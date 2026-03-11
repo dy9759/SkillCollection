@@ -46,7 +46,8 @@ metadata:
 - 每个块级标签通过 `id` 属性标识 block_id，如 `<p id="aB3kLm9xZq">内容</p>`。
 - **重要**：写入操作（`edit_block` 等）的 `block_id` / `anchor_id` 只接受顶层 block ID（由 `get_note_outline` 返回）。`read_note` XML 中容器（`<highlightBlock>`、`<columns>`、`<table>`）内部段落的 `id` 仅供阅读参考，不可用于写入操作。
 - 写入时提供 XML 格式内容，系统自动转换为内部 block 模型。编辑已有 block 时保留 `id`，创建新 block 时省略 `id`。
-- 行内 mark 使用语义标签：`<strong>粗体</strong>`、`<em>斜体</em>`、`<s>删除线</s>`、`<u>下划线</u>`、`<code>代码</code>`、`<a href="url">链接</a>`。
+- 行内 mark 使用语义标签：`<strong>粗体</strong>`、`<em>斜体</em>`、`<s>删除线</s>`、`<u>下划线</u>`、`<code>代码</code>`（可选属性 `backgroundColor`、`fontSize`）、`<a href="url">链接</a>`。
+- 行内自闭合元素：`<emoji value="😀"/>`（表情）、`<latex formula="E=mc^2"/>`（行内公式）、`<br/>`（硬换行）。
 - 样式属性通过 `<span>` 传递：`<span fontColor="#C21C13">红色文字</span>`。
 - **颜色受预设色板约束**，任意 hex 色值会被编辑器静默丢弃。各类颜色预设值：
   - `fontColor`（12 色）：`#080F17` `#C21C13` `#DB7800` `#078654` `#0E52D4` `#0080A0` `#757575` `#DA326B` `#D1A300` `#58A401` `#116AF0` `#A639D7`
@@ -61,8 +62,8 @@ metadata:
 
 ### 只读 Token
 
-- 部分笔记 token 为只读，写入工具会返回 `DOCUMENT_READ_ONLY`。
-- 此时 `retryable: false`——不要重试，应告知用户。
+- 部分笔记 token 为只读，所有写入操作（包括 `edit_block`、`batch_edit`、`insert_image`、`create_note` 等）均会返回 `DOCUMENT_READ_ONLY`。
+- 此时 `retryable: false`——不要重试，应告知用户。读取操作不受影响。
 
 ### 响应格式
 
@@ -253,11 +254,11 @@ get_mcp_logs({ limit: 20 })       // 查看最近的工具调用日志
 
 | Block 类型 | XML 标签 | 说明 |
 |-----------|----------|------|
-| `paragraph` | `<p>` | 支持行内 mark（`<strong>`、`<em>`、`<s>`、`<u>`、`<code>`、`<a>`、`<tag>`） |
+| `paragraph` | `<p>` | 支持行内 mark（`<strong>`、`<em>`、`<s>`、`<u>`、`<code>`、`<a>`、`<tag>`）。`<tag>` 为笔记标签引用（**只读**，写入时自动降级为纯文本） |
 | `heading` | `<h1>`-`<h6>` | 级别由标签名或 `attrs.level` 控制 |
 | `blockquote` | `<blockquote>` | 支持行内 mark |
 | `code_block` | `<codeblock lang="...">` | 纯文本内容；语言通过 `lang` 属性指定 |
-| `list` | `<p listType="bullet\|ordered\|todo">` | 通过 `listType`、`listLevel`、`checked` 属性控制 |
+| `list` | `<p listType="bullet\|ordered\|todo">` | 通过 `listType`、`listLevel`、`checked` 属性控制。有序列表额外支持 `listId`（分组连续编号项）和 `listValue`（编号样式：`arabicNum`、`alphabet` 等） |
 | `table` | `<table>` | `<tr>` → `<td>` 结构；必须整表替换 |
 | `highlight_block` | `<highlightBlock>` | 高亮块，包含 block 元素 |
 | `columns` | `<columns>` → `<column>` | 分栏布局，每个 column 包含 block 元素 |
@@ -272,6 +273,7 @@ get_mcp_logs({ limit: 20 })       // 查看最近的工具调用日志
 | Block 类型 | 属性 | 可选值 |
 |-----------|------|--------|
 | `heading` | `level` | 1–6 |
+| `heading` | `textAlign` | `"left"`、`"center"`、`"right"` |
 | `paragraph` | `textAlign` | `"left"`、`"center"`、`"right"` |
 | `code_block` | `language` | 语言标识字符串 |
 | `todo_list` 子项 | `checked` | `true` / `false` |
@@ -316,7 +318,7 @@ get_mcp_logs({ limit: 20 })       // 查看最近的工具调用日志
 
 ### 其他注意事项
 
-- **图片必须使用 `insert_image` 工具**：图片不可通过 XML 创建（`<img/>` 标签为只读）。`insert_image` 支持 HTTP/HTTPS URL、本地文件路径和 base64 data URI。**URL 必须直接指向图片资源（返回 image/* 内容类型），不可为 HTML 页面链接**。若 URL 返回 404 或非图片内容，将报 `IMAGE_FETCH_FAILED` 错误。`edit_block` 中也不支持图片子操作。
+- **图片必须使用 `insert_image` 工具**：图片不可通过 XML 创建（`<img/>` 标签为只读）。`insert_image` 支持 base64 data URI 和 HTTP/HTTPS URL。**本地文件请先读取并转为 base64 data URI 再传入**。**URL 必须直接指向图片资源（返回 image/* 内容类型），不可为 HTML 页面链接**。若 URL 返回 404 或非图片内容，将报 `IMAGE_FETCH_FAILED` 错误。`edit_block` 中也不支持图片子操作。
 - **`batch_edit` 执行顺序固定**：delete → replace → update_attrs → insert，与数组顺序无关。
 - **`create_note` 创建空白笔记**：不支持初始内容，需用 `edit_block` 填充。
 - **`read_section` 仅限标题**：`heading_block_id` 必须指向 `heading` block，否则报 `INVALID_BLOCK_TYPE`。

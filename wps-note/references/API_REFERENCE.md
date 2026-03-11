@@ -525,7 +525,7 @@ interface MCPStandardResult<T = any> {
 }
 ```
 
-**支持的属性**：`heading.level`、`paragraph.textAlign`、`code_block.language`、`todo.checked`。
+**支持的属性**：`heading.level`、`heading.textAlign`、`paragraph.textAlign`、`code_block.language`、`todo.checked`。
 
 **返回** `data`：`{ success, block_id, message? }`。
 
