@@ -2,11 +2,6 @@
 
 `wpsnote-cli` 是 WPS 笔记的命令行工具，将 MCP 工具封装为 shell 命令，适用于脚本自动化、终端工作流和 AI Agent 集成。
 
-## 概述
-
-- CLI 随 WPS 笔记桌面客户端自动安装和配置，开箱即用
-- 每个 CLI 命令对应一个 MCP 工具调用
-- 如果 WPS 笔记未运行，CLI 会自动尝试启动应用
 
 ## 全局选项
 
@@ -97,7 +92,7 @@ wpsnote-cli insert-image --note_id <id> --anchor_id <id> --position after --src_
 
 ### 自动启动应用
 
-当 MCP 服务不可达时，CLI 会自动尝试启动 WPS 笔记应用，并轮询等待服务就绪（最长 30 秒）。支持 macOS、Windows、Linux。
+当 MCP 服务不可达时，CLI 会自动尝试启动 WPS 笔记应用，并轮询等待服务就绪（最长 30 秒）
 
 ### Fallback 命令
 
