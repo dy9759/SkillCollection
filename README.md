@@ -38,7 +38,7 @@ skill-creator/
 WPS 笔记基础能力层，负责统一封装底层笔记操作能力，包括：
 
 - 通过 MCP 读取、编辑、搜索和管理 WPS 笔记
-- 通过 `wpsnote-cli` 提供命令行调用方式
+- 通过 `wpsnote-cli` 提供命令行调用方式（CLI 参考中区分 help/schema 可见的 canonical 命令与 fallback alias）
 - 为上层场景 Skill 提供稳定的能力入口和参考资料
 
 相关文档：

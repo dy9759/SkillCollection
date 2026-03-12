@@ -2,6 +2,20 @@
 
 `wpsnote-cli` 是 WPS 笔记的命令行工具，将 MCP 工具封装为 shell 命令，适用于脚本自动化、终端工作流和 AI Agent 集成。
 
+## 初始化方式
+
+当前版本的 CLI 由 WPS 笔记桌面端负责安装和写入配置：
+
+- 在桌面端 MCP 设置页点击安装 CLI
+- 安装器会自动写入 `~/.wpsnote-cli/config.json`
+- 当前**不存在** `wpsnote-cli setup` 命令
+
+## 命令命名约定
+
+- 本文档表格中的命令名以 `wpsnote-cli --help` / `wpsnote-cli schema` 可见的 **canonical 命令** 为准。
+- 对少数未显式注册的工具，CLI 仍支持 **fallback alias**：把命令名从 `kebab-case` 自动映射为 MCP tool 名后直接调用。
+- 因此像 `get-xml-reference`、`generate-image` 这类 tool 风格命令仍可运行，但它们不是 help/schema 主命令面。
+
 
 ## 全局选项
 
@@ -33,7 +47,7 @@
 | `search` | `search_note_content` | 在笔记内搜索文本 |
 | `read-image` | `read_image` | 读取图片（CLI 返回本地文件路径） |
 | `audio` | `get_audio_transcript` | 获取语音转写文本 |
-| `get-xml-reference` | `get_xml_reference` | 获取 XML 格式参考文档（通过 Fallback 机制调用） |
+| `xml-ref` | `get_xml_reference` | 获取 XML 格式参考文档 |
 
 ### 管理命令
 
@@ -55,7 +69,7 @@
 | `edit` | `edit_block` | 编辑 block（replace/insert/delete/update_attrs） |
 | `batch-edit` | `batch_edit` | 批量原子编辑 |
 | `insert-image` | `insert_image` | 插入图片 |
-| `generate-image` | `generate_image` | AI 文生图，返回图片 URL |
+| `gen-image` | `generate_image` | AI 文生图，返回图片 URL |
 
 ### 调试命令
 
@@ -98,11 +112,20 @@ wpsnote-cli insert-image --note_id <id> --anchor_id <id> --position after --src_
 
 ### Fallback 命令
 
-未注册的命令名会自动转换为 MCP 工具名（将 `-` 替换为 `_`）并直接调用，无需预定义。
+未注册的命令名会自动转换为 MCP 工具名（将 `-` 替换为 `_`）并直接调用，无需预定义。适合临时直调 tool，但对外文档和自动化脚本优先使用 canonical 命令。
 
 ```bash
-# 等同于调用 MCP 工具 get_xml_reference
+# canonical 命令
+wpsnote-cli xml-ref --json
+
+# fallback alias，等同于调用 MCP 工具 get_xml_reference
 wpsnote-cli get-xml-reference --json
+
+# canonical 命令
+wpsnote-cli gen-image --prompt "系统架构图"
+
+# fallback alias，等同于调用 MCP 工具 generate_image
+wpsnote-cli generate-image --prompt "系统架构图"
 ```
 
 ## 使用示例
@@ -174,13 +197,13 @@ wpsnote-cli insert-image --note_id <id> --anchor_id <bid> --position after --src
 
 ```bash
 # 生成图片（返回图片 URL）
-wpsnote-cli generate-image --prompt "一只橘猫坐在窗台上，水彩画风格，暖色调"
+wpsnote-cli gen-image --prompt "一只橘猫坐在窗台上，水彩画风格，暖色调"
 
 # 指定尺寸（竖版）
-wpsnote-cli generate-image --prompt "山水画" --width 1536 --height 2688
+wpsnote-cli gen-image --prompt "山水画" --width 1536 --height 2688
 
 # 生成并插入笔记（组合使用）
-IMG_URL=$(wpsnote-cli generate-image --prompt "系统架构图" --json | jq -r '.data.image_url')
+IMG_URL=$(wpsnote-cli gen-image --prompt "系统架构图" --json | jq -r '.data.image_url')
 wpsnote-cli insert-image --note_id <id> --anchor_id <bid> --position after --src "$IMG_URL"
 ```
 
