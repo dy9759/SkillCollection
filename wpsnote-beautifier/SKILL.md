@@ -54,7 +54,7 @@ metadata:
 
 1. **结构调整计划** — 哪些内容需要提升/降低标题层级，哪里需要增加分隔
 2. **强调元素计划** — 哪些内容用高亮块、哪些用分栏（严格控制数量，参照"颜色克制总原则"）
-3. **配色方案选择** — 从预设方案中选择 1 个主色系（见 [color-schemes.md](color-schemes.md)），全文统一使用该色系，不混用多个方案
+3. **配色方案选择** — 从预设方案中选择 1 个主色系（见 [reference/color-schemes.md](reference/color-schemes.md)），全文统一使用该色系，不混用多个方案
 4. **颜色使用预算** — 明确列出：高亮块 X 个、分栏 X 处、行内高亮约 X 处，确保总量克制
 5. **预计操作数量** — 让用户对改动范围有预期
 
@@ -206,13 +206,13 @@ metadata:
 - 行内高亮（fontHighlightColor）全文统一为 1 种颜色，使用量不超过 5-8 处
 - 避免大面积使用高饱和度颜色，优先使用柔和色调
 - **不确定是否需要加颜色时，选择不加**
-- 配色方案详见 [color-schemes.md](color-schemes.md)，选定后全文统一，不混用多个方案
+- 配色方案详见 [reference/color-schemes.md](reference/color-schemes.md)，选定后全文统一，不混用多个方案
 
 ---
 
 ## 常用 XML 写入模板
 
-详细的 XML 模板参见 [xml-patterns.md](xml-patterns.md)。
+详细的 XML 模板参见 [reference/xml-patterns.md](reference/xml-patterns.md)。
 
 ---
 
@@ -248,6 +248,6 @@ metadata:
 1. **block_id 随时可能变化** — 每次写入前必须通过 `get_note_outline` 刷新
 2. **batch_edit 执行顺序固定** — delete → replace → update_attrs → insert（与数组顺序无关）
 3. **anchor_id 只接受顶层 block ID** — 容器内部（高亮块、分栏、表格内）的段落 id 不可用于写入
-4. **表格须整表替换** — 对表格 block 调用 `replace_block`
+4. **表格须整表替换** — 对表格 block 调用 `edit_block(op="replace")`
 5. **只读标签不可创建** — `<img/>`、`<embed/>`、`<imageColumn/>`、`<tag>` 无法通过 XML 创建
 6. **新建 block 不需要 id** — 系统自动分配
