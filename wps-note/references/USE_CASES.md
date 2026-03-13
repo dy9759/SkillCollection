@@ -305,6 +305,8 @@ get_xml_reference()
 edit_block({ note_id: "<id>", op: "replace", block_id: "<paragraph_id>", content: "<p>新的段落内容</p>" })
 ```
 
+**注意**：`content` 必须直接填写完整 XML，不能写成 `"把第二段改成新的段落内容"`、纯文本或 Markdown。
+
 **验证**：
 - [ ] 返回 `ok: true`
 - [ ] 再次 `read_blocks` 确认内容已更新
@@ -358,6 +360,8 @@ edit_block({
   content: "<h2>背景</h2><p>本项目始于 2024 年第三季度...</p>"
 })
 ```
+
+**注意**：`insert` 的 `content` 中不要携带块级 `id`，系统会为新插入的 block 自动分配新 ID。
 
 **验证**：
 - [ ] 返回 `new_block_ids` 数组
@@ -502,7 +506,7 @@ batch_edit({
 - [ ] 任一操作失败则全部回滚
 
 **边界**：
-- 空 `operations` 数组——返回成功（无操作）
+- 空 `operations` 数组——返回 `INVALID_PARAMS` / “operations is required and must be a non-empty array”
 - 单种操作类型——等价于调用对应的单工具
 - 操作引用已被 delete 删掉的 block ID——replace/update_attrs 该条失败
 

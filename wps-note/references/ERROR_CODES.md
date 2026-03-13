@@ -13,7 +13,7 @@
 | `NOTE_NOT_FOUND` | 指定的 note_id 无效或笔记不存在 | 否 | 使用 `list_notes` 或 `search_notes` 获取有效 note_id；若当前笔记则用 `get_current_note` |
 | `BLOCK_NOT_FOUND` | 文档中不存在该 block ID | 否 | 重新获取大纲（`get_note_outline`）或搜索（`search_note_content`）以获取有效 block ID |
 | `INVALID_BLOCK_TYPE` | 操作所需的 block 类型不匹配 | 否 | 检查 block 类型是否正确（如 `read_section` 需要 `heading`） |
-| `INVALID_CONTENT` | XML/Markdown 内容无法解析为有效 blocks | 否 | 检查 message 中的具体 warnings，修正不合规的标签或结构后重试 |
+| `INVALID_CONTENT` | XML 内容无法解析为有效 blocks | 否 | 检查 message 中的具体 warnings，修正不合规的标签或结构后重试 |
 
 | `DOCUMENT_READ_ONLY` | 笔记 token 为只读 | 否 | 无法写入此笔记——告知用户 |
 | `FRONTEND_TIMEOUT` | 前端未在规定时间内响应 | 是 | 尝试缩小读取范围或稍后重试 |
@@ -86,7 +86,7 @@ block 编辑工具（`edit_block`、`batch_edit`、`insert_block`、`replace_blo
 传入的 `note_id` 无效或笔记不存在（如路径找不到、ENOENT、无效 ID）。
 
 ```
-1. list_notes({ limit: 50 }) 或 search_notes({ query: "..." })  → 获取有效 note_id
+1. list_notes({ limit: 50 }) 或 search_notes({ keyword: "..." })  → 获取有效 note_id
 2. 若操作的是当前打开的笔记：get_current_note()  → 获取当前 note_id
 3. 使用新的 note_id 重试原操作
 ```
@@ -121,9 +121,9 @@ block 编辑工具（`edit_block`、`batch_edit`、`insert_block`、`replace_blo
 2. 用户确认窗口已打开后重试
 ```
 
-### INVALID_CONTENT → 检查 warnings 并修正 XML/内容
+### INVALID_CONTENT → 检查 warnings 并修正 XML
 
-XML 或 Markdown 内容解析后未能产生任何有效 block。`message` 字段中包含解析器收集的具体 warnings，指明哪些标签或结构不合规。
+XML 内容解析后未能产生任何有效 block。`message` 字段中包含解析器收集的具体 warnings，指明哪些标签或结构不合规。
 
 常见原因：
 - 使用了不支持的 XML 标签（如 `<div>`、`<section>` 等 HTML 标签）

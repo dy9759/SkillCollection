@@ -241,20 +241,26 @@ interface MCPStandardResult<T = any> {
 
 ### edit_block
 
-编辑笔记 block（推荐的单操作编辑入口）。通过 `op` 指定操作：`replace`（block_id + content）替换内容、`insert`（anchor_id + position + content）插入新块、`delete`（block_ids）删除块、`update_attrs`（block_id + attrs）更新属性。编辑后 block_id 可能变化，需重新获取。
+编辑笔记 block（推荐的单操作编辑入口）。通过 `op` 指定操作：`replace`（block_id + content）替换内容、`insert`（anchor_id + position + content）插入新块、`delete`（block_ids）删除块、`update_attrs`（block_id + attrs）更新属性。只填写当前 `op` 需要的字段。编辑后 block_id 可能变化，需重新获取。
 
 ```json
 {
   "note_id": { "type": "string", "required": true, "description": "笔记 ID" },
   "op": { "type": "string", "enum": ["replace", "insert", "delete", "update_attrs"], "required": true, "description": "操作类型" },
-  "block_id": { "type": "string", "description": "目标 block ID（replace / update_attrs 时必填）" },
-  "block_ids": { "type": "array", "items": "string", "description": "要删除的 block ID 数组（delete 时必填）" },
-  "anchor_id": { "type": "string", "description": "锚点 block ID（insert 时必填）" },
+  "block_id": { "type": "string", "description": "目标顶层 block ID（replace / update_attrs 时必填）" },
+  "block_ids": { "type": "array", "items": "string", "description": "要删除的顶层 block ID 数组（delete 时必填）" },
+  "anchor_id": { "type": "string", "description": "锚点顶层 block ID（insert 时必填）" },
   "position": { "type": "string", "enum": ["before", "after"], "description": "插入位置（insert 时必填）" },
-  "content": { "type": "string", "description": "XML 内容（replace / insert 时必填）" },
+  "content": { "type": "string", "description": "完整 XML 字符串（replace / insert 时必填）。不能传纯文本、Markdown 或自然语言编辑指令；例如 '<p>正文</p>' 或 '<h2>标题</h2><p>正文</p>'" },
   "attrs": { "type": "object", "description": "要更新的属性（update_attrs 时必填）" }
 }
 ```
+
+**注意**：
+
+- `replace` / `insert` 的 `content` 必须直接填写 XML，而不是 `"把第二段改成……"` 这类文字指令。
+- `replace` 时 `content` 根块 `id` 可省略；若显式传入，必须与 `block_id` 一致。
+- `insert` 时 `content` 中的块级标签应省略 `id`，系统会分配新的 `block_id`。
 
 **返回** `data`：`{ success, results[], message? }`。
 
@@ -262,7 +268,7 @@ interface MCPStandardResult<T = any> {
 
 ### batch_edit
 
-在单次原子事务中执行多个编辑操作（多步操作需要全部成功或全部回滚时使用）。执行顺序固定：`delete` → `replace` → `update_attrs` → `insert`，与数组顺序无关。
+在单次原子事务中执行多个编辑操作（多步操作需要全部成功或全部回滚时使用）。执行顺序固定：`delete` → `replace` → `update_attrs` → `insert`，与数组顺序无关。每个操作只填写其 `op` 对应字段；`replace` / `insert` 的 `content` 必须是完整 XML 字符串。
 
 ```json
 {
@@ -274,8 +280,8 @@ interface MCPStandardResult<T = any> {
 **操作 schema：**
 
 ```json
-{ "op": "replace", "block_id": "string", "content": "string" }
-{ "op": "insert", "anchor_id": "string", "position": "before|after", "content": "string" }
+{ "op": "replace", "block_id": "string", "content": "<p>...</p>" }
+{ "op": "insert", "anchor_id": "string", "position": "before|after", "content": "<h2>...</h2><p>...</p>" }
 { "op": "delete", "block_ids": ["string"] }
 { "op": "update_attrs", "block_id": "string", "attrs": { ... } }
 ```
