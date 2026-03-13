@@ -1,6 +1,7 @@
 ---
 name: notes-to-flashcards
-description: Use this skill when a user wants WPS notes turned into active-recall material for revision. It is useful for course notes, reading notes, concept review, exam prep, and misconception repair when the user asks for flashcards, recall questions, drill cards, or a compact review deck based on one or more notes.
+author: Loki Mao (赛博小熊猫 Loki)
+description: 当用户希望把 WPS 笔记转成可主动回忆的复习卡片时使用此 Skill。适合课程笔记复习、概念记忆、考前冲刺、误解修正后的再巩固，以及把静态笔记变成可刷卡片的学习材料。
 ---
 
 # WPS Notes to Flashcards 2.0
@@ -9,19 +10,19 @@ Follow the shared workflow in [../wps-learning-workflow.md](../wps-learning-work
 
 ## Inputs
 
-- one or more WPS notes
-- optional topic or exam scope
-- optional preferred card count or difficulty emphasis
+- 一篇或多篇 WPS 学习笔记
+- 可选的主题范围或考试范围
+- 可选的卡片数量、难度重点或复习偏好
 
 ## Output
 
-A structured WPS-ready flashcard deck with active-recall cards and lightweight review hints.
+A structured WPS-ready flashcard deck，包含主动回忆卡片和轻量复习提示。
 
 ## What this skill should produce
 
-Generate cards that help memory and understanding, not just copy sentences.
+目标不是机械摘句，而是把笔记真正转成可用于复习的卡片组。
 
-Required sections:
+建议包含这些部分：
 
 1. `definition cards`
 2. `distinction cards`
@@ -34,25 +35,21 @@ Use review timing as lightweight review hints, not a full spaced-repetition sche
 
 ## WPS-first rules
 
-- Include the source note title or section when possible.
-- Keep fronts short and answerable from memory.
-- Mark high-risk confusion cards clearly.
+- 尽量标注来源笔记标题或原章节，方便回看。
+- 卡片正面要短、清楚、能靠记忆回答。
+- 容易混淆的卡片要单独标出来，优先复习。
 
-## Review logic
+## Quality rules
 
-When useful, group cards into:
-
-- review today
-- review in 3 days
-- review in 7 days
-
-This is only a lightweight spaced-review hint, not a full scheduler.
+- 优先抽取定义、辨析、例子、应用四类高价值卡片。
+- 轻量复习顺序可以提示 today / 3 days / 7 days，但不要假装这是完整排期系统。
+- 如果原笔记不完整，要说明卡片覆盖面有限。
 
 ## Do not use when
 
-- the user wants a teaching script rather than recall cards
-- the note is too incomplete to support card generation
-- the user needs a diagnostic quiz instead of flashcards
+- 用户要的是讲解脚本，而不是回忆卡片
+- 原笔记内容太碎，无法稳定生成卡片
+- 用户真正需要的是诊断型小测，而不是 flashcards
 
 ## Recommended next skill
 
