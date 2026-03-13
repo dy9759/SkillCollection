@@ -43,3 +43,10 @@ wps-note-intelligent-search/workspace/iteration-*/benchmark.json
 
 # Debug
 Debug/
+
+raw-skill/
+references/
+social-media-writer/
+archive/
+
+.claude/
