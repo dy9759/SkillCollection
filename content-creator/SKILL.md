@@ -6,6 +6,11 @@ description: |
   核心流程：风格画像→需求确认→大纲设计→深度研究→文章创作→定稿交付。
   这是创作流程的第一步：从0到1完成内容创作。
   不要用于：1)已有内容的排版发布 2)简单文本编辑。
+metadata:
+  version: "1.0.0"
+  category: content-creation
+  tags: [content, writing, copywriting, wechat, xiaohongshu, zhihu]
+  dependencies: [wps-note]
 ---
 
 # Content Creator - 专业内容创作工作流
@@ -171,6 +176,87 @@ description: |
 
 ---
 
+## 常用编排模式
+
+### 模式 1：基于样张创作（推荐）
+
+当用户提供了参考文章，希望仿照其风格创作：
+
+```
+检查 persona.md → 如不存在，分析样张提取风格 → 确认需求 → 设计大纲 → 深度研究 → 创作 → 定稿
+```
+
+**关键工具**：
+- `wps-read.py` 读取样张文章
+- `extract-template.py` 提取风格模板
+
+### 模式 2：全新主题创作
+
+当用户只有主题想法，没有特定风格要求：
+
+```
+检查 persona.md → 使用通用风格或加载历史画像 → 需求访谈 → 设计大纲 → 深度研究 → 创作 → 定稿
+```
+
+### 模式 3：快速迭代创作
+
+当用户对已有初稿不满意，需要大幅修改：
+
+```
+加载已有 brief/outline → 重新确认需求变化 → 调整大纲 → 补充研究 → 重写 → 定稿
+```
+
+---
+
+## Troubleshooting
+
+### 风格提取失败
+
+**现象**：`extract-template.py` 报错或提取结果为空
+**原因**：样文章节结构不清晰、内容太短（<500字）、XML 解析错误
+**解决**：
+1. 检查样张是否为完整文章（有头有尾）
+2. 确保样张 > 500 字
+3. 手动阅读样张，直接观察风格特征
+
+### 研究素材不足
+
+**现象**：`search_notes` 返回结果为空或无关
+**原因**：关键词不准确、笔记库中确实无相关内容
+**解决**：
+1. 尝试同义词扩展搜索
+2. 使用 web search 补充外部资料
+3. 主动向用户询问背景资料
+
+### 大纲确认后用户大改需求
+
+**现象**：用户说"不对，我不是这个意思"
+**原因**：需求访谈阶段理解偏差
+**解决**：
+1. 不要直接在原大纲上修改，回到 Step 2 重新确认需求
+2. 更新 `brief.md` 记录新的理解
+3. 基于新 brief 重新设计大纲
+
+### MCP 工具调用失败
+
+**现象**：`mcp__wpsnote__search_notes` 等工具报错
+**原因**：EDITOR_NOT_READY、BLOCK_NOT_FOUND、网络问题
+**解决**：
+1. 检查 WPS 笔记应用是否正常运行
+2. 重新获取 block_id（编辑后 ID 会变化）
+3. 参考 `wps-note` SKILL 的 Troubleshooting
+
+### 创作偏离风格
+
+**现象**：用户说"这不像我的风格"
+**原因**：persona.md 描述不够具体，或创作时未严格遵循
+**解决**：
+1. 细化 persona.md，添加更多具体示例
+2. 创作时逐段对照 persona.md 检查
+3. 关键句使用用户原话风格改写
+
+---
+
 ## 与 WPS 笔记的集成
 
 创作完成后，可直接写入 WPS 笔记：
@@ -178,6 +264,14 @@ description: |
 ```bash
 # 写入 WPS 笔记
 python scripts/wps-write.py --input final.md --title "文章标题" --tags "公众号"
+```
+
+**通过 MCP 工具写入**：
+```
+create_note({ title: "文章标题" }) → note_id
+batch_edit({ note_id, operations: [
+  { op: "replace", block_id, content: "<h1>标题</h1>..." }
+]})
 ```
 
 ---

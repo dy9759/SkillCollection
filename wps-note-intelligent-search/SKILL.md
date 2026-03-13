@@ -5,6 +5,11 @@ description: |
   当用户说"深度搜索""帮我深挖""关联查询""全面梳理"时使用。
   支持跨笔记关联挖掘、语义发散扩展、知识沉淀，不同于简单关键词匹配。
   不要用于单关键词查询（那用 search_notes MCP 工具）。
+metadata:
+  version: "1.0.0"
+  category: search
+  tags: [search, deep-search, knowledge-graph, note-analysis]
+  dependencies: [wps-note]
 ---
 
 ## Contract（契约）
@@ -37,17 +42,128 @@ description: |
 - **无匹配结果** → 返回空列表 + 扩展搜索建议
 - **MCP 调用失败** → 返回 503，启用本地降级策略
 
-## Tools（工具列表）
+## 与 wps-note 的关系
 
-本 Skill 使用以下 WPS MCP 工具执行搜索：
+本 Skill 是 `wps-note` 基础能力层的**场景封装层**，复用其底层搜索能力，专注于**深度搜索场景**：
 
-| 工具名 | 用途 | 调用方式 |
+- **不重复定义底层操作**：直接调用 `wps-note` 的 MCP 工具
+- **增加智能层**：意图解析、策略规划、结果关联分析
+- **场景化封装**：将多个 MCP 工具调用编排为完整深度搜索流程
+
+---
+
+## 常用编排模式
+
+### 模式 1：时间范围 + 主题搜索
+
+适用于查找特定时间段的相关内容：
+
+```
+意图解析 → search_notes({ keyword, since, before }) → find_tags → 结果聚合
+```
+
+### 模式 2：跨笔记关联挖掘
+
+适用于主题探索，发现分散在多篇笔记中的相关内容：
+
+```
+意图解析 → 扩展关键词 → 并行 search_notes（多组关键词） → 去重聚合 → find_tags → 结果排序
+```
+
+### 模式 3：单笔记内精确查找
+
+已知笔记范围，查找具体段落：
+
+```
+search_notes({ keyword }) → note_id → search_note_content({ note_id, query }) → read_blocks → 展示具体段落
+```
+
+---
+
+## 工具列表与调用方式
+
+本 Skill 复用 `wps-note` 的 MCP 工具执行深度搜索：
+
+| 工具名 | 用途 | MCP 调用 |
 |--------|------|----------|
 | `search_notes` | 笔记全文搜索（关键词、标签、时间范围） | `mcp__wpsnote__search_notes` |
 | `search_note_content` | 单笔记内容精确搜索 | `mcp__wpsnote__search_note_content` |
 | `get_note_outline` | 获取笔记结构大纲 | `mcp__wpsnote__get_note_outline` |
 | `get_note_info` | 批量获取笔记元数据 | `mcp__wpsnote__get_note_info` |
 | `find_tags` | 标签查找 | `mcp__wpsnote__find_tags` |
+
+### MCP 工具调用示例
+
+#### 1. 带时间范围的搜索
+
+```
+search_notes({
+  keyword: "项目规划",
+  since: "2025-03-01T00:00:00Z",
+  before: "2025-03-07T23:59:59Z",
+  sort: "update_time",
+  direction: "desc",
+  limit: 20
+})
+→ {
+  notes: [
+    { note_id: "abc123", title: "Q1 项目规划", update_time: "..." },
+    ...
+  ]
+}
+```
+
+#### 2. 标签 + 关键词联合搜索
+
+```
+search_notes({
+  keyword: "会议纪要",
+  tags: ["工作"],
+  since: "2025-02-01T00:00:00Z"
+})
+→ 返回同时满足：包含"会议纪要" + 标签为"工作" + 2月后的笔记
+```
+
+#### 3. 单笔记内容精确搜索
+
+```
+search_notes({ keyword: "前端架构" }) → note_id: "xyz789"
+
+search_note_content({
+  note_id: "xyz789",
+  query: "React 组件设计",
+  max_results: 10
+})
+→ [
+  { block_id: "p1aBc2De3F", type: "paragraph", preview: "...React 组件..." },
+  ...
+]
+
+# 读取具体段落
+read_blocks({ note_id: "xyz789", block_ids: ["p1aBc2De3F"] })
+```
+
+#### 4. 获取笔记元数据批量确认
+
+```
+search_notes({ keyword: "项目" }) → note_ids: ["id1", "id2", "id3"]
+
+get_note_info({ note_ids: ["id1", "id2", "id3"] })
+→ [
+  { note_id: "id1", title: "...", word_count: 1200, tags: ["工作"] },
+  ...
+]
+```
+
+#### 5. 标签发现
+
+```
+find_tags({ keyword: "前端" })
+→ [
+  { id: "tag1", name: "前端技术" },
+  { id: "tag2", name: "前端架构" }
+]
+```
 
 ## Workflow（工作流程）
 
@@ -196,6 +312,82 @@ python scripts/asset_manager.py list
 3. [会议待办] - 包含 2 项待办
 挖掘维度：多关键词任务类型深度匹配
 ```
+
+---
+
+## Troubleshooting
+
+### 搜索结果为空
+
+**现象**：`search_notes` 返回空数组
+**原因**：关键词太具体、时间范围太窄、没有匹配标签
+**解决**：
+1. 尝试更通用的关键词（如"前端架构"→"前端"）
+2. 移除时间限制或扩大范围
+3. 使用 `find_tags` 查看可用标签
+4. 尝试同义词或相关概念搜索
+
+### 结果太多无法筛选
+
+**现象**：返回 50+ 条笔记，用户难以处理
+**原因**：关键词太宽泛、没有限定条件
+**解决**：
+1. 引导用户增加限定词（如添加人名、项目名称）
+2. 使用时间范围缩小范围
+3. 按标签进一步过滤
+4. 展示摘要让用户选择最相关的
+
+### 关联挖掘找不到相关内容
+
+**现象**：扩展关键词后仍然没有相关笔记
+**原因**：笔记库中确实缺乏相关内容、扩展方向不对
+**解决**：
+1. 调整扩展关键词方向
+2. 询问用户是否有特定笔记可能相关
+3. 建议用户补充相关笔记到知识库
+4. 降级为简单关键词搜索
+
+### 单笔记内搜索无结果
+
+**现象**：`search_note_content` 返回空
+**原因**：笔记确实不包含该关键词、关键词拼写错误
+**解决**：
+1. 先用 `read_note` 或 `get_note_outline` 确认笔记内容
+2. 尝试同义词搜索
+3. 检查笔记是否为图片/PDF（不可搜索）
+
+### MCP 工具调用失败
+
+**现象**：`search_notes` 等工具报错
+**原因**：参数格式错误、EDITOR_NOT_READY、网络问题
+**解决**：
+1. 检查参数格式（时间格式 ISO 8601、标签格式等）
+2. 确保 WPS 笔记应用正常运行
+3. 参考 `wps-note` SKILL 的 Troubleshooting
+4. 错误码速查：
+   - `INVALID_PARAMS`: 检查参数类型和格式
+   - `RATE_LIMITED`: 等待 60 秒后重试
+   - `INTERNAL_ERROR`: 调用 `get_mcp_logs` 查看详情
+
+### 时间范围解析错误
+
+**现象**：用户说"上周"但搜索范围不对
+**原因**：时间计算错误、时区问题
+**解决**：
+1. 明确确认用户意图（具体日期范围）
+2. 使用脚本 `scripts/__init__.py parse` 辅助解析
+3. 日期边界检查（since ≤ before）
+
+### 结果排序不符合预期
+
+**现象**：最相关的笔记不在前面
+**原因**：排序策略不合适、相关性算法局限
+**解决**：
+1. 尝试不同排序方式（`sort`: update_time / relevance）
+2. 手动调整结果顺序（基于匹配维度数量）
+3. 向用户说明排序逻辑
+
+---
 
 ## Resources（资源引用）
 
