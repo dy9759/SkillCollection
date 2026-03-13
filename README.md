@@ -4,7 +4,7 @@
 [![下载 WPS 笔记](https://img.shields.io/badge/WPS笔记-下载-green?style=flat-square)](https://ainote.kdocs.cn/wps-notes-hub/)
 [![加入交流群](https://img.shields.io/badge/微信-加入交流群-07C160?style=flat-square&logo=wechat)](https://p.kdocs.cn/s/V6MQOIJGADQHG)
 
-**WPS 笔记是 AI Agent 的记忆中枢。**
+笔记，是思想落地的地方。
 
 Claude Code、Cursor、OpenClaw，几乎所有主流 AI Agent，都可以通过本仓库的 Skill 直接驱动 WPS 笔记：往里写、从里读、让它有序、让它被找到。
 
@@ -286,14 +286,21 @@ version: 1.0.0
 
 ## 贡献者
 
-感谢所有为这个仓库贡献过 Skill 的人。你们让 WPS 笔记对每一个 Agent 用户都更有用一点。
+每一个 Skill，都是有人把自己摸索出来的工作方式，提炼成了别人也能用的东西。
 
-<!-- 如果你贡献了 Skill，欢迎在 PR 里把自己加到这里 -->
+感谢你们愿意把私藏的经验，变成公共的财富。
+
+<!-- 如果你贡献了 Skill，欢迎通过 PR 把自己加到这里 -->
 
 | 贡献者 | Skill |
 |--------|-------|
-| [徐奕成](https://github.com/itshen) | `wps-note` · `news-to-note` · `tag-organize` · `note-copilot` · `live-transcript-summary` · `coding-assistant` · `wpsnote-beautifier` · `literature-reader` · `content-creator` · `wechat-publisher` · `wps-note-intelligent-search` · `skill-creator` |
-| [Loki Mao（赛博小熊猫）](https://github.com/loki2046-mao) | `learning/class-note-builder` · `learning/lecture-focus-extractor` · `learning/misconception-finder` · `learning/notes-to-flashcards` · `learning/notes-to-lesson-plan` · `learning/prerequisite-gap-finder` · `learning/study-note-linker` · `insight-engine/ie-recall-memory` |
+| [gaotianxiang](https://github.com/gaotianxiang) | `wps-note` · `literature-reader` · `tag-organize` · `skill-creator` · `wpsnote-beautifier` |
+| [KevinYoung-Kw](https://github.com/KevinYoung-Kw) | `content/content-creator` · `content/wechat-publisher` · `search/wps-note-intelligent-search` |
+| [Mellow](https://github.com/mellowrsa) | `search/news-to-note` |
+| [lee](https://github.com/liminwanqing) | `capture/coding-assistant` |
+| [loki2046-mao](https://github.com/loki2046-mao) | `learning/` 系列全部 · `insight-engine/ie-recall-memory` |
+| [songjialiang](https://github.com/songjialiang) | `insight-engine/ie-engine` · `insight-engine/ie-connect-dots` · `insight-engine/ie-retrieve-memory` · `insight-engine/ie-generate-insight` |
+| [itshen](https://github.com/itshen) | `capture/note-copilot` · `capture/live-transcript-summary` · `capture/doc-importer` · 仓库整理与维护 |
 
 ---
 
