@@ -235,6 +235,283 @@ def fetch_with_playwright(url: str) -> tuple[str, str]:
 
 
 # ============================================================
+# X Article 解析（longform 长文格式）
+# ============================================================
+
+def is_article_page(html: str) -> bool:
+    """判断是否为 X Article（长文）页面"""
+    return 'data-testid="twitterArticleRichTextView"' in html or \
+           'data-testid="longformRichTextComponent"' in html
+
+
+def _xml_escape_inline(s: str) -> str:
+    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+
+
+def _span_to_xml(span_el) -> str:
+    """将单个 span 转换为 WPS XML 内联片段，保留 bold"""
+    text = span_el.get_text()
+    if not text:
+        return ''
+    text_esc = _xml_escape_inline(text)
+    style = span_el.get('style', '')
+    if 'bold' in style.lower() or '700' in style:
+        return f'<strong>{text_esc}</strong>'
+    return text_esc
+
+
+def _inline_el_to_xml(el) -> str:
+    """递归处理内联元素，保留粗体、链接"""
+    if not hasattr(el, 'name'):
+        # NavigableString
+        t = str(el)
+        return _xml_escape_inline(t)
+    if el.name == 'br':
+        return '<br/>'
+    if el.name == 'a':
+        href = el.get('href', '')
+        text = el.get_text()
+        if href and text:
+            return f'<a href="{_xml_escape_inline(href)}">{_xml_escape_inline(text)}</a>'
+        return _xml_escape_inline(text)
+    if el.name == 'span':
+        style = el.get('style', '')
+        inner = ''.join(_inline_el_to_xml(c) for c in el.children)
+        if 'bold' in style.lower() or '700' in style:
+            return f'<strong>{inner}</strong>'
+        return inner
+    # 其他标签递归
+    return ''.join(_inline_el_to_xml(c) for c in el.children)
+
+
+def _p_el_to_xml(p_el) -> str:
+    """将段落 div/p 元素转为 WPS <p> XML，保留内联格式"""
+    inner = ''.join(_inline_el_to_xml(c) for c in p_el.children)
+    inner = inner.strip()
+    if not inner:
+        return ''
+    return f'<p>{inner}</p>'
+
+
+def _collect_article_blocks(el) -> list[dict]:
+    """
+    递归提取 X Article longformRichTextComponent 内所有块。
+    返回 [{type: h1/h2/h2/p/code/img, el: BeautifulSoup element}]
+    """
+    results = []
+    for child in el.children:
+        if not hasattr(child, 'name') or not child.name:
+            continue
+        tag = child.name
+        testid = child.get('data-testid', '')
+
+        if tag in ('h1', 'h2', 'h3'):
+            results.append({'type': tag, 'el': child})
+        elif testid == 'tweetPhoto':
+            results.append({'type': 'img', 'el': child})
+        elif testid == 'markdown-code-block':
+            results.append({'type': 'code', 'el': child})
+        elif tag == 'section':
+            code = child.find(attrs={'data-testid': 'markdown-code-block'})
+            photo = child.find(attrs={'data-testid': 'tweetPhoto'})
+            if code:
+                results.append({'type': 'code', 'el': code})
+            elif photo:
+                results.append({'type': 'img', 'el': photo})
+            else:
+                results.extend(_collect_article_blocks(child))
+        elif tag == 'div':
+            # 含子结构节点 → 继续递归
+            has_structural = (
+                child.find(['h1', 'h2', 'h3']) or
+                child.find(attrs={'data-testid': 'markdown-code-block'}) or
+                child.find(attrs={'data-testid': 'tweetPhoto'}) or
+                child.find('section')
+            )
+            if has_structural:
+                results.extend(_collect_article_blocks(child))
+            else:
+                text = child.get_text(strip=True)
+                if text:
+                    results.append({'type': 'p', 'el': child})
+        else:
+            results.extend(_collect_article_blocks(child))
+    return results
+
+
+def parse_article_from_html(html: str) -> tuple[str, list[dict], list[str]]:
+    """
+    解析 X Article 页面。
+
+    Returns:
+        (title, blocks, image_urls)
+        blocks: [{type: h1/h2/h3/p/code/img, content: str, img_url: str}]
+        image_urls: 按顺序排列的图片 URL 列表
+    """
+    soup = BeautifulSoup(html, 'html.parser')
+
+    # 提取文章标题
+    title_el = soup.find(attrs={'data-testid': 'twitter-article-title'})
+    title = title_el.get_text(strip=True) if title_el else ''
+
+    # 提取正文容器
+    lrtc = soup.find(attrs={'data-testid': 'longformRichTextComponent'})
+    if not lrtc:
+        lrtc = soup.find(attrs={'data-testid': 'twitterArticleRichTextView'})
+    if not lrtc:
+        print("   [Article] 未找到 longformRichTextComponent，解析失败")
+        return title, [], []
+
+    raw_blocks = _collect_article_blocks(lrtc)
+    print(f"   [Article] 提取到 {len(raw_blocks)} 个原始块")
+
+    # 转换为结构化 blocks
+    blocks = []
+    image_urls = []
+
+    for rb in raw_blocks:
+        btype = rb['type']
+        el = rb['el']
+
+        if btype in ('h1', 'h2', 'h3'):
+            text = el.get_text(strip=True)
+            if text:
+                blocks.append({'type': btype, 'content': text, 'img_url': ''})
+
+        elif btype == 'p':
+            xml = _p_el_to_xml(el)
+            if xml:
+                blocks.append({'type': 'p', 'content': xml, 'img_url': ''})
+
+        elif btype == 'code':
+            pre = el.find('pre')
+            code_text = pre.get_text() if pre else el.get_text()
+            if code_text.strip():
+                blocks.append({'type': 'code', 'content': code_text, 'img_url': ''})
+
+        elif btype == 'img':
+            imgs = el.find_all('img')
+            for img in imgs:
+                src = img.get('src', '')
+                if 'pbs.twimg.com/media/' in src:
+                    image_urls.append(src)
+                    blocks.append({'type': 'img', 'content': '', 'img_url': src})
+                    break  # 每个 tweetPhoto 只取一张
+
+    print(f"   [Article] 有效块: {len(blocks)}（含 {len(image_urls)} 张图片）")
+    return title, blocks, image_urls
+
+
+def article_blocks_to_segments(
+    blocks: list[dict],
+    img_mapping: dict[str, str],
+) -> list[tuple]:
+    """
+    将 Article blocks 转为 write_content_with_placeholders 所需的 segments。
+    segments: [(type, content)] — type 为 'xml' 或 'img'
+    """
+    segments = []
+    xml_buf = []
+
+    def flush_xml():
+        if xml_buf:
+            segments.append(('xml', '\n'.join(xml_buf)))
+            xml_buf.clear()
+
+    for b in blocks:
+        btype = b['type']
+
+        if btype == 'h1':
+            xml_buf.append(f'<h2>{_xml_escape_inline(b["content"])}</h2>')
+        elif btype == 'h2':
+            xml_buf.append(f'<h3>{_xml_escape_inline(b["content"])}</h3>')
+        elif btype == 'h3':
+            xml_buf.append(f'<h3>{_xml_escape_inline(b["content"])}</h3>')
+        elif btype == 'p':
+            xml_buf.append(b['content'])
+        elif btype == 'code':
+            # WPS 无 codeblock，用 highlightBlock 灰色背景呈现
+            code_text = _xml_escape_inline(b['content'])
+            xml_buf.append(
+                f'<highlightBlock emoji="💻" '
+                f'highlightBlockBackgroundColor="#EBEBEB" '
+                f'highlightBlockBorderColor="#C5C5C5">'
+                f'<p>{code_text}</p>'
+                f'</highlightBlock>'
+            )
+        elif btype == 'img':
+            flush_xml()
+            local_path = img_mapping.get(b['img_url'])
+            if local_path and os.path.exists(local_path):
+                segments.append(('img', local_path))
+            # 若图片下载失败则跳过
+
+    flush_xml()
+    return segments
+
+
+def import_article_to_wps(
+    url: str,
+    title: str,
+    author_name: str,
+    author_handle: str,
+    blocks: list[dict],
+    img_mapping: dict[str, str],
+) -> bool:
+    """将 X Article 导入 WPS 笔记"""
+    mod = _load_wps_writer()
+    if not mod:
+        print("   [WPS] 找不到 wps_writer.py")
+        return False
+    if not mod.cli_check():
+        print("   [WPS] wpsnote-cli 未连接")
+        return False
+
+    note_id = mod.cli_create_note(title)
+    if not note_id:
+        print("   [WPS] 创建笔记失败")
+        return False
+    mod.cli_sync(note_id)
+    print(f"   [WPS] 创建笔记: {note_id}")
+
+    outline_data = mod.cli_get_outline(note_id)
+    first_id = outline_data.get('blocks', [{}])[0].get('id')
+    if not first_id:
+        print("   [WPS] 无法获取初始 block")
+        return False
+
+    author_info = f'{author_name} (@{author_handle})' if author_name else f'@{author_handle}'
+    header_xml = f'<h1>{_xml_escape_inline(title)}</h1>'
+    meta_xml = (
+        f'<p>{_xml_escape_inline(author_info)} | '
+        f'<a href="{url}">原文链接</a></p>'
+    )
+
+    res = mod.cli_batch_edit(note_id, [
+        {'op': 'replace', 'block_id': first_id, 'content': header_xml},
+        {'op': 'insert', 'anchor_id': first_id, 'position': 'after', 'content': meta_xml},
+    ])
+    if res.get('ok') is False:
+        print(f"   [WPS] 写标题失败: {res.get('message')}")
+        return False
+
+    segments = article_blocks_to_segments(blocks, img_mapping)
+    xml_count = sum(1 for t, _ in segments if t == 'xml')
+    img_count = sum(1 for t, _ in segments if t == 'img')
+    print(f"   [WPS] segments: {xml_count} 段文字, {img_count} 张图片")
+
+    img_list = mod.write_content_with_placeholders(note_id, segments)
+    print(f"   [WPS] 文字写入完成，{len(img_list)} 个图片占位符")
+
+    if img_list:
+        ok, fail = mod.find_and_insert_images(note_id, img_list)
+        print(f"   [WPS] 图片插入: {ok}/{len(img_list)}")
+
+    print(f"   ✅ WPS 导入完成：《{title}》")
+    return True
+
+
+# ============================================================
 # HTML 解析：提取推文结构
 # ============================================================
 
@@ -571,7 +848,12 @@ def scrape_twitter(url: str, output_root: str = None, import_wps: bool = False) 
         print(f"\n[错误] 页面渲染失败: {e}")
         return False
 
-    # 2. 解析推文
+    # 2. 判断是否为 X Article（长文）
+    if is_article_page(html):
+        print("   [检测] 识别为 X Article（长文）格式")
+        return _handle_article(url, username, html, output_root, import_wps)
+
+    # 3. 普通推文解析
     tweets = parse_tweets_from_html(html, username or '')
 
     if not tweets:
@@ -584,8 +866,7 @@ def scrape_twitter(url: str, output_root: str = None, import_wps: bool = False) 
 
     print(f"   [提取] 共提取 {len(tweets)} 条推文")
 
-    # 3. 确定标题
-    # 优先使用第一条推文的前 50 字符作为标题
+    # 4. 确定标题
     title_text = tweets[0].text if tweets else '推文'
     title_text = re.sub(r'\s+', ' ', title_text).strip()
     title = title_text[:50] + ('...' if len(title_text) > 50 else '')
@@ -594,7 +875,7 @@ def scrape_twitter(url: str, output_root: str = None, import_wps: bool = False) 
 
     print(f"   [标题] {title}")
 
-    # 4. 创建输出目录
+    # 5. 创建输出目录
     today = datetime.datetime.now().strftime('%Y%m%d')
     dir_name = sanitize_filename(f"{today}_{title}", max_length=60)
     output_dir = os.path.join(output_root, dir_name)
@@ -602,7 +883,7 @@ def scrape_twitter(url: str, output_root: str = None, import_wps: bool = False) 
     images_dir = os.path.join(output_dir, 'images')
     print(f"   [输出] 目录: {os.path.abspath(output_dir)}")
 
-    # 5. 下载图片
+    # 6. 下载图片
     total_images = sum(len(t.images) for t in tweets)
     if total_images > 0:
         print(f"\n   [图片] 共发现 {total_images} 张图片，开始下载...")
@@ -611,12 +892,12 @@ def scrape_twitter(url: str, output_root: str = None, import_wps: bool = False) 
         print(f"   [图片] 无图片")
         img_mapping = {}
 
-    # 6. 保存原始 HTML
+    # 7. 保存原始 HTML
     html_path = os.path.join(output_dir, 'original.html')
     with open(html_path, 'w', encoding='utf-8') as f:
         f.write(html)
 
-    # 7. WPS 模式 or Markdown 模式
+    # 8. WPS 模式 or Markdown 模式
     if import_wps:
         print(f"\n   [WPS] 启用高质量导入模式...")
         wps_ok = import_to_wps(
@@ -662,6 +943,114 @@ def scrape_twitter(url: str, output_root: str = None, import_wps: bool = False) 
     print(f"  保存目录: {os.path.abspath(output_dir)}")
     print(f"{'=' * 70}")
 
+    return True
+
+
+def _handle_article(url: str, username: str, html: str,
+                    output_root: str, import_wps: bool) -> bool:
+    """处理 X Article 长文格式"""
+    title, blocks, image_urls = parse_article_from_html(html)
+
+    if not blocks:
+        print("\n[警告] X Article 未能提取到任何内容")
+        return False
+
+    if not title:
+        title = f'@{username} Article'
+
+    print(f"   [Article] 标题: {title}")
+
+    # 创建输出目录
+    today = datetime.datetime.now().strftime('%Y%m%d')
+    dir_name = sanitize_filename(f"{today}_{title}", max_length=60)
+    output_dir = os.path.join(output_root, dir_name)
+    os.makedirs(output_dir, exist_ok=True)
+    images_dir = os.path.join(output_dir, 'images')
+    os.makedirs(images_dir, exist_ok=True)
+    print(f"   [输出] 目录: {os.path.abspath(output_dir)}")
+
+    # 保存原始 HTML
+    html_path = os.path.join(output_dir, 'original.html')
+    with open(html_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+
+    # 下载图片（去重）
+    img_mapping = {}
+    if image_urls:
+        print(f"\n   [图片] 共发现 {len(image_urls)} 张图片，开始下载...")
+        counter = 0
+        for img_url in image_urls:
+            if img_url in img_mapping:
+                continue
+            counter += 1
+            save_path = os.path.join(images_dir, f'img_{counter:03d}.jpg')
+            print(f"      [{counter}] 下载图片: {img_url[:80]}...")
+            actual = download_image(img_url, save_path, referer=url)
+            if actual:
+                img_mapping[img_url] = actual
+                size_kb = os.path.getsize(actual) // 1024
+                print(f"             → 已保存: {os.path.basename(actual)} ({size_kb}KB)")
+            time.sleep(0.3)
+    else:
+        print("   [图片] 无图片")
+
+    if import_wps:
+        print(f"\n   [WPS] 启用高质量导入模式...")
+        # 提取作者信息
+        soup = BeautifulSoup(html, 'html.parser')
+        user_name_el = soup.find(attrs={'data-testid': 'User-Name'})
+        author_name, author_handle = '', username or ''
+        if user_name_el:
+            for span in user_name_el.find_all('span'):
+                t = span.get_text(strip=True)
+                if t and not t.startswith('@') and not author_name:
+                    author_name = t
+                if t.startswith('@') and not author_handle:
+                    author_handle = t.lstrip('@')
+
+        wps_ok = import_article_to_wps(
+            url=url, title=title,
+            author_name=author_name, author_handle=author_handle,
+            blocks=blocks, img_mapping=img_mapping,
+        )
+        if wps_ok:
+            print(f"\n{'=' * 70}")
+            print(f"  导入完成（WPS 模式 · X Article）!")
+            print(f"{'=' * 70}")
+            print(f"  标题: {title}")
+            print(f"  块数: {len(blocks)}（图片 {len(img_mapping)} 张）")
+            print(f"{'=' * 70}")
+            return True
+        print("   [WPS] 导入失败，降级为 Markdown")
+
+    # Markdown 降级
+    md_lines = [f"# {title}\n", f"> 来源: {url}\n", "---\n"]
+    for b in blocks:
+        btype = b['type']
+        if btype == 'h1':
+            md_lines.append(f"\n## {b['content']}\n")
+        elif btype == 'h2':
+            md_lines.append(f"\n### {b['content']}\n")
+        elif btype == 'p':
+            from bs4 import BeautifulSoup as BS
+            md_lines.append(BS(b['content'], 'html.parser').get_text() + "\n")
+        elif btype == 'code':
+            md_lines.append(f"\n```\n{b['content']}\n```\n")
+        elif btype == 'img':
+            lp = img_mapping.get(b['img_url'], '')
+            if lp:
+                md_lines.append(f"\n![图片]({lp})\n")
+    md_path = os.path.join(output_dir, 'content.md')
+    with open(md_path, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(md_lines))
+
+    print(f"\n{'=' * 70}")
+    print(f"  爬取完成（X Article · Markdown 模式）!")
+    print(f"{'=' * 70}")
+    print(f"  标题: {title}")
+    print(f"  块数: {len(blocks)}")
+    print(f"  保存目录: {os.path.abspath(output_dir)}")
+    print(f"{'=' * 70}")
     return True
 
 
