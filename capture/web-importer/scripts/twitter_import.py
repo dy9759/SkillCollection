@@ -415,25 +415,25 @@ def tweets_to_markdown(tweets: list[Tweet], img_mapping: dict[str, str],
 # WPS 导入
 # ============================================================
 
-def _load_import_to_wps():
-    """动态加载 import_to_wps 模块"""
+def _load_wps_writer():
+    """加载同目录下的 wps_writer 模块"""
     import importlib.util
     this_dir = os.path.dirname(os.path.abspath(__file__))
-    wps_script = os.path.join(this_dir, '..', '..', 'doc-importer', 'scripts', 'import_to_wps.py')
+    wps_script = os.path.join(this_dir, 'wps_writer.py')
     if not os.path.exists(wps_script):
         return None
-    spec = importlib.util.spec_from_file_location('import_to_wps', wps_script)
+    spec = importlib.util.spec_from_file_location('wps_writer', wps_script)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
 
 
-def import_to_wps(url: str, title: str, tweets: list[Tweet],
-                  img_mapping: dict[str, str], images_dir: str) -> bool:
+def import_to_wps(url: str, title: str, tweets: list,
+                  img_mapping: dict, images_dir: str) -> bool:
     """将推文内容导入 WPS 笔记"""
-    mod = _load_import_to_wps()
+    mod = _load_wps_writer()
     if not mod:
-        print("   [WPS] 找不到 import_to_wps.py")
+        print("   [WPS] 找不到 wps_writer.py，请确认脚本在同一目录下")
         return False
     if not mod.cli_check():
         print("   [WPS] wpsnote-cli 未连接")

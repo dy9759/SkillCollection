@@ -510,14 +510,14 @@ def html_to_markdown(content_html, image_mapping=None):
     return md
 
 
-def _load_import_to_wps():
-    """动态加载 import_to_wps 模块（与 web-importer 同仓库）"""
+def _load_wps_writer():
+    """加载同目录下的 wps_writer 模块"""
     import importlib.util
     this_dir = os.path.dirname(os.path.abspath(__file__))
-    wps_script = os.path.join(this_dir, '..', '..', 'doc-importer', 'scripts', 'import_to_wps.py')
+    wps_script = os.path.join(this_dir, 'wps_writer.py')
     if not os.path.exists(wps_script):
         return None
-    spec = importlib.util.spec_from_file_location('import_to_wps', wps_script)
+    spec = importlib.util.spec_from_file_location('wps_writer', wps_script)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
@@ -528,18 +528,18 @@ def scrape_url_to_wps(url, title, content_html, metadata, images_dir, output_dir
     高质量模式：将已提取的 HTML 正文直接导入 WPS 笔记，保留颜色/粗体/标题格式。
     不走 markdownify，直接解析内联样式。
     """
+    import tempfile
     from pathlib import Path
 
-    mod = _load_import_to_wps()
+    mod = _load_wps_writer()
     if not mod:
-        print("   [WPS] 找不到 import_to_wps.py，请确认目录结构")
+        print("   [WPS] 找不到 wps_writer.py，请确认脚本在同一目录下")
         return False
     if not mod.cli_check():
         print("   [WPS] wpsnote-cli 未连接，请运行：wpsnote-cli status")
         return False
 
-    # 将 content_html 写到临时文件，模拟"原文.html"供 html_to_segments 读取
-    import tempfile
+    # 将 content_html 写到临时文件供 html_to_segments 读取
     tmp_html = Path(tempfile.mktemp(suffix='.html'))
     tmp_html.write_text(content_html, encoding='utf-8')
 
@@ -558,7 +558,6 @@ def scrape_url_to_wps(url, title, content_html, metadata, images_dir, output_dir
     img_count  = sum(1 for t, _ in segments if t == 'img')
     print(f"   [WPS] 解析完成: {xml_count} 段文字, {img_count} 张图片")
 
-    # 创建笔记
     note_id = mod.cli_create_note(title)
     if not note_id:
         print("   [WPS] 创建笔记失败")
@@ -566,7 +565,6 @@ def scrape_url_to_wps(url, title, content_html, metadata, images_dir, output_dir
     mod.cli_sync(note_id)
     print(f"   [WPS] 创建笔记: {note_id}")
 
-    # 写标题 + 来源信息行
     outline_data = mod.cli_get_outline(note_id)
     blocks = outline_data.get('blocks', [])
     if not blocks:
@@ -586,7 +584,6 @@ def scrape_url_to_wps(url, title, content_html, metadata, images_dir, output_dir
         print(f"   [WPS] 写标题失败: {res.get('message')}")
         return False
 
-    # 写正文 + 图片
     img_list = mod.write_content_with_placeholders(note_id, segments)
     print(f"   [WPS] 文字写入完成，{len(img_list)} 个图片占位符")
 
@@ -596,9 +593,11 @@ def scrape_url_to_wps(url, title, content_html, metadata, images_dir, output_dir
 
     print(f"   ✅ WPS 导入完成：《{title}》")
     return True
+
+
+def create_output_dir(title: str, output_root: str) -> str:
     """创建输出目录"""
     timestamp = datetime.datetime.now().strftime('%Y%m%d')
-    # 使用 日期_标题关键词 作为目录名
     dir_name = sanitize_filename(f"{timestamp}_{title}", max_length=80)
     output_dir = os.path.join(output_root, dir_name)
     os.makedirs(output_dir, exist_ok=True)

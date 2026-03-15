@@ -203,22 +203,18 @@ def download_image(img_url, save_path, max_retries=3):
 def _import_to_wps(article_dir: str, article_info: dict, img_dir: str):
     """
     将已下载的文章直接导入到 WPS 笔记（高质量模式：保留颜色/粗体/标题格式）。
-    依赖 import_to_wps.py（与本脚本同仓库 doc-importer/scripts/）。
     """
-    import sys, os
-    # 找到 import_to_wps.py
+    import sys, os, importlib.util
     this_dir = os.path.dirname(os.path.abspath(__file__))
-    wps_script = os.path.join(this_dir, '..', '..', 'doc-importer', 'scripts', 'import_to_wps.py')
+    wps_script = os.path.join(this_dir, 'wps_writer.py')
     if not os.path.exists(wps_script):
-        print(f"   ⚠️  找不到 import_to_wps.py，跳过 WPS 导入")
+        print(f"   ⚠️  找不到 wps_writer.py，跳过 WPS 导入")
         return False
 
-    import importlib.util
-    spec = importlib.util.spec_from_file_location('import_to_wps', wps_script)
+    spec = importlib.util.spec_from_file_location('wps_writer', wps_script)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
 
-    # 检查 wpsnote-cli 连接
     if not mod.cli_check():
         print(f"   ⚠️  wpsnote-cli 未连接，跳过 WPS 导入")
         return False
