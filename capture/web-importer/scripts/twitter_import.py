@@ -262,10 +262,11 @@ def _span_to_xml(span_el) -> str:
 
 def _inline_el_to_xml(el) -> str:
     """递归处理内联元素，保留粗体、链接"""
-    if not hasattr(el, 'name'):
-        # NavigableString
-        t = str(el)
-        return _xml_escape_inline(t)
+    from bs4 import NavigableString, Tag
+    if isinstance(el, NavigableString):
+        return _xml_escape_inline(str(el))
+    if not isinstance(el, Tag):
+        return ''
     if el.name == 'br':
         return '<br/>'
     if el.name == 'a':
