@@ -46,7 +46,8 @@ metadata:
   "last_end_time": 342.5,
   "summary_anchor_id": "blockId_xyz",
   "round": 3,
-  "speaker_map": {"发言人 1": "张总", "发言人 2": "李工❓"}
+  "speaker_map": {"发言人 1": "张总", "发言人 2": "李工❓"},
+  "person_cache": {"张总": [{"note_title": "Q4 复盘", "snippet": "张总提出..."}]}
 }
 ```
 
@@ -87,10 +88,11 @@ loop（每 60 秒）:
   3. 过滤新增句子（start_time > last_end_time）
   4. 若无新增 → 更新状态 → sleep 60 → continue
   5. 场景识别（首轮）+ 发言人推断
-  6. 只用新增句子生成摘要
+  5.5 人名联动：提取人名 → 拆字搜索笔记库 → 注入背景上下文（缓存已搜过的人名）
+  6. 只用新增句子 + 人物背景上下文生成摘要
   7. wpsnote-cli batch-edit              → 写回笔记
   8. wpsnote-cli search "***"            → 检测补全请求
-  9. 更新状态文件（last_end_time、round 等）
+  9. 更新状态文件（last_end_time、round、person_cache 等）
   10. sleep 60 → loop
 ```
 
@@ -121,22 +123,42 @@ get_current_note() → { note_id, title }
 
 若返回 `NO_ACTIVE_EDITOR_WINDOW`，提示用户打开笔记后重试。
 
-### Step 2：风格学习（节省 token 版）
+### Step 2：风格学习（多篇会议纪要版）
 
-只读 **1 篇**历史总结笔记的**前 500 字**：
+读 **3-5 篇**历史会议纪要/总结笔记，每篇最多 **3000 字**，综合归纳风格：
 
 ```bash
-# CLI 方式
-NOTES=$(wpsnote-cli find --keyword "总结 纪要 摘要" --limit 3 --json)
-STYLE_NOTE_ID=$(echo $NOTES | python3 -c "import sys,json; notes=json.load(sys.stdin)['data']['notes']; print(notes[0]['note_id'] if notes else '')")
+# CLI 方式：搜索多关键词，取前 5 篇
+NOTES=$(wpsnote-cli find --keyword "会议纪要 纪要 会议总结 周会 月会" --limit 5 --json)
 
-# 只读前 500 字
-if [ -n "$STYLE_NOTE_ID" ]; then
-  wpsnote-cli read --note_id "$STYLE_NOTE_ID" --max_length 500 --json
-fi
+# Python 逐篇读取（最多 3000 字/篇）
+python3 - <<'EOF'
+import json, subprocess, sys
+
+notes = json.loads(subprocess.check_output(
+    ["wpsnote-cli", "find", "--keyword", "会议纪要 纪要 会议总结 周会 月会", "--limit", "5", "--json"]
+))["data"]["notes"]
+
+style_samples = []
+for note in notes[:5]:
+    result = subprocess.check_output(
+        ["wpsnote-cli", "read", "--note_id", note["note_id"], "--max_length", "3000", "--json"]
+    )
+    content = json.loads(result)["data"].get("content", "")
+    style_samples.append({"title": note["title"], "content": content[:3000]})
+
+print(json.dumps(style_samples, ensure_ascii=False))
+EOF
 ```
 
-从前 500 字提取风格特征：语言风格（口语/书面）、结构偏好（扁平/层级）、详略程度。**不需要读完整篇**。
+从多篇样本**综合归纳**风格特征（投票取多数）：
+- 语言风格：口语（「感觉」「其实」）vs 书面（「经讨论」「本次」）
+- 结构偏好：全 bullet list vs 分章节标题
+- 详略程度：每条 ≤10 字 vs 每条 ≥30 字
+- 是否中英混写
+- 是否常用色块/分栏排版
+
+若搜索结果不足 3 篇，降级为 1 篇，风格学习标注「样本不足，参考有限」。
 
 ### Step 3：初始化状态文件
 
@@ -256,7 +278,27 @@ if name_changed:
     # 逐个替换
 ```
 
-### Step 5：生成摘要（只用新增句子）
+### Step 4.5：人名知识联动（跨笔记）
+
+从新增句子和 speaker_map 中提取人名，搜索笔记库，将背景上下文注入本轮摘要 prompt。
+
+**提取规则**：speaker_map 中已确认姓名 + 正则匹配「姓名+职位词」（总/经理/主任/老师等）
+
+**搜索策略**（依次降级）：
+1. 全名搜索（如「张三」）
+2. 后两字搜索（三字名时，如「李建国」→「建国」）
+3. 名字单字搜索（两字名时取名，噪音大，慎用）
+
+每人最多取 2 篇笔记 × 3 段上下文，结果缓存在 `state["person_cache"]`，同一 session 不重复搜索。
+
+**注入原则**：
+- 背景信息作为 prompt 附加上下文，供 AI 丰富人物描述
+- 与当前转写无关联时不引用，引用时在色块内注明「（背景来自《笔记标题》）」
+- 与当前笔记相同的笔记搜索结果跳过
+
+> 详细代码见 [person-linking.md](person-linking.md)
+
+### Step 5：生成摘要（新增句子 + 人物背景）
 
 **输入给 AI 的内容**：
 
@@ -268,15 +310,21 @@ if name_changed:
 {speaker}: {text}
 ...
 
+[人物背景（来自笔记库，供参考，不强行引用）]:
+- 张总（来自《Q4 复盘》）：张总提出要压缩研发周期，目标 Q1 上线...
+- 李工（来自《架构评审》）：负责后端服务，主导过 3 个核心模块...
+
 请按{模板名}模板提取要点，生成 WPS XML 格式的增量摘要。
 只写本段新增内容对应的要点，不要重复已有内容。
+若人物背景与当前发言有关联，可在该人物的色块内用小字补充背景（如角色、历史决策），注明来源。
 ```
 
 **约束**：
 - 严格基于新增句子，不添加推断性内容
 - 跳过空内容章节
 - 模糊信息标注「待确认」
-- **参考用户风格**（启动时学习）
+- **参考用户风格**（启动时综合 3-5 篇样本学习）
+- **人物背景仅供参考**：与当前发言无关联时不引用；引用时注明来源笔记
 - 默认使用带色块的富文本排版（见「排版规范」章节）
 
 ### Step 6：写回笔记
@@ -353,6 +401,7 @@ json.dump(state, open(state_path, "w"), ensure_ascii=False)
 ```
 ✓ 第 3 轮完成（新增 18 句 / 142 秒 → 摘要 +85 字）
   场景：会议记录  发言人：张总、李工❓
+  人名联动：张总→《Q4 复盘》、李工→未找到相关笔记
   新增行动项：2 条  ***补全：1 处
   下一轮：60 秒后
 ```
@@ -382,13 +431,21 @@ json.dump(state, open(state_path, "w"), ensure_ascii=False)
 
 ## 风格学习
 
-启动时通过读 **1 篇**历史笔记的**前 500 字**，提取用户写作习惯。
+启动时读 **3-5 篇**历史会议纪要/总结笔记，每篇上限 **3000 字**，综合归纳风格。
 
-提取维度（按前 500 字足以判断的维度）：
-- 语言风格：口语（「感觉」「其实」）vs 书面（「经讨论」「本次」）
+**搜索关键词**（依次尝试，直到凑够 3 篇）：
+1. `会议纪要 纪要`
+2. `周会 月会 复盘`
+3. `总结 摘要`
+
+**综合归纳维度**（多篇投票取多数）：
+- 语言风格：口语 vs 书面
 - 结构偏好：全 bullet list vs 分章节标题
 - 详略程度：每条 ≤10 字 vs 每条 ≥30 字
 - 是否中英混写
+- 是否常用色块/分栏排版
+
+样本 < 3 篇时标注「风格样本不足，参考有限」，仍继续。
 
 风格学习是参考，不是复制。转写内容决定信息，用户风格决定表达方式。
 
@@ -455,146 +512,26 @@ h2 行动项
 
 各模板均遵循「严格基于转写、跳过空章节、默认富文本排版」原则。
 
-### 通用转写模板
+| 场景 | 主结构 | 特殊要求 |
+|------|--------|---------|
+| 通用 | h2摘要 → h3主题 → columns(蓝) → todo | — |
+| 会议纪要 | h2纪要 → h3议题 → columns(蓝)发言人 → columns(绿)结论 → todo | 含参会人、决策标注 |
+| 课堂笔记 | h2笔记 → h3知识点 → h4细节 → h3重点 → todo作业 | 无色块，以层级代替 |
+| 知识分享 | h2记录 → h3核心知识 → h4知识点 → h3要点 → todo学习 | — |
+| 直播/播客 | h2纪要 → h3主题 → columns(黄)嘉宾A → columns(蓝)嘉宾B | 注明嘉宾身份 |
+| 商务谈判 | h2记录 → h3议题 → 双栏(蓝/红)甲乙方 → columns(绿)协议 → todo | 双栏对立布局 |
+| 项目复盘 | h2复盘 → h3成果 → h3问题 → h3经验 → todo改进 | 量化成果 |
+| 庭审/病例/采访/电话/培训 | 按各专业流程顺序组织，见下方说明 | — |
 
-```xml
-<h2>转写摘要</h2>
-<p><strong>时间</strong>：[日期时间] &nbsp; <strong>主题</strong>：[主题]</p>
-<h3>[主题一]</h3>
-<columns>
-  <column columnBackgroundColor="#EBF2FF">
-    <h4>[发言人 / 子主题]</h4>
-    <p listType="bullet" listLevel="0">[要点]</p>
-    <blockquote>「[原话]」</blockquote>
-  </column>
-</columns>
-<h3>后续行动</h3>
-<p listType="todo" listLevel="0" checked="0">[行动项]</p>
-```
+**专业场景结构**：
+- **庭审**：庭前准备→法庭调查→举证质证→法庭辩论→最后陈述
+- **病例**：主诉→现病史→诊断→治疗方案→医嘱
+- **采访**：5W1H要素→精彩引用→后续跟进
+- **电话录音**：通话目的→讨论内容→承诺事项→后续行动
+- **培训课程**：课程大纲→知识点→实践练习→课后作业
+- **口述转文章**：引言→章节→结论（口语转书面语）
 
-### 会议纪要模板
-
-```xml
-<h2>会议纪要</h2>
-<p><strong>主题</strong>：[主题] &nbsp; <strong>时间</strong>：[时间] &nbsp; <strong>参会</strong>：[人员]</p>
-<h3>[议题一]</h3>
-<columns>
-  <column columnBackgroundColor="#EBF2FF">
-    <h4>[发言人]</h4>
-    <p listType="bullet" listLevel="0">[观点]</p>
-    <blockquote>「[原话]」</blockquote>
-  </column>
-</columns>
-<columns>
-  <column columnBackgroundColor="#E8FCEF">
-    <h4>结论 / 决策</h4>
-    <p listType="bullet" listLevel="0">[决策]</p>
-  </column>
-</columns>
-<h3>行动项</h3>
-<p listType="todo" listLevel="0" checked="0">[任务]（负责人：XX，截止：XX）</p>
-```
-
-### 课堂笔记模板
-
-```xml
-<h2>课堂笔记</h2>
-<p><strong>课程</strong>：[课程名] &nbsp; <strong>时间</strong>：[时间]</p>
-<h3>核心知识点</h3>
-<h4>[知识点一]</h4>
-<p>[核心概念与讲解]</p>
-<h3>重点强调</h3>
-<p listType="bullet" listLevel="0">[重点1]</p>
-<h3>作业与任务</h3>
-<p listType="todo" listLevel="0" checked="0">[作业]（截止：XX）</p>
-```
-
-### 知识分享模板
-
-```xml
-<h2>知识分享记录</h2>
-<p><strong>主题</strong>：[主题] &nbsp; <strong>分享人</strong>：[姓名]</p>
-<h3>核心知识</h3>
-<h4>[知识点一]</h4>
-<p>[核心概念与实践经验]</p>
-<h3>学习要点</h3>
-<p listType="bullet" listLevel="0">[要点1]</p>
-<h3>后续学习</h3>
-<p listType="todo" listLevel="0" checked="0">[学习任务]</p>
-```
-
-### 直播/播客模板
-
-```xml
-<h2>内容纪要</h2>
-<p><strong>标题</strong>：[标题] &nbsp; <strong>类型</strong>：[直播/播客]</p>
-<h3>[主题一]</h3>
-<columns>
-  <column columnBackgroundColor="#FFF5EB">
-    <h4>[嘉宾一] · [身份]</h4>
-    <p listType="bullet" listLevel="0">[核心观点]</p>
-    <blockquote>「[原话]」</blockquote>
-  </column>
-</columns>
-<columns>
-  <column columnBackgroundColor="#EBF2FF">
-    <h4>[嘉宾二] · [身份]</h4>
-    <p listType="bullet" listLevel="0">[核心观点]</p>
-  </column>
-</columns>
-```
-
-### 商务谈判模板
-
-```xml
-<h2>谈判记录</h2>
-<p><strong>主题</strong>：[主题] &nbsp; <strong>各方</strong>：[甲方] vs [乙方]</p>
-<h3>[议题一]</h3>
-<columns>
-  <column columnBackgroundColor="#EBF2FF">
-    <h4>[甲方]</h4>
-    <p listType="bullet" listLevel="0">[立场]</p>
-  </column>
-  <column columnBackgroundColor="#FFECEB">
-    <h4>[乙方]</h4>
-    <p listType="bullet" listLevel="0">[立场]</p>
-  </column>
-</columns>
-<columns>
-  <column columnBackgroundColor="#E8FCEF">
-    <h4>达成协议</h4>
-    <p listType="bullet" listLevel="0">[协议内容]</p>
-  </column>
-</columns>
-<h3>待确认事项</h3>
-<p listType="todo" listLevel="0" checked="0">[待确认]</p>
-```
-
-### 项目复盘模板
-
-```xml
-<h2>项目复盘</h2>
-<p><strong>项目</strong>：[名称] &nbsp; <strong>时间</strong>：[时间]</p>
-<h3>成果总结</h3>
-<p>[量化与质化成果]</p>
-<h3>问题与分析</h3>
-<h4>[问题一]</h4>
-<p>[原因分析与解决方案]</p>
-<h3>经验教训</h3>
-<p listType="bullet" listLevel="0">[成功经验/失败教训]</p>
-<h3>改进行动</h3>
-<p listType="todo" listLevel="0" checked="0">[改进项]（负责人：XX）</p>
-```
-
-### 其他专业场景
-
-- **庭审**：按庭审程序（庭前准备→法庭调查→举证质证→法庭辩论→最后陈述）
-- **病例**：按主诉→现病史→诊断→治疗方案→医嘱
-- **新闻采访**：按 5W1H 要素 + 精彩引用 + 后续跟进
-- **电话录音**：按通话目的→讨论内容→承诺事项→后续行动
-- **采访记录**：按话题→核心观点→精彩引用→后续跟进
-- **培训课程**：按课程大纲→知识点→实践练习→课后作业
-- **口述转文章**：按引言→章节→结论，口语转书面语
+> 完整 XML 模板见 [templates.md](templates.md)
 
 ---
 
@@ -646,8 +583,8 @@ h2 行动项
 
 当前笔记：2026-03 产品周会
 识别场景：等待录音开始后自动识别
-参考风格：找到「Q1 复盘」（前 500 字，书面+扁平列表风格）
-模式：增量（只处理新增转写）
+参考风格：找到 5 篇会议纪要（综合归纳：书面+分章节+色块排版）
+模式：增量（只处理新增转写）+ 人名联动（自动搜索笔记库）
 轮询间隔：60 秒
 
 ---
