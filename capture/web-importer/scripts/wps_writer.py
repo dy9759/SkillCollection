@@ -375,12 +375,18 @@ def write_content_with_placeholders(note_id: str, segments: list) -> list:
         for attempt in range(INSERT_RETRIES):
             if attempt > 0:
                 time.sleep(1.5 * attempt)
+                # 重试时重新查询最新 anchor，避免用失效 id
                 anchor = cli_get_last_block_id(note_id) or anchor
             res = cli_batch_edit(note_id, [
                 {'op': 'insert', 'anchor_id': anchor, 'position': 'after', 'content': content}
             ])
             if res.get('ok') is not False:
-                anchor = cli_get_last_block_id(note_id) or anchor
+                # 优先用返回的 last_block_id，避免竞态条件导致乱序
+                new_anchor = (res.get('data') or {}).get('last_block_id')
+                if new_anchor:
+                    anchor = new_anchor
+                else:
+                    anchor = cli_get_last_block_id(note_id) or anchor
                 return True
         print(f'    ✗ insert 最终失败（{write_errors+1}次）: {res.get("message", "")[:60]}')
         write_errors += 1

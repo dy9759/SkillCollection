@@ -410,44 +410,33 @@ def article_blocks_to_segments(
     """
     将 Article blocks 转为 write_content_with_placeholders 所需的 segments。
     segments: [(type, content)] — type 为 'xml' 或 'img'
+    每个 block 单独成一个 xml segment，避免超大 xml 导致 WPS 乱序。
     """
     segments = []
-    xml_buf = []
-
-    def flush_xml():
-        if xml_buf:
-            segments.append(('xml', '\n'.join(xml_buf)))
-            xml_buf.clear()
 
     for b in blocks:
         btype = b['type']
 
         if btype == 'h1':
-            xml_buf.append(f'<h2>{_xml_escape_inline(b["content"])}</h2>')
-        elif btype == 'h2':
-            xml_buf.append(f'<h3>{_xml_escape_inline(b["content"])}</h3>')
-        elif btype == 'h3':
-            xml_buf.append(f'<h3>{_xml_escape_inline(b["content"])}</h3>')
+            segments.append(('xml', f'<h2>{_xml_escape_inline(b["content"])}</h2>'))
+        elif btype in ('h2', 'h3'):
+            segments.append(('xml', f'<h3>{_xml_escape_inline(b["content"])}</h3>'))
         elif btype == 'p':
-            xml_buf.append(b['content'])
+            segments.append(('xml', b['content']))
         elif btype == 'code':
-            # WPS 无 codeblock，用 highlightBlock 灰色背景呈现
             code_text = _xml_escape_inline(b['content'])
-            xml_buf.append(
+            segments.append(('xml',
                 f'<highlightBlock emoji="💻" '
                 f'highlightBlockBackgroundColor="#EBEBEB" '
                 f'highlightBlockBorderColor="#C5C5C5">'
                 f'<p>{code_text}</p>'
                 f'</highlightBlock>'
-            )
+            ))
         elif btype == 'img':
-            flush_xml()
             local_path = img_mapping.get(b['img_url'])
             if local_path and os.path.exists(local_path):
                 segments.append(('img', local_path))
-            # 若图片下载失败则跳过
 
-    flush_xml()
     return segments
 
 

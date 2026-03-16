@@ -426,7 +426,11 @@ def write_content_with_placeholders(note_id: str, segments: list) -> list:
                 {'op': 'insert', 'anchor_id': anchor, 'position': 'after', 'content': content}
             ])
             if res.get('ok') is not False:
-                anchor = cli_get_last_block_id(note_id) or anchor
+                new_anchor = (res.get('data') or {}).get('last_block_id')
+                if new_anchor:
+                    anchor = new_anchor
+                else:
+                    anchor = cli_get_last_block_id(note_id) or anchor
                 return True
         print(f'    ✗ insert 最终失败（{write_errors+1}次）: {res.get("message", "")[:60]}')
         write_errors += 1
