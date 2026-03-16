@@ -37,6 +37,10 @@ wps-note-intelligent-search/workspace/iteration-*/benchmark.json
 .env
 .env.local
 
+# 个人数据文件（不提交到 git）
+capture/web-importer/scripts/articles.json
+capture/web-importer/scripts/latest_articles.json
+
 # Temporary files
 *.tmp
 *.temp
