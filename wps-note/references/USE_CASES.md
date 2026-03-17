@@ -243,18 +243,21 @@ get_xml_reference()
 **调用**：
 ```
 1. read_note({ note_id: "<id>" })
-   → { content: "...(前100块)...",
+   → { content: "...(第一页 blocks)...",
        pagination: { offset: 0, limit: 100, total_blocks: 350,
                      returned_blocks: 100, has_more: true, next_offset: 100 } }
 2. read_note({ note_id: "<id>", offset: 100 })
-   → { content: "...(101-200块)...",
-       pagination: { offset: 100, has_more: true, next_offset: 200 } }
+   → { content: "...(第二页 blocks)...",
+       pagination: { offset: 100, limit: 100, total_blocks: 350,
+                     returned_blocks: 100, has_more: true, next_offset: 200 } }
 3. read_note({ note_id: "<id>", offset: 200 })
-   → { content: "...(201-300块)...",
-       pagination: { offset: 200, has_more: true, next_offset: 300 } }
+   → { content: "...(第三页 blocks)...",
+       pagination: { offset: 200, limit: 100, total_blocks: 350,
+                     returned_blocks: 100, has_more: true, next_offset: 300 } }
 4. read_note({ note_id: "<id>", offset: 300 })
-   → { content: "...(301-350块)...",
-       pagination: { offset: 300, has_more: false } }
+   → { content: "...(最后一页 blocks)...",
+       pagination: { offset: 300, limit: 100, total_blocks: 350,
+                     returned_blocks: 50, has_more: false } }
 ```
 
 **验证**：
@@ -279,11 +282,15 @@ get_xml_reference()
 **调用**：
 ```
 1. get_note_outline({ note_id: "<id>" })
-   → { blocks: [...前100个...], pagination: { total_blocks: 350, has_more: true, next_offset: 100 } }
+   → { blocks: [...前100个...],
+       pagination: { total_blocks: 350, returned_blocks: 100, has_more: true, next_offset: 100 } }
 2. get_note_outline({ note_id: "<id>", offset: 100 })
-   → { blocks: [...101-200...], pagination: { has_more: true, next_offset: 200 } }
+   → { blocks: [...101-200...],
+       pagination: { total_blocks: 350, returned_blocks: 100, has_more: true, next_offset: 200 } }
 3. 或结合 search_note_content 精准定位目标 block
 ```
+
+注意：上述 `pagination` 中的数值是读取分页的页边界（非存储上限），可通过 `block_limit` 参数自定义页大小。
 
 **验证**：
 - [ ] 首次调用无需额外参数，超大文档自动分页
@@ -531,6 +538,26 @@ list_notes({ sort: "update_time", direction: "desc", limit: 10 })
 - 无参数——默认分页返回
 - `page: 2, page_size: 5`——第二页
 - `since` / `before` 时间过滤——结果在范围内
+- `starred: true`——仅返回已收藏笔记，且每个 note 包含 `starred: true`
+
+---
+
+#### UC-M01a：查看收藏笔记
+
+**Prompt**：`"看看我收藏了哪些笔记"`
+
+**调用**：
+```
+list_notes({ starred: true })
+```
+
+**验证**：
+- [ ] 返回的每个 note 都包含 `starred: true`
+- [ ] 未收藏笔记不在结果中
+
+**边界**：
+- 组合使用 `starred: true` + `sort`/`limit`——支持排序和分页
+- 无收藏笔记——返回空数组，`ok: true`
 
 ---
 
@@ -568,6 +595,8 @@ search_notes({ keyword: "季度目标" })
 
 **边界**：
 - 组合筛选 `tags + since + keyword`
+- `starred: true`——仅在已收藏笔记中搜索
+- 组合筛选 `keyword + starred: true`——在收藏笔记中按关键词搜索
 - 无结果——空数组，`ok: true`
 
 ---

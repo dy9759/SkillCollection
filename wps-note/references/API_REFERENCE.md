@@ -4,22 +4,7 @@
 
 ## 响应信封
 
-所有工具返回统一结构：
-
-```typescript
-interface MCPStandardResult<T = any> {
-  ok: boolean;          // true 表示成功
-  code: string;         // "OK" 或错误码
-  message: string;      // 可读消息
-  retryable: boolean;   // 是否可直接重试
-  data?: T;             // 业务数据
-  hints?: Array<{       // 建议的后续操作
-    tool?: string;      // 建议调用的工具
-    reason: string;     // 建议原因
-  }>;
-  details?: Record<string, any>;  // 调试信息（可选）
-}
-```
+所有工具返回统一信封 `{ ok, code, message, retryable, data, hints }`，字段说明见 SKILL.md 响应格式章节。
 
 ---
 
@@ -27,7 +12,7 @@ interface MCPStandardResult<T = any> {
 
 ### get_note_outline
 
-获取笔记结构化大纲。返回 title、word_count、block_count、estimated_xml_chars、size_category 和 blocks 列表（每个 block 含 id、type、preview、attrs）——这是获取有效 block_id 和判断文档规模的主要方式，后续所有读取和编辑操作都依赖 block_id。超大文档（>200 blocks）自动分页，返回 pagination（含 has_more、next_offset）。
+获取笔记结构化大纲。返回 title、word_count、block_count、estimated_xml_chars、size_category 和 blocks 列表（每个 block 含 id、type、preview、attrs）——这是获取有效 block_id 和判断文档规模的主要方式，后续所有读取和编辑操作都依赖 block_id。超大文档自动分页返回 pagination（含 has_more、next_offset）。
 
 ```json
 {
@@ -36,7 +21,7 @@ interface MCPStandardResult<T = any> {
   "include_preview": { "type": "boolean", "description": "是否包含文本预览，默认 true" },
   "preview_length": { "type": "number", "description": "预览文本长度，默认 50" },
   "offset": { "type": "number", "description": "从第几个 block 开始（0-based），默认 0。has_more 时用 next_offset 续读" },
-  "block_limit": { "type": "number", "description": "单次最多返回的 block 数量。不指定时返回全部（小文档），超大文档自动分页（每页 100）" }
+  "block_limit": { "type": "number", "description": "单次最多返回的 block 数量（仅控制读取分页，笔记本身无 block 数量上限）。不指定时返回全部（小文档），超大文档自动分页" }
 }
 ```
 
@@ -56,7 +41,7 @@ interface MCPStandardResult<T = any> {
 }
 ```
 
-分页说明：文档超过 200 blocks 时自动分页；`has_more: true` 时使用 `next_offset` 续读：`get_note_outline({ note_id, offset: next_offset })`。
+分页说明：文档超过 200 blocks 时自动分页返回。`pagination.limit` 是本次读取的页大小，可通过 `block_limit` 参数自定义。`has_more: true` 时使用 `next_offset` 续读：`get_note_outline({ note_id, offset: next_offset })`。
 
 ---
 
@@ -85,14 +70,14 @@ interface MCPStandardResult<T = any> {
 
 ### read_note
 
-读取笔记全文或分页读取（XML 格式），每个块级标签通过 `id` 属性标识 block_id。返回 title、word_count、content、truncated 和 pagination 分页信息。超大文档（>200 blocks）自动分页。
+读取笔记全文或分页读取（XML 格式），每个块级标签通过 `id` 属性标识 block_id。返回 title、word_count、content、truncated 和 pagination 分页信息。超大文档自动分页。
 
 ```json
 {
   "note_id": { "type": "string", "required": true, "description": "笔记 ID" },
   "max_length": { "type": "number", "description": "最大返回字符数，默认不限制" },
   "offset": { "type": "number", "description": "从第几个 block 开始读取（0-based），默认 0" },
-  "block_limit": { "type": "number", "description": "单次最多读取的 block 数量，超大文档未指定时自动分页（每页 100 blocks）" }
+  "block_limit": { "type": "number", "description": "单次最多读取的 block 数量（仅控制读取分页，笔记本身无 block 数量上限）。超大文档未指定时自动分页" }
 }
 ```
 
@@ -115,8 +100,9 @@ interface MCPStandardResult<T = any> {
 ```
 
 **分页说明**：
-- 文档超过 200 blocks 时自动分页（每页 100 blocks），无需额外参数
-- `has_more: true` 时使用 `next_offset` 继续读取：`read_note({ note_id, offset: 100 })`
+- `pagination.limit` 是本次读取的页大小，可通过 `block_limit` 参数自定义
+- 文档超过 200 blocks 时自动分页返回，无需额外参数
+- `has_more: true` 时使用 `next_offset` 继续读取：`read_note({ note_id, offset: next_offset })`
 - 手动控制：`offset: 50, block_limit: 30` → 读取第 50–79 个 block
 - `offset >= total_blocks` → 返回空 content，`has_more: false`
 - 小文档（<=200 blocks）不传新参数时行为与原来完全一致
@@ -354,7 +340,8 @@ interface MCPStandardResult<T = any> {
   "since": { "type": "string", "description": "起始时间（ISO 8601）" },
   "before": { "type": "string", "description": "结束时间（ISO 8601）" },
   "page": { "type": "number", "description": "页码，默认 1（兼容模式）" },
-  "page_size": { "type": "number", "description": "每页条数，默认 20（兼容模式）" }
+  "page_size": { "type": "number", "description": "每页条数，默认 20（兼容模式）" },
+  "starred": { "type": "boolean", "description": "为 true 时仅返回已收藏笔记" }
 }
 ```
 
@@ -363,7 +350,7 @@ interface MCPStandardResult<T = any> {
 **返回** `data`：
 ```json
 {
-  "notes": [ ... ],
+  "notes": [{ "note_id": "abc123", "title": "...", "starred": true, "..." : "..." }],
   "meta": { "has_more": true, "next_token": "...", "truncated": false, "fetched_pages": 1 }
 }
 ```
@@ -419,7 +406,8 @@ interface MCPStandardResult<T = any> {
       "update_time": "2024-01-02T00:00:00.000Z",
       "link_id": "link-abc",
       "intro": "笔记简介...",
-      "tags": [{ "id": "t1", "name": "工作" }]
+      "tags": [{ "id": "t1", "name": "工作" }],
+      "starred": true
     }
   ],
   "meta": {
@@ -432,6 +420,7 @@ interface MCPStandardResult<T = any> {
 }
 ```
 
+- `notes[].starred`：是否已收藏（`true` / `false`）
 - `notes[].tags`：笔记关联的标签列表，自动从全部标签中反向映射
 - `meta.page` / `meta.page_size`：仅在分页模式下返回
 - `meta.requested_limit`：仅在 limit 模式下返回
@@ -465,7 +454,7 @@ interface MCPStandardResult<T = any> {
 }
 ```
 
-`size_category` 取值：`small`（<5K 字）、`medium`（5K-20K）、`large`（20K-80K）、`very_large`（>80K）。large/very_large 时 hints 会建议使用 `search_note_content` 精准定位；`get_note_outline` 支持分页（offset/block_limit），可按需获取结构。
+`size_category` 取值：`small`（<5K 字）、`medium`（5K-20K）、`large`（20K-80K）、`very_large`（>80K）。large/very_large 时 hints 会建议使用 `search_note_content` 精准定位；`get_note_outline` 支持分页读取（offset/block_limit），可按需获取结构。
 
 ---
 
@@ -506,13 +495,14 @@ interface MCPStandardResult<T = any> {
   "before": { "type": "string", "description": "结束时间（ISO 8601）" },
   "sort": { "type": "string", "enum": ["update_time", "create_time"], "description": "排序字段，默认 update_time" },
   "direction": { "type": "string", "enum": ["desc", "asc"], "description": "排序方向，默认 desc" },
-  "limit": { "type": "number", "description": "最大返回结果数" }
+  "limit": { "type": "number", "description": "最大返回结果数" },
+  "starred": { "type": "boolean", "description": "为 true 时仅在已收藏笔记中搜索" }
 }
 ```
 
 无必填参数。
 
-**返回** `data`：匹配笔记数组。
+**返回** `data`：匹配笔记数组，每个笔记包含 `starred` 布尔字段。
 
 ---
 

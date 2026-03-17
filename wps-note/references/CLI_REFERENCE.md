@@ -16,12 +16,10 @@
 
 ## 命令面与能力边界
 
-- `wpsnote-cli --help` 当前暴露 `status`、`schema` 和 22 个 canonical 工具命令
+- `wpsnote-cli --help` 当前暴露 `status`、`schema` 和 23 个 canonical 工具命令
 - CLI 仍支持 fallback 直调 MCP tool：把工具名从 `snake_case` 改成 `kebab-case` 即可
-- 当前可见但没有 canonical alias 的工具只有 `get_cursor_block`
 - 当前隐藏但仍可 fallback 直调的兼容写工具有：`replace_block`、`insert_block`、`delete_blocks`、`update_block_attrs`
 - fallback 命令当前只可靠支持 `--key=value`、`--json` 和 `--json-args=...`；不要依赖 `--key value` 这种分离写法
-- MCP 的分页参数目前没有全部映射到 canonical 命令。需要手动分页时，优先改用 fallback 的 tool 风格命令：`get-note-outline`、`read-note`、`read-section`
 
 ## 全局选项
 
@@ -45,10 +43,10 @@
 
 | CLI 命令 | MCP 工具 | 说明 |
 |----------|----------|------|
-| `list` | `list_notes` | 列出笔记，支持排序和分页 |
-| `read` | `read_note` | 读取笔记全文；超大文档时实际返回 `pagination`。手动分页请用 fallback `read-note` |
-| `outline` | `get_note_outline` | 获取笔记大纲；实际返回 `size_category`、`estimated_xml_chars`，大文档自动分页。手动分页请用 fallback `get-note-outline` |
-| `section` | `read_section` | 读取标题章节。实际业务数据是 `{ heading, level, blocks, truncated, next_block_offset? }`；续读请用 fallback `read-section` |
+| `list` | `list_notes` | 列出笔记，支持排序、分页和收藏过滤（`--starred`） |
+| `read` | `read_note` | 读取笔记全文；超大文档自动分页返回 `pagination`，支持 `--offset`、`--block_limit` 手动控制 |
+| `outline` | `get_note_outline` | 获取笔记大纲；返回 `size_category`、`estimated_xml_chars`，大文档自动分页，支持 `--offset`、`--block_limit` 手动控制 |
+| `section` | `read_section` | 读取标题章节。返回 `{ heading, level, blocks, truncated, next_block_offset? }`；截断时用 `--block_offset` 续读 |
 | `read-blocks` | `read_blocks` | 按 ID 读取指定 block |
 | `search` | `search_note_content` | 在笔记内搜索文本 |
 | `read-image` | `read_image` | 读取图片；CLI 返回本地文件路径 |
@@ -62,7 +60,8 @@
 | `create` | `create_note` | 创建空白笔记 |
 | `info` | `get_note_info` | 获取笔记元数据（含标签） |
 | `current` | `get_current_note` | 获取当前编辑中的笔记；实际返回通常还会附带 `word_count`、`block_count`、`estimated_xml_chars`、`size_category` |
-| `find` | `search_notes` | 搜索笔记（关键词 / 标签 / 时间范围） |
+| `cursor` | `get_cursor_block` | 获取当前光标所在顶层 block 的 ID 和类型 |
+| `find` | `search_notes` | 搜索笔记（关键词 / 标签 / 时间范围 / 收藏过滤 `--starred`） |
 | `tags` | `find_tags` | 列出或搜索标签 |
 | `sync` | `sync_note` | 同步笔记到云端 |
 | `delete` | `delete_note` | 删除笔记（不可恢复） |
@@ -89,29 +88,12 @@
 
 | CLI 命令 | MCP 工具 | 说明 |
 |----------|----------|------|
-| `get-cursor-block` | `get_cursor_block` | 获取当前光标所在顶层 block |
 | `replace-block` | `replace_block` | 隐藏兼容工具，推荐优先用 `edit --op replace` |
 | `insert-block` | `insert_block` | 隐藏兼容工具，推荐优先用 `edit --op insert` |
 | `delete-blocks` | `delete_blocks` | 隐藏兼容工具，推荐优先用 `edit --op delete` |
 | `update-block-attrs` | `update_block_attrs` | 隐藏兼容工具，推荐优先用 `edit --op update_attrs` |
 
 ## 当前 CLI 与 MCP 的差异
-
-### 分页参数未完全映射到 canonical 命令
-
-MCP 已支持以下分页参数，但当前 canonical 命令还没有显式注册：
-
-- `get_note_outline`: `offset`、`block_limit`
-- `read_note`: `offset`、`block_limit`
-- `read_section`: `block_offset`
-
-需要手动分页时，直接使用 fallback 的 tool 风格命令：
-
-```bash
-wpsnote-cli get-note-outline --note_id=<id> --offset=100 --block_limit=50 --json
-wpsnote-cli read-note --note_id=<id> --offset=100 --block_limit=50 --json
-wpsnote-cli read-section --note_id=<id> --heading_block_id=<bid> --block_offset=50 --json
-```
 
 ### `read_section` 的真实返回值是结构化 blocks
 
@@ -187,9 +169,8 @@ wpsnote-cli insert-image --note_id <id> --anchor_id <id> --position after --src_
 由于 fallback 走的是轻量参数解析器，推荐统一使用：
 
 ```bash
-wpsnote-cli get-cursor-block --json
-wpsnote-cli get-note-outline --note_id=<id> --offset=100 --json
 wpsnote-cli replace-block --json-args='{"note_id":"<id>","block_id":"<bid>","content":"<p>新内容</p>"}' --json
+wpsnote-cli insert-block --json-args='{"note_id":"<id>","anchor_id":"<bid>","position":"after","content":"<p>新段落</p>"}' --json
 ```
 
 ## 使用示例
@@ -199,19 +180,23 @@ wpsnote-cli replace-block --json-args='{"note_id":"<id>","block_id":"<bid>","con
 ```bash
 wpsnote-cli status
 wpsnote-cli list --limit 5
+wpsnote-cli list --starred                      # 仅列出已收藏笔记
 wpsnote-cli find --keyword "会议记录"
+wpsnote-cli find --starred                      # 在收藏笔记中搜索
 wpsnote-cli read --note_id <id>
 wpsnote-cli outline --note_id <id> --json
-wpsnote-cli get-cursor-block --json
+wpsnote-cli cursor --json
 ```
 
 ### 手动分页读取大文档
 
+`block_limit` 仅控制单次读取返回的 block 数量。
+
 ```bash
-wpsnote-cli get-note-outline --note_id=<id> --offset=0 --block_limit=100 --json
-wpsnote-cli get-note-outline --note_id=<id> --offset=100 --block_limit=100 --json
-wpsnote-cli read-note --note_id=<id> --offset=100 --block_limit=50 --json
-wpsnote-cli read-section --note_id=<id> --heading_block_id=<bid> --block_offset=50 --json
+wpsnote-cli outline --note_id <id> --offset 0 --block_limit 50 --json
+wpsnote-cli outline --note_id <id> --offset 50 --block_limit 50 --json
+wpsnote-cli read --note_id <id> --offset 0 --block_limit 50 --json
+wpsnote-cli section --note_id <id> --heading_block_id <bid> --block_offset 50 --json
 ```
 
 ### 编辑操作
