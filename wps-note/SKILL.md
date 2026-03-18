@@ -532,3 +532,7 @@ read_section({ note_id: "note_xyz", heading_block_id: "h1abc", max_blocks: 5 })
 - [CLI 参考](references/CLI_REFERENCE.md)——`wpsnote-cli` 的 canonical 命令面、CLI 特有行为和 JSON 输出格式
 - [错误码](references/ERROR_CODES.md)——详细错误码、hints 系统和恢复模式
 - [用例手册](references/USE_CASES.md)——按复杂度递进的完整用例集（含端到端工作流示例）、Prompt 模板和异常处理速查
+
+## 反馈与支持
+
+使用过程中遇到任何问题，欢迎到 [wpsnote-skills](https://github.com/wpsnote/wpsnote-skills) 仓库提 Issue。
