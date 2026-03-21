@@ -79,6 +79,11 @@ content/                         # 内容创作与发布
   content-creator/               # 从 0 到 1 的内容创作工作流
   wechat-publisher/              # 公众号排版发布，导出微信公众号 HTML
   short-video-copywriter/        # 短视频文案创作
+  xiaohongshu-note-creator/      # 笔记转小红书图文，含每页配图与话题标签
+  image-gen/                     # AI 图像生成（文生图+图生图），内置加密 Key 管理
+
+comm_script/                     # 公共脚本（跨 Skill 复用）
+  image_gen.py                   # 统一图像生成脚本，支持 OpenRouter / 百炼 / 火山方舟 / Gemini，内置 AES Key 加密管理
 
 search/                          # 搜索与阅读
   news-to-note/                  # 新闻智能解读与知识库关联
@@ -151,6 +156,16 @@ skill-creator/                   # 工具：Skill 创建、迭代与评估
 | `content-creator` | 完整创作工作流：风格画像→需求确认→大纲→深度研究→文章→定稿，与 `wechat-publisher` 形成闭环 |
 | `wechat-publisher` | 将笔记内容一键排版导出为微信公众号 HTML，支持多种模板风格，是创作流程的最后一步 |
 | `short-video-copywriter` | 短视频文案创作，适配抖音、视频号等平台风格 |
+| `xiaohongshu-note-creator` | 将 WPS 笔记转化为完整小红书图文方案，含每页文案、AI 配图和话题标签 |
+| `image-gen` | AI 图像生成升级方案，支持文生图 + 图生图，对接 OpenRouter / 百炼 / 火山方舟 / Gemini，内置 RSA 加密 Key 管理 |
+
+### `comm_script/` · 公共脚本
+
+跨 Skill 复用的底层脚本，不独立触发，由各 Skill 调用。
+
+| 脚本 | 说明 |
+|------|------|
+| `image_gen.py` | 统一图像生成脚本，支持文生图 + 图生图，支持 4 个服务商，内置 AES Key 加密管理（`encrypt-key` 子命令） |
 
 ---
 
