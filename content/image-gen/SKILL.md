@@ -36,6 +36,13 @@ metadata:
 
   用户只能选择用哪个 **provider**，模型由 AI 根据上表自动填入，任何情况下不接受覆盖。
 
+- **WPS 笔记写入时 content 必须是纯 XML 字符串**，不能是数组、不能是自然语言：
+  ```
+  ✅ content: "<p>图片已生成</p>"
+  ❌ content: [{"type": "text", "text": "..."}]
+  ```
+- **insert_image 必须提供 anchor_id + position**，且目标笔记须在 WPS 编辑器中打开，否则报 `INTERNAL_ERROR`
+
 ---
 
 ## 核心流程

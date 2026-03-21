@@ -34,6 +34,34 @@ metadata:
 - 提问时必须附上 2-4 个备选选项
 - 状态通知：调用工具前一句话告知正在做什么
 
+### 3. WPS 笔记写入规范（必须严格遵守，避免反复报错）
+
+**content 必须是纯 XML 字符串，不是数组、不是自然语言：**
+```
+✅ 正确：content: "<h2>封面页（P1）</h2><p>页面标题：...</p>"
+❌ 错误：content: [{"type": "text", "text": "..."}]
+❌ 错误：content: "把第二段改成..."
+```
+
+**多段内容一次性拼入，不要分多次 insert：**
+```
+✅ 正确：一次 insert，content 里拼多个块级标签
+   edit_block({ op: "insert", anchor_id: "xxx", position: "after",
+     content: "<h2>P1</h2><p>...</p><h2>P2</h2><p>...</p><h2>P3</h2><p>...</p>" })
+
+❌ 错误：每个块单独 insert 一次（容易乱序、锚点失效）
+```
+
+**连续追加时用 last_block_id 做锚点（必须分批时）：**
+```
+第一次 insert → 返回 last_block_id: "id_A"
+第二次 insert → anchor_id 用 "id_A"，不要重新 outline
+```
+
+**block_id 在每次写入后可能变化，不要复用缓存的 id：**
+- 连续写入时用 `last_block_id` 做链式锚点
+- 需要操作已有 block 时，先 `get_note_outline` 刷新
+
 ---
 
 ## 核心流程
@@ -101,6 +129,12 @@ metadata:
 ---
 
 ## Step 4：生成图文内容
+
+### 写入前必须做的准备
+
+1. 调用 `get_note_outline(note_id)` 获取当前 block 结构，记录最后一个 block 的 id 作为首次 `anchor_id`
+2. **将所有页面内容一次性拼成完整 XML 字符串**，用一次 `edit_block` 的 `insert` 写入，避免分多次调用导致乱序或 block_id 失效
+3. 如必须分批写入：每次 insert 后取返回的 `last_block_id` 作为下次的 `anchor_id`，**禁止复用旧 id**
 
 ### 每页内容结构
 
