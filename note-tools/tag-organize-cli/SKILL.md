@@ -52,7 +52,7 @@ wpsnote-cli <子命令> --json-args '{"key": "value", "content": "<p>XML内容</
 
 | 操作 | CLI 命令 |
 |------|---------|
-| 获取笔记统计（含标签分布） | `wpsnote-cli stats --detailed --json` |
+| 获取笔记统计（含标签分布） | `wpsnote-cli stats --detailed true --json` |
 | 查找所有标签 | `wpsnote-cli tags --json` |
 | 按关键词搜索标签 | `wpsnote-cli tags --keyword "标签名" --json` |
 | 按标签筛选笔记 | `wpsnote-cli find --json-args '{"tags":["标签名"]}'` |
@@ -132,7 +132,7 @@ wpsnote-cli <子命令> --json-args '{"key": "value", "content": "<p>XML内容</
 
 1. **获取统计信息** — 一次调用获得文件总数、标签总数、无标签文件数、每个标签下的文件数量分布：
 ```bash
-wpsnote-cli stats --detailed --json
+wpsnote-cli stats --detailed true --json
 ```
 
 2. **获取完整标签列表** — 获得标签层级结构（父子关系、命名），识别命名风格、层级逻辑、可疑标签名：
