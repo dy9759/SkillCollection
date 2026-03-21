@@ -293,7 +293,7 @@ def _save_images(images: "list[str]", out_dir: str, prefix: str = "image") -> "l
     Path(out_dir).mkdir(parents=True, exist_ok=True)
     saved = []
     for i, url in enumerate(images):
-        ts = int(time.time())
+        ts = int(time.time() * 1000)
         fname_base = f"{prefix}_{ts}_{i + 1}"
         try:
             if url.startswith("data:"):
