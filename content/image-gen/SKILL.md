@@ -43,6 +43,13 @@ metadata:
   ```
   `op` 合法值：`replace` / `insert` / `delete` / `update_attrs`
 
+- **`insert` 的 `position` 只能是 `"before"` 或 `"after"`，`anchor_id` 不能为 null：**
+  ```
+  ❌ { "anchor_id": null, "position": "begin" }
+  ❌ { "anchor_id": null, "position": "end" }
+  ```
+  末尾追加：先 `get_note_outline` 取最后 block id → `anchor_id` 填该 id，`position` 填 `"after"`
+
 - **WPS 笔记写入时 content 必须是纯 XML 字符串**，不能是数组：
   ```
   ✅ content: "<p>图片已生成</p>"

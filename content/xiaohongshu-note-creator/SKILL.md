@@ -47,6 +47,14 @@ metadata:
 ```
 `op` 合法值只有：`replace` / `insert` / `delete` / `update_attrs`
 
+**`insert` 的 `position` 只能是 `"before"` 或 `"after"`，`anchor_id` 必须是真实 block id，不能为 null：**
+```
+✅ { "op": "insert", "anchor_id": "aB3kLm9xZq", "position": "after", "content": "..." }
+❌ { "op": "insert", "anchor_id": null, "position": "begin", ... }
+❌ { "op": "insert", "anchor_id": null, "position": "end", ... }
+```
+**想在笔记末尾追加**：先 `get_note_outline` 取最后一个 block 的 id → `anchor_id` 填该 id，`position` 填 `"after"`
+
 **content 必须是纯 XML 字符串，不是数组、不是自然语言：**
 ```
 ✅ content: "<h2>封面页（P1）</h2><p>内容...</p>"
