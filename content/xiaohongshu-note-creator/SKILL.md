@@ -178,7 +178,7 @@ provider 从偏好中读取，模型固定不可修改：
 |----------|-------------|
 | openrouter | `google/gemini-3.1-flash-image-preview` |
 | dashscope | `qwen-image-2.0-pro` |
-| ark | `doubao-seedream-5-0-260128` |
+| ark（即梦） | `doubao-seedream-5-0-260128` |
 | gemini | `gemini-3-pro-image-preview` |
 
 **有保存的 Key（note 模式）：**
@@ -286,7 +286,7 @@ insert_image({ note_id: "...", anchor_id: "...", position: "after", src: "..." }
 3. 每页字数？（50字以内 / 80字左右 / 100字以上）
 4. 主要话题方向？（如：职场/读书/设计/健康/育儿/...）
 5. 图片风格偏好？（插画风 / 摄影风 / 信息图表风 / 自动匹配）
-6. 生图服务商？（openrouter需代理 / dashscope国内直连 / ark国内直连 / gemini需代理 / 用内置工具）
+6. 生图服务商？（openrouter需代理 / dashscope百炼国内直连 / ark即梦国内直连 / gemini需代理 / 用内置工具）
 ```
 
 收到后：
@@ -334,7 +334,7 @@ insert_image({ note_id: "...", anchor_id: "...", position: "after", src: "..." }
   <tr>
     <td><p>生图服务商</p></td>
     <td><p>{provider}</p></td>
-    <td><p>openrouter / dashscope / ark / gemini / 内置工具</p></td>
+    <td><p>openrouter / dashscope（百炼） / ark（即梦） / gemini / 内置工具</p></td>
   </tr>
 </table>
 ```

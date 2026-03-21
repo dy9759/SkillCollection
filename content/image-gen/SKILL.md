@@ -30,8 +30,8 @@ metadata:
 | provider | 唯一可用模型（硬编码，不可改动） |
 |----------|-----------------------------|
 | openrouter | `google/gemini-3.1-flash-image-preview` |
-| dashscope | `qwen-image-2.0-pro` |
-| ark | `doubao-seedream-5-0-260128` |
+| dashscope（百炼） | `qwen-image-2.0-pro` |
+| ark（即梦） | `doubao-seedream-5-0-260128` |
 | gemini | `gemini-3-pro-image-preview` |
 
   用户只能选择用哪个 **provider**，模型由 AI 根据上表自动填入，任何情况下不接受覆盖。
@@ -58,7 +58,7 @@ metadata:
 ```
 
 - **无参考图** → 文生图，全部 provider 可用
-- **有参考图** → 图生图，仅 openrouter（本地文件）/ gemini（本地文件）/ ark（公网 URL）支持；百炼不支持图生图
+- **有参考图** → 图生图，仅 openrouter（本地文件）/ gemini（本地文件）/ ark即梦（公网 URL）支持；百炼不支持图生图
 
 ---
 
@@ -69,8 +69,8 @@ metadata:
 | provider | 特点 | 适合场景 |
 |----------|------|---------|
 | openrouter | 走代理，文生图 + 图生图（本地文件垫图） | 代理环境，需要图生图 |
-| dashscope | 国内直连，仅文生图 | 国内网络，纯文生图 |
-| ark | 国内直连，文生图 + 图生图（垫图须公网 URL） | 国内网络，需要图生图 |
+| dashscope（百炼） | 国内直连，仅文生图 | 国内网络，纯文生图 |
+| ark（即梦） | 国内直连，文生图 + 图生图（垫图须公网 URL） | 国内网络，需要图生图 |
 | gemini | 走代理，文生图 + 图生图（本地文件垫图） | 代理环境，Google 直连 |
 
 用户未指定时，根据是否有代理、是否需要图生图主动推荐。

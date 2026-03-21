@@ -40,7 +40,7 @@ python image_gen.py \
     --prompt "冬日北京胡同街景，水彩风格，暖色调" \
     --aspect 4:3
 
-━━━ 火山方舟（国内直连；文生图 + 图生图，垫图须为公网 URL）━━━
+━━━ 即梦 AI（火山方舟，国内直连；文生图 + 图生图，垫图须为公网 URL）━━━
 
 # 文生图
 python image_gen.py \
@@ -113,7 +113,7 @@ Key 获取地址
 --------
   OpenRouter : https://openrouter.ai/workspaces/default/keys
   阿里云百炼  : https://bailian.console.aliyun.com/cn-beijing?tab=model#/api-key
-  火山方舟    : https://console.volcengine.com/ark/
+  火山方舟(即梦) : https://console.volcengine.com/ark/
   Google      : https://aistudio.google.com/app/api-keys
 
 各 Provider 能力对比
@@ -121,7 +121,7 @@ Key 获取地址
   provider    文生图  图生图  垫图格式            国内直连  代理
   openrouter  ✓      ✓      本地文件(jpg/png)    ✗        需要
   dashscope   ✓      ✗      不支持               ✓        不需要
-  ark         ✓      ✓      公网 URL             ✓        不需要
+  ark（即梦）         ✓      ✓      公网 URL             ✓        不需要（即梦 AI）
   gemini      ✓      ✓      本地文件(jpg/png)    ✗        需要
 
 注意事项
@@ -429,7 +429,7 @@ def call_dashscope(model, key, prompt, image_path, proxy, aspect, size):
 
 def call_ark(model, key, prompt, image_path, proxy, aspect, size):
     """
-    火山方舟 /api/v3/images/generations
+    即梦 AI（火山方舟）/api/v3/images/generations
     垫图须为公网 URL（本地文件无效）。
     图像返回位置：data[].url 或 data[].b64_json
     """
@@ -540,7 +540,7 @@ def call_gemini(model, key, prompt, image_path, proxy, aspect, size):
 KEY_URLS = {
     "openrouter": "https://openrouter.ai/workspaces/default/keys",
     "dashscope":  "https://bailian.console.aliyun.com/cn-beijing?tab=model#/api-key",
-    "ark":        "https://console.volcengine.com/ark/",
+    "ark":        "https://console.volcengine.com/ark/",  # 即梦 AI（火山方舟）
     "gemini":     "https://aistudio.google.com/app/api-keys",
 }
 
@@ -559,7 +559,7 @@ def _raise_for_status(resp: httpx.Response, provider: str) -> None:
     if resp.status_code in (401, 403):
         provider_key = {
             "OpenRouter": "openrouter", "阿里云百炼": "dashscope",
-            "火山方舟": "ark", "Google Gemini": "gemini",
+            "火山方舟(即梦)": "ark", "Google Gemini": "gemini",
         }.get(provider)
         url = KEY_URLS.get(provider_key, "")
         hint = f"\n         → API Key 无效或无权限，请到此处创建/查看 Key：{url}"
@@ -584,7 +584,7 @@ provider 说明
               可用模型：google/gemini-3.1-flash-image-preview
   dashscope   阿里云百炼，国内直连，仅文生图，不支持垫图
               可用模型：qwen-image-2.0-pro
-  ark         火山方舟，国内直连，文生图 + 图生图（垫图须为公网 URL）
+  ark         即梦 AI（火山方舟），国内直连，文生图 + 图生图（垫图须为公网 URL）
               可用模型：doubao-seedream-5-0-260128
   gemini      Google 直连，走代理（国内），文生图 + 图生图（本地文件垫图）
               可用模型：gemini-3-pro-image-preview
