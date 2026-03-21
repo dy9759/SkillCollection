@@ -11,15 +11,15 @@ metadata:
   tags: [image, gen-image, flux, gemini, dashscope, openrouter]
   dependencies: [wps-note]
   scripts:
-    - image_gen.py（与 SKILL.md 同目录）
+    - image_gen.py（SKILL.md 同目录的 scripts/ 下）
 ---
 
 # Image Gen — AI 图像生成
 
 支持文生图 + 图生图，自动管理 API Key，生成结果可直接插入 WPS 笔记。
 
-> **脚本路径说明**：`image_gen.py` 与此 SKILL.md **在同一目录下**。
-> 执行前确认：`ls {SKILL所在目录}/image_gen.py`，运行时 `cd` 到该目录再执行。
+> **脚本路径说明**：`image_gen.py` 位于此 SKILL.md **同目录的 `scripts/` 下**。
+> 执行前确认：`ls {SKILL所在目录}/scripts/image_gen.py`，运行时指定路径：`python3 {SKILL所在目录}/scripts/image_gen.py ...`
 
 ---
 
@@ -143,7 +143,7 @@ metadata:
 
 2. 执行加密：
 ```bash
-python3 image_gen.py encrypt-key \
+python3 scripts/image_gen.py encrypt-key \
     --note-id "{笔记 note_id}" \
     --provider "{provider}" \
     --key "{用户提供的Key}"
@@ -177,7 +177,7 @@ python3 image_gen.py encrypt-key \
 ### note 模式（已有保存的 Key）
 
 ```bash
-python3 image_gen.py \
+python3 scripts/image_gen.py \
     --provider "{provider}" \
     --model "{model}" \
     --key "note:{note_id}" \
@@ -193,7 +193,7 @@ python3 image_gen.py \
 ### 临时模式（本次直接使用）
 
 ```bash
-python3 image_gen.py \
+python3 scripts/image_gen.py \
     --provider "{provider}" \
     --model "{model}" \
     --key "{用户提供的Key}" \

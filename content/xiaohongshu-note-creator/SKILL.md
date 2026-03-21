@@ -12,14 +12,14 @@ metadata:
   tags: [xiaohongshu, note, image, copywriting]
   dependencies: [wps-note, image-gen]
   scripts:
-    - image_gen.py（与 SKILL.md 同目录）
+    - image_gen.py（SKILL.md 同目录的 scripts/ 下）
 ---
 
 # Xiaohongshu Note Creator - 笔记转小红书图文
 
-> **脚本路径说明**：本 Skill 依赖的 `image_gen.py` 与此 SKILL.md **在同一目录下**。
-> AI 执行前，先确认脚本存在：`ls {SKILL所在目录}/image_gen.py`
-> 运行命令时切换到该目录：`cd {SKILL所在目录} && python3 image_gen.py ...`
+> **脚本路径说明**：本 Skill 依赖的 `image_gen.py` 位于此 SKILL.md **同目录的 `scripts/` 下**。
+> AI 执行前，先确认脚本存在：`ls {SKILL所在目录}/scripts/image_gen.py`
+> 运行命令时指定路径：`python3 {SKILL所在目录}/scripts/image_gen.py ...`
 
 将 WPS 笔记内容转化为完整的小红书图文方案，包含每页图文、AI 配图和话题标签。
 
@@ -287,7 +287,7 @@ provider 从偏好中读取，模型固定不可修改：
 # 先将 read_image 获取的 base64 保存为临时文件
 python3 -c "import base64; open('/tmp/ref_p{N}.jpg','wb').write(base64.b64decode('{base64内容}'))"
 
-python3 image_gen.py \
+python3 scripts/image_gen.py \
     --provider "{偏好中的provider}" \
     --model "{对应模型，见上表}" \
     --key "note:{图像生成Key笔记的note_id}" \
@@ -300,7 +300,7 @@ python3 image_gen.py \
 
 **纯文生图模式（无原文图 / dashscope / ark 限制）：**
 ```bash
-python3 image_gen.py \
+python3 scripts/image_gen.py \
     --provider "{偏好中的provider}" \
     --model "{对应模型，见上表}" \
     --key "note:{图像生成Key笔记的note_id}" \
