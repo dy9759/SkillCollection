@@ -12,14 +12,10 @@ metadata:
   tags: [xiaohongshu, note, image, copywriting]
   dependencies: [wps-note, image-gen]
   scripts:
-    - image_gen.py（SKILL.md 同目录的 scripts/ 下）
+    - comm_script/image_gen.py
 ---
 
 # Xiaohongshu Note Creator - 笔记转小红书图文
-
-> **脚本路径说明**：本 Skill 依赖的 `image_gen.py` 位于此 SKILL.md **同目录的 `scripts/` 下**。
-> AI 执行前，先确认脚本存在：`ls {SKILL所在目录}/scripts/image_gen.py`
-> 运行命令时指定路径：`python3 {SKILL所在目录}/scripts/image_gen.py ...`
 
 将 WPS 笔记内容转化为完整的小红书图文方案，包含每页图文、AI 配图和话题标签。
 
@@ -38,33 +34,33 @@ metadata:
 - 提问时必须附上 2-4 个备选选项
 - 状态通知：调用工具前一句话告知正在做什么
 
-### 3. WPS 笔记写入规范（必须严格遵守，避免反复报错）
+### 3. WPS 笔记写入规范（违反必报错）
+
+**`batch_edit` operations 字段名必须是 `op`，不是 `type`：**
+```
+✅ { "op": "insert", "anchor_id": "...", "position": "after", "content": "..." }
+❌ { "type": "insert", ... }
+```
+`op` 合法值只有：`replace` / `insert` / `delete` / `update_attrs`
 
 **content 必须是纯 XML 字符串，不是数组、不是自然语言：**
 ```
-✅ 正确：content: "<h2>封面页（P1）</h2><p>页面标题：...</p>"
-❌ 错误：content: [{"type": "text", "text": "..."}]
-❌ 错误：content: "把第二段改成..."
+✅ content: "<h2>封面页（P1）</h2><p>内容...</p>"
+❌ content: [{"type": "text", "text": "..."}]
+❌ content: "把第二段改成..."
 ```
 
 **多段内容一次性拼入，不要分多次 insert：**
 ```
-✅ 正确：一次 insert，content 里拼多个块级标签
-   edit_block({ op: "insert", anchor_id: "xxx", position: "after",
-     content: "<h2>P1</h2><p>...</p><h2>P2</h2><p>...</p><h2>P3</h2><p>...</p>" })
-
-❌ 错误：每个块单独 insert 一次（容易乱序、锚点失效）
+✅ 一次 insert，content 里拼多个块级标签
+❌ 每个块单独 insert 一次（容易乱序、锚点失效）
 ```
 
-**连续追加时用 last_block_id 做锚点（必须分批时）：**
+**连续追加时用 last_block_id 做链式锚点（必须分批时）：**
 ```
 第一次 insert → 返回 last_block_id: "id_A"
 第二次 insert → anchor_id 用 "id_A"，不要重新 outline
 ```
-
-**block_id 在每次写入后可能变化，不要复用缓存的 id：**
-- 连续写入时用 `last_block_id` 做链式锚点
-- 需要操作已有 block 时，先 `get_note_outline` 刷新
 
 ---
 
@@ -96,19 +92,14 @@ metadata:
 获取笔记标识后：
 1. 使用 `search_notes` 或 `get_note_outline` 定位笔记
 2. 使用 `read_note` 读取完整内容
-3. **扫描原文图片（重要）**：
-   - 调用 `get_note_outline` 找出所有 `image` 类型的 block
-   - 对每张图片调用 `read_image(note_id, block_id)` 获取 base64 内容，**按页面顺序记录**
-   - 将图片列表附加到规划结果，格式：`[图片1: block_id={id} base64长度={n}字符位置第{N}页附近, ...]`
-   - 没有图片 → 记录"无原文图片，使用纯文生图"
-4. 分析以下要素：
+3. 分析以下要素：
    - 核心主题（1句话）
    - 关键知识点（3-7个）
    - 内容类型（干货教程 / 经验分享 / 知识科普 / 情感故事）
    - 受众画像（初学者 / 有经验者 / 特定人群）
    - 适合转化的亮点
 
-告知用户：「已读取笔记《{标题}》，识别为「{内容类型}」，核心是「{主题}」。原文含 {N} 张图片，将优先用于垫图生成配图。」
+告知用户：「已读取笔记《{标题}》，识别为「{内容类型}」，核心是「{主题}」，准备规划图文结构。」
 
 ---
 
@@ -135,39 +126,16 @@ metadata:
 
 规划完成后，调用 `create_note` 新建笔记（标题：`{源笔记标题} - 小红书图文`），用 `batch_edit` 写入规划结构（仅占位）后告知用户页数分配，**不等用户确认直接继续**。
 
-> 规划每页主题时，**必须标注对应原文的章节或段落**（如"P2 → 原文 01 笔记软件的周期律"），确保每页都有原文锚点，不得无中生有。
-
 ---
 
 ## Step 4：生成图文内容
 
-### 写入前必须做的准备
-
-1. 调用 `get_note_outline(note_id)` 获取当前 block 结构，记录最后一个 block 的 id 作为首次 `anchor_id`
-2. **将所有页面内容一次性拼成完整 XML 字符串**，用一次 `edit_block` 的 `insert` 写入，避免分多次调用导致乱序或 block_id 失效
-3. 如必须分批写入：每次 insert 后取返回的 `last_block_id` 作为下次的 `anchor_id`，**禁止复用旧 id**
-
 ### 每页内容结构
 
 每页包含：
-- **页面标题**：6-12 字，醒目有力，**必须提炼自原文，不得自造**
-- **正文文案**：根据偏好字数/页，口语化、分点或分段，**必须基于原文原句改写，不得凭空发挥**
+- **页面标题**：6-12 字，醒目有力
+- **正文文案**：根据偏好字数/页，口语化、分点或分段
 - **视觉描述**（生图 prompt）：主体 + 场景 + 风格 + 色调
-
-### 文案忠实原文规则（铁律）
-
-**文案的每一句话都必须有原文出处，严禁自由发挥：**
-
-1. **提炼原文，不创作**：每页正文必须来自原文对应章节的真实内容，不得 AI 发散补充
-2. **直接改写，保留观点**：将原文段落改写为口语化小红书风格，但核心观点、数据、举例必须与原文一致
-3. **引用原文金句**：原文中有力的句子（如「整理是 AI 的事，思考是用户的事」）优先直接保留
-4. **禁止的行为**：
-   - ❌ 用自己的话"总结"原文，丢失原文的具体细节
-   - ❌ 添加原文没有的观点、案例、数字
-   - ❌ 用模板化小红书套话替换原文的独特表达
-   - ❌ 把多个不相关章节的内容混写成一页
-
-5. **每页写完后自检**：用一句话说明"这页的内容对应原文第几章节/哪段话"，写入视觉描述之前做此检查
 
 ### 写入笔记的完整结构
 
@@ -228,79 +196,22 @@ metadata:
 
 ### 生图执行
 
-#### 第零步：确定生图方式（每次生图前必须先走此流程）
-
-```
-偏好中 生图服务商 是否为 "内置工具"？
-├─ 是 → 直接跳到【方法二：内置工具】
-└─ 否（设置了外部 provider）→ 必须使用外部服务，执行以下检查：
-    1. 搜索笔记标题含「图像生成 Key」的笔记
-    2. 找到 → 取对应 provider 的 ciphertext_b64 → 使用【方法一 note 模式】
-    3. 没找到 → 询问用户：
-       「偏好设置的是 {provider}，但未找到保存的 Key。
-         A. 我现在提供 Key（临时使用）
-         B. 去保存 Key 到笔记（参考 image-gen skill）
-         C. 这次改用内置工具」
-       - 选 A → 用户提供 Key → 使用【方法一临时模式】
-       - 选 B → 引导用户完成 Key 保存后重新开始生图
-       - 选 C → 使用【方法二：内置工具】
-```
-
-⚠️ **严禁静默降级**：只要偏好设置了外部 provider，就必须走上面的流程询问用户，**不得跳过询问直接使用内置工具**。
-
 **优先使用 `image_gen.py`（外部服务，质量更高）**，失败则降级到内置工具。
-
-#### 垫图优先策略（核心规则）
-
-**有原文图片时，必须优先垫图，不得直接文生图：**
-
-1. 根据页面主题，从 Step 2 记录的原文图片列表中，**选取内容最相关的 1 张**作为垫图
-2. 垫图来源决定使用方式：
-   - `read_image` 获取的 base64 → 先保存为本地临时文件（`/tmp/ref_p{N}.jpg`）→ 传 `--image /tmp/ref_p{N}.jpg`（openrouter / gemini 支持）
-   - **ark（即梦）不支持本地文件垫图**：遇到 ark provider 且仅有 base64 图片时，自动降级为纯文生图
-3. 如果原文图片多于页数，未被分配的图片可以重复使用（靠近位置优先）
-4. **无原文图片 / 无法取到 base64 / ark 限制** → 纯文生图（按视觉描述生成氛围图）
-
-**逐页生图的垫图分配示例：**
-```
-原文图片：[img1(P2附近), img2(P5附近)]
-P1 封面 → 无最近原文图，纯文生图
-P2      → 用 img1 垫图
-P3/P4   → 用 img1 垫图（最近）
-P5      → 用 img2 垫图
-P6+     → 用 img2 垫图（最近）
-```
 
 #### 方法一：image_gen.py（优先）
 
 provider 从偏好中读取，模型固定不可修改：
 
-| provider | 模型（硬编码） | 垫图支持 |
-|----------|-------------|---------|
-| openrouter | `google/gemini-3.1-flash-image-preview` | ✅ 本地文件 |
-| dashscope | `qwen-image-2.0-pro` | ❌ 不支持 |
-| ark（即梦） | `doubao-seedream-5-0-260128` | ✅ 仅公网 URL |
-| gemini | `gemini-3-pro-image-preview` | ✅ 本地文件 |
+| provider | 模型（硬编码） |
+|----------|-------------|
+| openrouter | `google/gemini-3.1-flash-image-preview` |
+| dashscope | `qwen-image-2.0-pro` |
+| ark（即梦） | `doubao-seedream-5-0-260128` |
+| gemini | `gemini-3-pro-image-preview` |
 
-**垫图模式（provider 支持 + 有原文图）：**
+**有保存的 Key（note 模式）：**
 ```bash
-# 先将 read_image 获取的 base64 保存为临时文件
-python3 -c "import base64; open('/tmp/ref_p{N}.jpg','wb').write(base64.b64decode('{base64内容}'))"
-
-python3 scripts/image_gen.py \
-    --provider "{偏好中的provider}" \
-    --model "{对应模型，见上表}" \
-    --key "note:{图像生成Key笔记的note_id}" \
-    --ciphertext "{对应provider的ciphertext_b64}" \
-    --prompt "{视觉描述}" \
-    --image "/tmp/ref_p{N}.jpg" \
-    --aspect "3:4" \
-    --out "./output"
-```
-
-**纯文生图模式（无原文图 / dashscope / ark 限制）：**
-```bash
-python3 scripts/image_gen.py \
+python3 comm_script/image_gen.py \
     --provider "{偏好中的provider}" \
     --model "{对应模型，见上表}" \
     --key "note:{图像生成Key笔记的note_id}" \
@@ -310,7 +221,16 @@ python3 scripts/image_gen.py \
     --out "./output"
 ```
 
-**无保存的 Key（临时模式）同上，`--key` 改为直接传 Key 字符串，可视情况加 `--image`。**
+**无保存的 Key（临时模式）：**
+```bash
+python3 comm_script/image_gen.py \
+    --provider "{provider}" \
+    --model "{对应模型}" \
+    --key "{用户提供的Key}" \
+    --prompt "{视觉描述}" \
+    --aspect "3:4" \
+    --out "./output"
+```
 
 > 小红书标准比例 `3:4`（`--aspect 3:4`）
 
@@ -328,6 +248,12 @@ wpsnote-cli gen-image \
 或 MCP：`generate_image({ prompt: "{视觉描述}", width: 1080, height: 1350 })`
 
 > ⚠️ 生图限速每分钟 1 张，多页生成前告知用户预计耗时（页数 × 约 60 秒）
+
+### 首次生图前：检查 Key
+
+如果偏好中已设置 provider，生图前先执行 Key 检查流程（参考 image-gen skill 的 Step 3）：
+- 搜索 `图像生成 Key` 笔记，找到对应 provider 的密文 → 直接用 note 模式
+- 找不到 → 询问用户是否提供外部 Key，不提供则降级到内置工具
 
 ### 配图回填步骤
 
