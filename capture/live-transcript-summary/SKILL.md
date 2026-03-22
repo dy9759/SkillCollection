@@ -3,7 +3,7 @@ name: live-transcript-summary
 description: 边听边总结：实时监听当前 WPS 笔记中的音频转写，每 60 秒自动循环一次，识别场景后按对应模板整理内容，并写回笔记。当用户提到正在录音、开会、听课、听播客、做采访、开始录制，或者希望 AI 帮忙整理、总结、记录当前正在发生的内容时使用此 skill。也适用于用户说「帮我跟着听」「你帮我记」「边听边整理」「录完帮我整理」「实时帮我总结」，或在笔记中输入 *** 希望 AI 结合录音补全内容的场景。
 metadata:
   author: Yicheng Xu
-  version: "2.0.0"
+  version: "2.1.0"
   tags: [audio, transcript, summary, real-time, wps-note]
 ---
 
@@ -86,13 +86,14 @@ loop（每 60 秒）:
   1. wpsnote-cli outline --json          → 扫描 NoteAudioCard
   2. wpsnote-cli audio --json            → 全量拉取转写
   3. 过滤新增句子（start_time > last_end_time）
-  4. 若无新增 → 更新状态 → sleep 60 → continue
+  4. 若无新增 → 检测临时区 → 更新状态 → sleep 60 → continue
   5. 场景识别（首轮）+ 发言人推断
   5.5 人名联动：提取人名 → 拆字搜索笔记库 → 注入背景上下文（缓存已搜过的人名）
   6. 只用新增句子 + 人物背景上下文生成摘要
-  7. wpsnote-cli batch-edit              → 写回笔记
+  7. wpsnote-cli batch-edit              → 写回笔记 + 插入/更新临时区（hr + 提示块）
+  6.5 检测临时区用户内容 → 合并到正文对应位置 → 清空临时区用户 block
   8. wpsnote-cli search "***"            → 检测补全请求
-  9. 更新状态文件（last_end_time、round、person_cache 等）
+  9. 更新状态文件（last_end_time、round、temp_zone_anchor_id 等）
   10. sleep 60 → loop
 ```
 
@@ -171,6 +172,7 @@ state = {
     "scene": None,             # 首轮场景识别后填入
     "last_end_time": -1.0,     # -1 代表从头开始
     "summary_anchor_id": None, # 摘要区域的最后一个 block_id
+    "temp_zone_anchor_id": None, # 临时区 highlightBlock 的 block_id
     "round": 0,
     "speaker_map": {},         # {"发言人 1": "真实姓名"}
     "started_at": time.time(),
@@ -194,7 +196,8 @@ json.dump(state, open(state_path, "w"), ensure_ascii=False)
 ---
 如需 AI 援助：
   ① 补全：在笔记任意位置输入 ***，AI 结合录音自动补全
-  ② 停止：告诉我「停止总结」即可
+  ② 临时区：每轮摘要末尾有一个灰色提示区，把想法/补充/纠正贴到那里，AI 下轮自动合并到正文
+  ③ 停止：告诉我「停止总结」即可
 ---
 ```
 
@@ -362,6 +365,130 @@ wpsnote-cli batch-edit --json-args "{
 }"
 ```
 
+### 临时区写入（每轮必做）
+
+临时区始终位于**整篇笔记的最末尾**。每轮摘要写完后，需要把临时区保持在最后。
+
+**流程**：
+1. 若临时区尚不存在（`state["temp_zone_anchor_id"]` 为 None）：在笔记最末尾插入 `<hr/>` + 提示块，记录 `temp_zone_anchor_id`
+2. 若临时区已存在：先处理临时区用户内容（Step 6.5），再把新摘要内容插入到**临时区之前**（而非末尾），保证临时区始终压底
+
+**首轮首次创建临时区**（摘要写完后）：
+
+```bash
+# 获取当前笔记最后一个 block（此时已是刚写完的摘要内容）
+LAST_BLOCK=$(wpsnote-cli outline --note_id "$NOTE_ID" --json | \
+  python3 -c "import sys,json; blocks=json.load(sys.stdin)['data']['blocks']; print(blocks[-1]['id'])")
+
+wpsnote-cli edit --json-args "{
+  \"note_id\": \"$NOTE_ID\",
+  \"op\": \"insert\",
+  \"anchor_id\": \"$LAST_BLOCK\",
+  \"position\": \"after\",
+  \"content\": \"<hr/><highlightBlock emoji=\\\"💬\\\" highlightBlockBackgroundColor=\\\"#EBEBEB\\\" highlightBlockBorderColor=\\\"#C5C5C5\\\"><p><span fontColor=\\\"#757575\\\">临时区：把你的想法、补充、纠正贴到这里，AI 下轮自动合并到正文对应位置。也可以直接改上面的正文。</span></p></highlightBlock>\"
+}"
+# state["temp_zone_anchor_id"] = 返回的 last_block_id（highlightBlock 的 id）
+```
+
+**后续轮次**：新摘要内容插入到**临时区的 hr 块之前**，临时区自然保持在最末尾，不需要移动。
+
+```bash
+# 后续轮次写摘要时，anchor 用临时区 hr 块的前一个 block（即上轮摘要最后一个内容块）
+# 而非直接插到末尾，这样临时区始终压底
+wpsnote-cli edit --json-args "{
+  \"note_id\": \"$NOTE_ID\",
+  \"op\": \"insert\",
+  \"anchor_id\": \"$SUMMARY_ANCHOR_ID\",
+  \"position\": \"after\",
+  \"content\": \"<p>新增摘要内容...</p>\"
+}"
+# summary_anchor_id 更新为本轮最后一个摘要 block，仍在临时区 hr 之前
+```
+
+### Step 6.5：处理临时区用户输入（每轮必做）
+
+在写回摘要之后、检测 `***` 之前，检查用户是否在临时区里写了内容。
+
+```python
+# 读取临时区 anchor_id（来自 state["temp_zone_anchor_id"]）
+temp_anchor_id = state.get("temp_zone_anchor_id")
+if not temp_anchor_id:
+    # 临时区还未创建，跳过
+    pass
+else:
+    # 读取临时区下方的 blocks
+    # 临时区结构：<hr/> → <highlightBlock>提示文字</highlightBlock> → [用户插入的内容...]
+    # 用 read-blocks 读取 temp_zone_anchor_id 后方若干 block
+    # 过滤掉提示文字本身（通过检测是否含「临时区：把你的想法」来识别提示块）
+```
+
+**判断临时区是否有用户内容**：
+
+```bash
+# 读取临时区 anchor 后方 10 个 block
+TEMP_BLOCKS=$(wpsnote-cli read-blocks --note_id "$NOTE_ID" \
+  --json-args "{\"note_id\":\"$NOTE_ID\",\"block_id\":\"$TEMP_ANCHOR_ID\",\"after\":10}")
+```
+
+```python
+import json
+blocks_data = json.loads(temp_blocks_output)["data"]["blocks"]
+
+# 过滤掉提示块（含关键文字「临时区：」的高亮块）和 hr 块
+user_blocks = [
+    b for b in blocks_data
+    if b["type"] not in ("hr",)
+    and "临时区：" not in b.get("content_text", "")
+]
+
+if not user_blocks:
+    # 临时区无用户内容，跳过
+    pass
+else:
+    # 有用户内容，触发合并流程
+    merge_temp_zone_content(user_blocks)
+```
+
+**合并流程**：
+
+1. 将用户写入的内容文本喂给 AI，结合本轮摘要上下文，判断每条内容应合并到哪个位置（哪个 h2/h3 节或哪个 column 内）
+2. 用 `batch_edit` 把内容插入到对应位置
+3. **清空临时区**：删除用户写入的 block，保留 `<hr/>` 和提示 block
+
+```bash
+# 合并后清理用户 block（只删用户写的，保留提示）
+USER_BLOCK_IDS=$(echo "$user_blocks" | python3 -c "import sys,json; print(' '.join(b['id'] for b in json.load(sys.stdin)))")
+
+wpsnote-cli batch-edit --json-args "{
+  \"note_id\": \"$NOTE_ID\",
+  \"operations\": [
+    {\"op\": \"delete\", \"block_ids\": $USER_BLOCK_IDS}
+  ]
+}"
+```
+
+4. 在本轮简报中注明「临时区：合并了 N 条用户输入」
+
+**合并 prompt 示例**：
+
+```
+以下是用户写在「临时区」的内容：
+{user_temp_content}
+
+以下是当前笔记的摘要大纲（含各 block_id）：
+{summary_outline}
+
+请判断每条临时内容应该插入到哪个位置（哪个 block_id 之后），
+并生成对应的 WPS XML 插入内容。
+规则：
+- 若是对某个观点的补充，插入该观点 block 之后
+- 若是新话题，插入摘要末尾（Todo 之前）
+- 若是对某条信息的纠正，替换对应 block
+- 保持原有排版风格（色块/bullet 等）
+```
+
+---
+
 ### Step 7：检测 *** 补全请求
 
 ```bash
@@ -392,6 +519,9 @@ wpsnote-cli edit --json-args "{
 if new_sentences:
     state["last_end_time"] = new_sentences[-1]["end_time"]
     state["summary_anchor_id"] = last_inserted_block_id
+    # temp_zone_anchor_id 首次写入后持久保留，后续轮次不覆盖
+    if state.get("temp_zone_anchor_id") is None and temp_zone_block_id:
+        state["temp_zone_anchor_id"] = temp_zone_block_id
 state["round"] += 1
 json.dump(state, open(state_path, "w"), ensure_ascii=False)
 ```
@@ -402,7 +532,7 @@ json.dump(state, open(state_path, "w"), ensure_ascii=False)
 ✓ 第 3 轮完成（新增 18 句 / 142 秒 → 摘要 +85 字）
   场景：会议记录  发言人：张总、李工❓
   人名联动：张总→《Q4 复盘》、李工→未找到相关笔记
-  新增行动项：2 条  ***补全：1 处
+  新增行动项：2 条  ***补全：1 处  临时区合并：1 条
   下一轮：60 秒后
 ```
 
@@ -590,7 +720,8 @@ h2 行动项
 ---
 如需 AI 援助：
   ① 补全：在笔记任意位置输入 ***，AI 结合录音自动补全
-  ② 停止：告诉我「停止总结」即可
+  ② 临时区：每轮摘要末尾有一个灰色提示区，把想法/补充/纠正贴到那里，AI 下轮自动合并到正文
+  ③ 停止：告诉我「停止总结」即可
 ---
 ```
 

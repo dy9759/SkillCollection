@@ -11,7 +11,7 @@ metadata:
   tags: [image, gen-image, flux, gemini, dashscope, openrouter]
   dependencies: [wps-note]
   scripts:
-    - scripts/image_gen.py
+    - comm_script/image_gen.py
 ---
 
 # Image Gen — AI 图像生成
@@ -35,28 +35,6 @@ metadata:
 | gemini | `gemini-3-pro-image-preview` |
 
   用户只能选择用哪个 **provider**，模型由 AI 根据上表自动填入，任何情况下不接受覆盖。
-
-- **`batch_edit` 的 operations 每项字段名必须是 `op`，不是 `type`：**
-  ```
-  ✅ { "op": "insert", "anchor_id": "...", "position": "after", "content": "..." }
-  ❌ { "type": "insert", ... }
-  ```
-  `op` 合法值：`replace` / `insert` / `delete` / `update_attrs`
-
-- **`insert` 的 `position` 只能是 `"before"` 或 `"after"`，`anchor_id` 不能为 null：**
-  ```
-  ❌ { "anchor_id": null, "position": "begin" }
-  ❌ { "anchor_id": null, "position": "end" }
-  ```
-  末尾追加：先 `get_note_outline` 取最后 block id → `anchor_id` 填该 id，`position` 填 `"after"`
-
-- **WPS 笔记写入时 content 必须是纯 XML 字符串**，不能是数组：
-  ```
-  ✅ content: "<p>图片已生成</p>"
-  ❌ content: [{"type": "text", "text": "..."}]
-  ```
-
-- **insert_image 必须提供 anchor_id + position**，目标笔记须在 WPS 编辑器中打开，否则报 `INTERNAL_ERROR`
 
 ---
 
