@@ -16,7 +16,7 @@
 
 ## 命令面与能力边界
 
-- `wpsnote-cli --help` 当前暴露 `status`、`schema` 和 23 个 canonical 工具命令
+- `wpsnote-cli --help` 当前暴露 `status`、`schema` 和 24 个 canonical 工具命令
 - CLI 仍支持 fallback 直调 MCP tool：把工具名从 `snake_case` 改成 `kebab-case` 即可
 - 当前隐藏但仍可 fallback 直调的兼容写工具有：`replace_block`、`insert_block`、`delete_blocks`、`update_block_attrs`
 - fallback 命令当前只可靠支持 `--key=value`、`--json` 和 `--json-args=...`；不要依赖 `--key value` 这种分离写法
@@ -27,6 +27,7 @@
 |------|------|
 | `--json` | 以 JSON 格式输出；单个文本结果会直接解包为业务数据 |
 | `--json-args <json>` | 以 JSON 传入全部参数；canonical 命令推荐这样传复杂对象/数组 |
+| `--args-file <path>` | 从 JSON 文件读取全部参数（避免命令行长度截断）；优先级低于 `--json-args` 和显式 `--param`，可与其混合使用实现部分覆盖 |
 | `-h, --help` | 显示帮助信息 |
 | `-V, --version` | 显示版本号 |
 
@@ -75,6 +76,7 @@
 | `batch-edit` | `batch_edit` | 批量原子编辑 |
 | `insert-image` | `insert_image` | 插入图片 |
 | `gen-image` | `generate_image` | AI 文生图，返回图片 URL |
+| `import-web` | `import_web_page` | 导入网页为笔记（仅白名单域名） |
 
 ### 调试命令
 
@@ -156,6 +158,43 @@ wpsnote-cli insert-image --note_id <id> --anchor_id <id> --position after --src_
 - 完整的 data URI（推荐，如 `data:image/png;base64,...`）
 - 纯 base64 字符串。CLI 当前会把它包装成 `data:application/octet-stream;base64,...`
 
+### 通用文件参数传递（`--args-file` 和 `_file` 后缀）
+
+CLI 支持两种文件参数传递方式，用于避免命令行长度截断：
+
+**方式 1：`--args-file`**——从 JSON 文件读取全部参数
+
+```bash
+# JSON 文件包含完整参数
+cat /tmp/edit-params.json
+# {"note_id":"<id>","op":"insert","anchor_id":"<bid>","position":"after","content":"<p>很长的内容...</p>"}
+
+wpsnote-cli edit --args-file /tmp/edit-params.json
+
+# 可与显式参数混合，显式参数优先覆盖文件中的同名字段
+wpsnote-cli edit --args-file /tmp/edit-params.json --note_id <override_id>
+```
+
+优先级（低→高）：`--args-file` < `--json-args` < 显式 `--param`。
+
+**方式 2：`_file` 后缀参数**——单个字段从文件读取
+
+Electron 主进程会自动将 `xxx_file` 参数解析为 `xxx` 的文件内容。与 `--args-file` 不同，这种方式在 Electron 主进程层解析，对所有 MCP 客户端通用（不限于 CLI）。
+
+```bash
+# content 内容放在文件中
+wpsnote-cli edit --note_id <id> --op replace --block_id <bid> --content_file /tmp/content.xml
+
+# batch_edit 的 operations 放在文件中
+wpsnote-cli batch-edit --note_id <id> --operations_file /tmp/ops.json
+```
+
+`_file` 规则：
+
+- 若 `xxx` 已有显式值，`xxx_file` 被忽略
+- 文件内容先尝试 JSON parse；失败则作为原始字符串传入（适用于 XML 内容）
+- `batch_edit` 的 `operations` 数组中每个操作项也支持 `content_file`
+
 ### 工具命令会自动尝试拉起桌面端
 
 普通工具命令在 MCP 服务不可达时，会先探测 `/health`：
@@ -214,6 +253,22 @@ wpsnote-cli batch-edit --json-args '{
 }'
 ```
 
+### 通过文件传入大内容
+
+```bash
+# 方式 1：全部参数通过文件
+wpsnote-cli edit --args-file /tmp/edit-params.json
+
+# 方式 2：仅 content 通过文件（XML 内容）
+wpsnote-cli edit --note_id <id> --op insert --anchor_id <bid> --position after --content_file /tmp/content.xml
+
+# 方式 3：batch_edit 全部参数通过文件
+wpsnote-cli batch-edit --args-file /tmp/batch-params.json
+
+# 方式 4：batch_edit 仅 operations 通过文件
+wpsnote-cli batch-edit --note_id <id> --operations_file /tmp/ops.json
+```
+
 ### 图片与文生图
 
 ```bash
@@ -231,6 +286,14 @@ wpsnote-cli gen-image --prompt "一只橘猫坐在窗台上，水彩画风格，
 ```
 
 把这个 `url` 再传给 `insert-image --src` 即可。
+
+### 网页导入
+
+```bash
+wpsnote-cli import-web --url "https://mp.weixin.qq.com/s/xxx" --json
+```
+
+仅支持白名单域名（微信公众号、知乎、豆瓣等），非白名单域名会返回 `INVALID_PARAMS`。转换耗时约 5-30 秒。
 
 ### 获取当前笔记并继续处理
 

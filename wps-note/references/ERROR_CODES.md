@@ -7,7 +7,7 @@
 | 错误码 | 含义 | 可重试 | 恢复方法 |
 |--------|------|--------|----------|
 | `OK` | 操作成功 | — | — |
-| `INVALID_PARAMS` | 参数缺失或类型错误 | 否 | 检查 inputSchema，修正参数类型和必填字段 |
+| `INVALID_PARAMS` | 参数缺失、类型错误或值不合法（含 `import_web_page` 的不支持域名） | 否 | 检查 inputSchema，修正参数类型和必填字段；若为不支持的域名，更换为白名单域名 URL |
 | `EDITOR_NOT_READY` | 笔记编辑器仍在加载中 | 是 | 等待片刻后重试 |
 | `NO_ACTIVE_EDITOR_WINDOW` | 没有打开的笔记窗口 | 是 | 请用户打开笔记窗口，然后重试 |
 | `NOTE_NOT_FOUND` | 指定的 note_id 无效或笔记不存在 | 否 | 使用 `list_notes` 或 `search_notes` 获取有效 note_id；若当前笔记则用 `get_current_note` |
@@ -180,6 +180,18 @@ XML 内容解析后未能产生任何有效 block。`message` 字段中包含解
 2. 选择具有正确类型的 block
 3. 重试操作
 ```
+
+### INVALID_PARAMS (Unsupported domain) → 更换为白名单域名
+
+`import_web_page` 工具仅支持白名单域名（微信公众号、知乎、豆瓣等）。传入非白名单域名时返回 `INVALID_PARAMS`。
+
+```
+1. 检查 message 中提示的不支持域名
+2. 更换为白名单域名的 URL（如微信公众号文章链接 mp.weixin.qq.com）
+3. 使用修正后的 URL 重试 import_web_page
+```
+
+---
 
 ### IMAGE_FETCH_FAILED → 修正图片来源
 

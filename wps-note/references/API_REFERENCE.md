@@ -248,6 +248,15 @@
 - `replace` 时 `content` 根块 `id` 可省略；若显式传入，必须与 `block_id` 一致。
 - `insert` 时 `content` 中的块级标签应省略 `id`，系统会分配新的 `block_id`。
 
+**文件引用参数**（Electron 主进程预处理，对所有 MCP 客户端透明）：
+
+| 参数 | 说明 |
+|------|------|
+| `content_file` | 文件路径，读取内容填入 `content`（与 `content` 二选一；`content` 显式传入时 `content_file` 被忽略） |
+| `__args_file` | JSON 文件路径，读取后整体 merge 到参数中（最低优先级，不覆盖已有字段） |
+
+文件引用在 Electron 主进程层解析（`server.js`），前端 bridge 无感知。无 `_file` 参数时为空操作，零开销。
+
 **返回** `data`：`{ success, results[], message? }`。
 
 ---
@@ -271,6 +280,15 @@
 { "op": "delete", "block_ids": ["string"] }
 { "op": "update_attrs", "block_id": "string", "attrs": { ... } }
 ```
+
+**文件引用参数**（同 `edit_block`）：
+
+| 参数 | 说明 |
+|------|------|
+| `operations_file` | JSON 文件路径，读取后解析为 `operations` 数组（与 `operations` 二选一） |
+| `__args_file` | JSON 文件路径，读取后整体 merge 到参数中 |
+
+`operations` 数组中的每个操作项也支持 `content_file` 引用。
 
 **返回** `data`：`{ success, results[], message? }`。
 
@@ -323,6 +341,38 @@
 - Prompt 过长（>500 字符） → `GENERATE_IMAGE_FAILED`（缩短 prompt）
 - 白名单未授权 → `GENERATE_IMAGE_FAILED`（联系管理员）
 - 用户未登录 → `GENERATE_IMAGE_FAILED`（登录后重试）
+
+---
+
+### import_web_page
+
+从指定 URL 导入网页内容为笔记。仅支持白名单域名（微信公众号、知乎、豆瓣等）。创建新笔记并将网页内容转换后写入，返回笔记 ID、标题和摘要。转换耗时约 5-30 秒。
+
+```json
+{
+  "url": { "type": "string", "required": true, "description": "要导入的网页 URL。必须是白名单域名，例如微信公众号文章链接" }
+}
+```
+
+**返回** `data`：
+```json
+{
+  "fileId": "123456",
+  "title": "文章标题",
+  "intro": "文章摘要前 100 字...",
+  "linkUrl": "https://xxx/note/123456"
+}
+```
+
+- `fileId`：新创建的笔记 ID，可直接用于后续 `read_note`、`edit_block` 等操作
+- `title`：从网页内容中提取的标题
+- `intro`：从网页内容中提取的摘要（最长 100 字）
+- `linkUrl`：笔记的 Web 访问链接（可选）
+
+**错误场景**：
+- 不支持的域名 → `INVALID_PARAMS`（仅白名单域名可导入，检查 URL 后修正）
+- 创建云文档失败 → `INTERNAL_ERROR`（retryable，网络问题或服务异常）
+- 网页内容转换失败 → `INTERNAL_ERROR`（retryable，重试或检查 URL 是否可访问）
 
 ---
 
