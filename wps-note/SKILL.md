@@ -6,7 +6,7 @@ description: 通过 MCP 工具读取、编辑和管理 WPS 笔记，基于 block
   （BLOCK_NOT_FOUND、EDITOR_NOT_READY 等）。
 metadata:
   mcp-server: wps-note
-  version: "1.0.0"
+  version: "0.1.10"
   category: productivity
   tags: [note-taking, document-editing, wps]
 ---
