@@ -355,6 +355,12 @@ version: 1.0.0
 
 [![加入 AI Skill 共创社区](https://img.shields.io/badge/WPS笔记-加入共创社区-FF6B35?style=flat-square)](https://365.kdocs.cn/l/cau3Z9vsAUQt)
 
+<p align="center">
+  <img src="./assets/wechat-group-qr.png" alt="微信交流群二维码" width="300" />
+  <br/>
+  <sub>微信扫码加入交流群</sub>
+</p>
+
 ## 贡献者
 
 每一个 Skill，都是有人把自己摸索出来的工作方式，提炼成了别人也能用的技巧。
