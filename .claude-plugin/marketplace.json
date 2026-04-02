@@ -5,12 +5,12 @@
   },
   "metadata": {
     "description": "WPS 笔记 Agent Skills：让 AI Agent 直接驱动笔记读写、创作、搜索、学习等全场景",
-    "version": "1.0.0"
+    "version": "0.1.13"
   },
   "plugins": [
     {
-      "name": "core-skills",
-      "description": "WPS 笔记核心能力：基础读写、笔记处理工具、Skill 创建",
+      "name": "base-skills",
+      "description": "WPS 笔记核心能力：基础读写、搜索、管理 + 智能美化、协作打磨、标签整理、Skill 创建",
       "source": "./",
       "strict": false,
       "skills": [

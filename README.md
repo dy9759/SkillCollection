@@ -17,7 +17,6 @@
 # Skill 分类
 
 - [./skills](./skills): 全部 Skill，按功能分组如下
-- [./template](./template): Skill 模板
 - [./comm_script](./comm_script): 公共脚本（跨 Skill 复用）
 
 ### 核心能力
