@@ -1,0 +1,87 @@
+{
+  "name": "wpsnote-skills",
+  "owner": {
+    "name": "WPS Note Team"
+  },
+  "metadata": {
+    "description": "WPS 笔记 Agent Skills：让 AI Agent 直接驱动笔记读写、创作、搜索、学习等全场景",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "core-skills",
+      "description": "WPS 笔记核心能力：基础读写、笔记处理工具、Skill 创建",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/wps-note",
+        "./skills/wpsnote-beautifier",
+        "./skills/note-copilot",
+        "./skills/tag-organize",
+        "./skills/tag-organize-cli",
+        "./skills/skill-creator"
+      ]
+    },
+    {
+      "name": "content-skills",
+      "description": "内容创作与搜索阅读：从写作、排版、发布到内容提炼、新闻解读、论文研究",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/content-creator",
+        "./skills/wechat-publisher",
+        "./skills/short-video-copywriter",
+        "./skills/xiaohongshu-note-creator",
+        "./skills/image-gen",
+        "./skills/content-digest",
+        "./skills/news-to-note",
+        "./skills/wps-note-intelligent-search",
+        "./skills/literature-reader",
+        "./skills/paper-researcher"
+      ]
+    },
+    {
+      "name": "capture-skills",
+      "description": "信息捕获与记录：音频转写、文档导入、网页导入、编码文档、日历联动",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/live-transcript-summary",
+        "./skills/doc-importer",
+        "./skills/web-importer",
+        "./skills/coding-assistant",
+        "./skills/note-calendar"
+      ]
+    },
+    {
+      "name": "creative-skills",
+      "description": "灵感引擎与长篇创作：记忆检索、想法连接、洞见生成、AI 陪伴式小说写作",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/ie-engine",
+        "./skills/ie-retrieve-memory",
+        "./skills/ie-connect-dots",
+        "./skills/ie-generate-insight",
+        "./skills/ie-recall-memory",
+        "./skills/novel-writer",
+        "./skills/novel-writer-cli"
+      ]
+    },
+    {
+      "name": "learning-skills",
+      "description": "学习场景：课堂笔记整理、复习重点提取、知识卡片、错误检查、前置知识补缺、知识网络构建",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/class-note-builder",
+        "./skills/lecture-focus-extractor",
+        "./skills/misconception-finder",
+        "./skills/notes-to-flashcards",
+        "./skills/notes-to-lesson-plan",
+        "./skills/prerequisite-gap-finder",
+        "./skills/study-note-linker"
+      ]
+    }
+  ]
+}
