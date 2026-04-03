@@ -686,6 +686,31 @@ get_mcp_logs({ limit: 20 })
 
 ---
 
+#### UC-M08：导入网页为笔记
+
+**场景**：用户想把一篇微信公众号文章保存为笔记。
+
+**Prompt**：`"帮我把这篇公众号文章导入为笔记"`
+
+**调用**：
+```
+import_web_page({ url: "https://mp.weixin.qq.com/s/xxx" })
+```
+
+**验证**：
+- [ ] 返回 `ok: true`
+- [ ] `data.fileId` 非空
+- [ ] `data.title` 包含文章标题
+- [ ] `data.intro` 包含文章摘要
+- [ ] 笔记已创建并可通过 `read_note` 读取
+
+**边界**：
+- 不支持的域名（如 `example.com`）——返回 `INVALID_PARAMS`，提示仅白名单域名可导入
+- URL 为空——返回 `INVALID_PARAMS`
+- 网页无法访问或转换超时——返回 `INTERNAL_ERROR`（retryable）
+
+---
+
 ## L2 组合工作流
 
 2-4 个工具串联完成一个任务。适用于 Agent 编排和用户场景展示。

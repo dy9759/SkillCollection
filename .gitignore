@@ -30,16 +30,16 @@ yarn-error.log*
 *.log
 
 # Test outputs (large eval files)
-wps-note-intelligent-search/workspace/iteration-*/
-wps-note-intelligent-search/workspace/iteration-*/benchmark.json
+skills/wps-note-intelligent-search/workspace/iteration-*/
+skills/wps-note-intelligent-search/workspace/iteration-*/benchmark.json
 
 # Environment
 .env
 .env.local
 
 # 个人数据文件（不提交到 git）
-capture/web-importer/scripts/articles.json
-capture/web-importer/scripts/latest_articles.json
+skills/web-importer/scripts/articles.json
+skills/web-importer/scripts/latest_articles.json
 
 # Temporary files
 *.tmp
@@ -49,7 +49,6 @@ capture/web-importer/scripts/latest_articles.json
 Debug/
 
 raw-skill/
-references/
 social-media-writer/
 archive/
 document-skills/
