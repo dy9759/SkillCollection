@@ -1,0 +1,3010 @@
+[
+  {
+    "name": "clawiser",
+    "source": "ClaWiser",
+    "path": "ClaWiser",
+    "description": "Agent 记忆与工作流增强套件。包含 8 个模块：记忆系统（memory-deposit、retrieval-enhance、noise-reduction）+ 工作流（hdd、sdd、save-game、load-game、project-skill-pairing）。当用户说\"安装 ClaWiser\"、\"初始化 ClaWiser\"、\"运行 ClaWiser\"时触发。",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 249,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T536dbbc9675356c0f995e5a4cb44193dc6120d73:%M:HEAD"
+  },
+  {
+    "name": "hdd",
+    "source": "ClaWiser",
+    "path": "ClaWiser/assets/hdd",
+    "description": ">",
+    "version": "0.3.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 302,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T536dbbc9675356c0f995e5a4cb44193dc6120d73:%M:HEAD"
+  },
+  {
+    "name": "load-game",
+    "source": "ClaWiser",
+    "path": "ClaWiser/assets/load-game",
+    "description": ">",
+    "version": "0.1.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 129,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T536dbbc9675356c0f995e5a4cb44193dc6120d73:%M:HEAD"
+  },
+  {
+    "name": "memory-deposit",
+    "source": "ClaWiser",
+    "path": "ClaWiser/assets/memory-deposit",
+    "description": ">",
+    "version": "0.3.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 191,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T536dbbc9675356c0f995e5a4cb44193dc6120d73:%M:HEAD"
+  },
+  {
+    "name": "noise-reduction",
+    "source": "ClaWiser",
+    "path": "ClaWiser/assets/noise-reduction",
+    "description": ">",
+    "version": "0.5.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 231,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T536dbbc9675356c0f995e5a4cb44193dc6120d73:%M:HEAD"
+  },
+  {
+    "name": "project-skill-pairing",
+    "source": "ClaWiser",
+    "path": "ClaWiser/assets/project-skill-pairing",
+    "description": ">",
+    "version": "0.1.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 152,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T536dbbc9675356c0f995e5a4cb44193dc6120d73:%M:HEAD"
+  },
+  {
+    "name": "retrieval-enhance",
+    "source": "ClaWiser",
+    "path": "ClaWiser/assets/retrieval-enhance",
+    "description": "检索系统守护。静默运行——agent 自主判断何时激活。三种场景：(1) 首次搭建时初始化 memorySearch 管线 (2) 搜索质量下降时自动诊断根因并路由修复 (3) 定期抽检+调参。不由用户触发。",
+    "version": "0.3.0",
+    "user_invocable": false,
+    "external_deps": [
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 185,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T536dbbc9675356c0f995e5a4cb44193dc6120d73:%M:HEAD"
+  },
+  {
+    "name": "save-game",
+    "source": "ClaWiser",
+    "path": "ClaWiser/assets/save-game",
+    "description": ">",
+    "version": "0.1.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 134,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T536dbbc9675356c0f995e5a4cb44193dc6120d73:%M:HEAD"
+  },
+  {
+    "name": "sdd",
+    "source": "ClaWiser",
+    "path": "ClaWiser/assets/sdd",
+    "description": ">",
+    "version": "0.3.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 111,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T536dbbc9675356c0f995e5a4cb44193dc6120d73:%M:HEAD"
+  },
+  {
+    "name": "process-monitor",
+    "source": "James-Skills",
+    "path": "James-Skills/process-monitor",
+    "description": "流程智能监控设计专家。基于用户提供的流程信息和业务目标，引导完成监控指标定义、异常阈值设置、预警规则设计、根因分析框架构建，最终输出一份结构化的《流程智能监控方案》和可视化看板，供流程Owner直接落地使用。当用户需要为流程设计监控体系、定义KPI指标、设置预警规则、或生成Owner预警报告模板时触发此 skill。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 190,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tdb0c6975999e2bc4123a40501f22df488522d7ab:%M:HEAD"
+  },
+  {
+    "name": "color-font-skill",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/plugins/pptx-plugin/skills/color-font-skill",
+    "description": "Choose presentation-ready color palettes and font pairings for PPT/design tasks. Use when users ask for visual theme choices, brand-safe palettes, or font recommendations. Triggers include: 配色, 色板, 字体...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 156,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "design-style-skill",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/plugins/pptx-plugin/skills/design-style-skill",
+    "description": ">",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 209,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "ppt-editing-skill",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/plugins/pptx-plugin/skills/ppt-editing-skill",
+    "description": "Edit existing PowerPoint files or templates with XML-safe workflows. Use for template-based deck updates: analyze layouts, map content to slides, duplicate/reorder/delete slides safely, edit slide XML...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 193,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "ppt-orchestra-skill",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/plugins/pptx-plugin/skills/ppt-orchestra-skill",
+    "description": "Plan and orchestrate multi-slide PowerPoint creation from scratch. Use before generating a full deck with subagents: classify each slide type, enforce visual variety, set typography/spacing rules, and...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 155,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "slide-making-skill",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/plugins/pptx-plugin/skills/slide-making-skill",
+    "description": "Implement single-slide PowerPoint pages with PptxGenJS. Use when writing or fixing slide JS files: dimensions, positioning, text/image/chart APIs, styling rules, and export expectations for native .pp...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 282,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "android-native-dev",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/android-native-dev",
+    "description": "Android native application development and UI design guide. Covers Material Design 3, Kotlin/Compose development, project configuration, accessibility, and build troubleshooting. Read this before Andr...",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 883,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "buddy-sings",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/buddy-sings",
+    "description": ">",
+    "version": "1.1",
+    "user_invocable": false,
+    "external_deps": [
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 445,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "flutter-dev",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/flutter-dev",
+    "description": "|",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 128,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "frontend-dev",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/frontend-dev",
+    "description": "|",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 567,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "fullstack-dev",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/fullstack-dev",
+    "description": "|",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 1037,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "gif-sticker-maker",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/gif-sticker-maker",
+    "description": "|",
+    "version": "1.2",
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 127,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "ios-application-dev",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/ios-application-dev",
+    "description": "|",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 178,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "minimax-docx",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/minimax-docx",
+    "description": ">",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 274,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "mmx-cli",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/minimax-multimodal-toolkit",
+    "description": "Use mmx to generate text, images, video, speech, and music via the MiniMax AI platform. Use when the user wants to create media content, chat with MiniMax models, perform web search, or manage MiniMax...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 359,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "minimax-music-gen",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/minimax-music-gen",
+    "description": ">",
+    "version": "1.1",
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 404,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "minimax-music-playlist",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/minimax-music-playlist",
+    "description": ">",
+    "version": "2.0",
+    "user_invocable": false,
+    "external_deps": [
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 325,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "minimax-pdf",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/minimax-pdf",
+    "description": ">",
+    "version": "1.0",
+    "user_invocable": false,
+    "external_deps": [
+      "chrome",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 192,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "minimax-xlsx",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/minimax-xlsx",
+    "description": "Open, create, read, analyze, edit, or validate Excel/spreadsheet files (.xlsx, .xlsm, .csv, .tsv). Use when the user asks to create, build, modify, analyze, read, validate, or format any Excel spreads...",
+    "version": "1.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 138,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "pptx-generator",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/pptx-generator",
+    "description": "Generate, edit, and read PowerPoint presentations. Create from scratch with PptxGenJS (cover, TOC, content, section divider, summary slides), edit existing PPTX via XML workflows, or extract text with...",
+    "version": "1.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 249,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "react-native-dev",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/react-native-dev",
+    "description": "|",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 149,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "shader-dev",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/shader-dev",
+    "description": "Comprehensive GLSL shader techniques for creating stunning visual effects — ray marching, SDF modeling, fluid simulation, particle systems, procedural generation, lighting, post-processing, and more.",
+    "version": "1.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 299,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "vision-analysis",
+    "source": "MiniMax-skills",
+    "path": "MiniMax-skills/skills/vision-analysis",
+    "description": ">",
+    "version": "1.0",
+    "user_invocable": false,
+    "external_deps": [
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 174,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Td961bd050bef957c7a72d59003c8ccc9b3e85933:%M:HEAD"
+  },
+  {
+    "name": "anything-to-md",
+    "source": "anything-to-md",
+    "path": "anything-to-md/src/skill",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 300,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T44f0b9cf335cee7ced7a57203ab4607c34a46f1e:%M:HEAD"
+  },
+  {
+    "name": "baoyu-article-illustrator",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-article-illustrator",
+    "description": "Analyzes article structure, identifies positions requiring visual aids, generates illustrations with Type × Style × Palette three-dimension approach. Use when user asks to \"illustrate article\", \"add i...",
+    "version": "1.57.0",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 188,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-comic",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-comic",
+    "description": "Knowledge comic creator supporting multiple art styles and tones. Creates original educational comics with detailed panel layouts and sequential image generation. Use when user asks to create \"知识漫画\", ...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 332,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-compress-image",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-compress-image",
+    "description": "Compresses images to WebP (default) or PNG with automatic tool selection. Use when user asks to \"compress image\", \"optimize image\", \"convert to webp\", or reduce image file size.",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "bun"
+    ],
+    "status": "active",
+    "skill_md_lines": 104,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-cover-image",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-cover-image",
+    "description": "Generates article cover images with 5 dimensions (type, palette, rendering, text, mood) combining 11 color palettes and 7 rendering styles. Supports cinematic (2.35:1), widescreen (16:9), and square (...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 258,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-danger-gemini-web",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-danger-gemini-web",
+    "description": "Generates images and text via reverse-engineered Gemini Web API. Supports text generation, image generation from prompts, reference images for vision input, and multi-turn conversations. Use when othe...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "chrome"
+    ],
+    "status": "experimental",
+    "skill_md_lines": 168,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-danger-x-to-markdown",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-danger-x-to-markdown",
+    "description": "Converts X (Twitter) tweets and articles to markdown with YAML front matter. Uses reverse-engineered API requiring user consent. Use when user mentions \"X to markdown\", \"tweet to markdown\", \"save twee...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "references",
+      "chrome"
+    ],
+    "status": "experimental",
+    "skill_md_lines": 224,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-diagram",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-diagram",
+    "description": "Create professional, dark-themed SVG diagrams of any type — architecture diagrams, flowcharts, sequence diagrams, structural diagrams, mind maps, timelines, illustrative/conceptual diagrams, and more....",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 247,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-format-markdown",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-format-markdown",
+    "description": "Formats plain text or markdown files with frontmatter, titles, summaries, headings, bold, lists, and code blocks. Use when user asks to \"format markdown\", \"beautify article\", \"add formatting\", or impr...",
+    "version": "1.57.0",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 366,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-image-cards",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-image-cards",
+    "description": "Generates infographic image card series with 12 visual styles, 8 layouts, and 3 color palettes. Breaks content into 1-10 cartoon-style image cards optimized for social media engagement. Use when user ...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 641,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-image-gen",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-image-gen",
+    "description": "AI image generation with OpenAI, Azure OpenAI, Google, OpenRouter, DashScope, MiniMax, Jimeng, Seedream and Replicate APIs. Supports text-to-image, reference images, aspect ratios, and batch generatio...",
+    "version": "1.56.4",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 408,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-imagine",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-imagine",
+    "description": "AI image generation with OpenAI, Azure OpenAI, Google, OpenRouter, DashScope, Z.AI GLM-Image, MiniMax, Jimeng, Seedream and Replicate APIs. Supports text-to-image, reference images, aspect ratios, and...",
+    "version": "1.57.0",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 490,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-infographic",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-infographic",
+    "description": "Generates professional infographics with 21 layout types and 21 visual styles. Analyzes content, recommends layout×style combinations, and generates publication-ready infographics. Use when user asks ...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 269,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-markdown-to-html",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-markdown-to-html",
+    "description": "Converts Markdown to styled HTML with WeChat-compatible themes. Supports code highlighting, math, PlantUML, footnotes, alerts, infographics, and optional bottom citations for external links. Use when ...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "bun"
+    ],
+    "status": "active",
+    "skill_md_lines": 269,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-post-to-wechat",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-post-to-wechat",
+    "description": "Posts content to WeChat Official Account (微信公众号) via API or Chrome CDP. Supports article posting (文章) with HTML, markdown, or plain text input, and image-text posting (贴图, formerly 图文) with multiple i...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "references",
+      "chrome"
+    ],
+    "status": "active",
+    "skill_md_lines": 508,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-post-to-weibo",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-post-to-weibo",
+    "description": "Posts content to Weibo (微博). Supports regular posts with text, images, and videos, and headline articles (头条文章) with Markdown input via Chrome CDP. Use when user asks to \"post to Weibo\", \"发微博\", \"发布微博\"...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "chrome"
+    ],
+    "status": "active",
+    "skill_md_lines": 172,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-post-to-x",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-post-to-x",
+    "description": "Posts content and articles to X (Twitter). Supports regular posts with images/videos and X Articles (long-form Markdown). Uses real Chrome with CDP to bypass anti-automation. Use when user asks to \"po...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "references",
+      "chrome"
+    ],
+    "status": "active",
+    "skill_md_lines": 223,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-slide-deck",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-slide-deck",
+    "description": "Generates professional slide deck images from content. Creates outlines with style instructions, then generates individual slide images. Use when user asks to \"create slides\", \"make a presentation\", \"...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 718,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-translate",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-translate",
+    "description": "Translates articles and documents between languages with three modes - quick (direct), normal (analyze then translate), and refined (analyze, translate, review, polish). Supports custom glossaries and...",
+    "version": "1.59.0",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 280,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-url-to-markdown",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-url-to-markdown",
+    "description": "Fetch any URL and convert to markdown using baoyu-fetch CLI (Chrome CDP with site-specific adapters). Built-in adapters for X/Twitter, YouTube transcripts, Hacker News threads, and generic pages via D...",
+    "version": "1.60.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "chrome"
+    ],
+    "status": "active",
+    "skill_md_lines": 324,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-xhs-images",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-xhs-images",
+    "description": "Generates Xiaohongshu (Little Red Book) image card series with 12 visual styles, 8 layouts, and 3 color palettes. Breaks content into 1-10 cartoon-style image cards optimized for XHS engagement. Use w...",
+    "version": "1.56.1",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 641,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "baoyu-youtube-transcript",
+    "source": "baoyu-skills",
+    "path": "baoyu-skills/skills/baoyu-youtube-transcript",
+    "description": "Downloads YouTube video transcripts/subtitles and cover images by URL or video ID. Supports multiple languages, translation, chapters, and speaker identification. Caches raw data for fast re-formattin...",
+    "version": "1.1.0",
+    "user_invocable": false,
+    "external_deps": [
+      "bun",
+      "chrome",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 186,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.107.0, origin/main, origin/HEAD)T9977ff520c49ea0888d8d43d582973c6e8c1d55a:%M:HEAD"
+  },
+  {
+    "name": "dbs",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 79,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-action",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-action",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 239,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-agent-migration",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-agent-migration",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 294,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-ai-check",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-ai-check",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 272,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-benchmark",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-benchmark",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 220,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-chatroom",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-chatroom",
+    "description": "定向聊天室：根据话题推荐或接受用户指定的专家，模拟多角色对话。触发方式：/dbs-chatroom、/定向聊天室、「定向聊天室」",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 131,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-chatroom-austrian",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-chatroom-austrian",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 178,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-content",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-content",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 223,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-deconstruct",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-deconstruct",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 228,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-diagnosis",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-diagnosis",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 503,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-hook",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-hook",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 304,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-slowisfast",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-slowisfast",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 231,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "dbs-xhs-title",
+    "source": "dbskill",
+    "path": "dbskill/skills/dbs-xhs-title",
+    "description": "|",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 736,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tf29b07c5d4811ef21951a9b59cb8978fa0851b17:%M:HEAD"
+  },
+  {
+    "name": "ai-evals",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/ai-evals",
+    "description": "Help users create and run AI evaluations. Use when someone is building evals for LLM products, measuring model quality, creating test cases, designing rubrics, or trying to systematically measure AI o...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 53,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "ai-product-strategy",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/ai-product-strategy",
+    "description": "Help users define AI product strategy. Use when someone is building an AI product, deciding where to apply AI in their product, planning an AI roadmap, evaluating build vs buy for AI capabilities, or ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 84,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "analyzing-user-feedback",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/analyzing-user-feedback",
+    "description": "Help users synthesize and act on customer feedback. Use when someone is analyzing NPS responses, processing support tickets, reviewing user research, synthesizing feedback from multiple channels, or t...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 76,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "behavioral-product-design",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/behavioral-product-design",
+    "description": "Help users apply behavioral science to product design. Use when someone is designing for habit formation, reducing friction, applying psychology to UX, increasing retention through behavioral principl...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 60,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "brand-storytelling",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/brand-storytelling",
+    "description": "Help users craft compelling brand narratives. Use when someone is defining brand strategy, writing company positioning, creating pitch narratives, developing messaging frameworks, or trying to make th...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 76,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "building-a-promotion-case",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/building-a-promotion-case",
+    "description": "Help users get promoted at work. Use when someone is preparing for a promotion conversation, building their case for advancement, trying to understand what's blocking their promotion, or figuring out ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 76,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "building-sales-team",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/building-sales-team",
+    "description": "Help users build and scale their sales organization. Use when someone is hiring their first salespeople, deciding when to bring on sales leadership, structuring sales compensation, or transitioning fr...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "building-team-culture",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/building-team-culture",
+    "description": "Help users build and maintain strong team culture. Use when someone is defining team values, creating psychological safety, onboarding to a new team, navigating cultural change, or building distribute...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 70,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "building-with-llms",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/building-with-llms",
+    "description": "Help users build effective AI applications. Use when someone is building with LLMs, writing prompts, designing AI features, implementing RAG, creating agents, running evals, or trying to improve AI ou...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 123,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "career-transitions",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/career-transitions",
+    "description": "Help users navigate career changes and pivots. Use when someone is considering a new role, transitioning into product management, evaluating job offers, taking a sabbatical, or feeling stuck in their ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 74,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "coaching-pms",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/coaching-pms",
+    "description": "Help users develop and coach product managers. Use when someone is managing PMs, creating development plans, running performance reviews, or trying to level up their PM team's capabilities.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 63,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "community-building",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/community-building",
+    "description": "Help users build and grow product communities. Use when someone is starting a community, scaling an ambassador program, driving community-led growth, or choosing between user, developer, or partner co...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "competitive-analysis",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/competitive-analysis",
+    "description": "Help users understand and respond to competition. Use when someone is positioning against competitors, evaluating market threats, running competitive war games, or deciding how much to focus on compet...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "conducting-interviews",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/conducting-interviews",
+    "description": "Help users conduct effective hiring interviews. Use when someone is designing an interview loop, crafting interview questions, evaluating candidates in real-time, or building a structured interview pr...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 70,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "conducting-user-interviews",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/conducting-user-interviews",
+    "description": "Help users run better customer and user interviews. Use when someone is preparing for user research, planning discovery interviews, writing interview questions, analyzing interview findings, or trying...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 92,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "content-marketing",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/content-marketing",
+    "description": "Help users build content marketing strategies. Use when someone is starting a blog, building SEO, creating thought leadership content, or deciding on content formats and distribution channels.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "cross-functional-collaboration",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/cross-functional-collaboration",
+    "description": "Help users work effectively across functions. Use when someone is navigating PM-engineering relationships, resolving cross-team conflicts, building product trios, or improving handoffs between design,...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 73,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "defining-product-vision",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/defining-product-vision",
+    "description": "Help users create compelling product visions. Use when someone is writing a vision statement, defining a long-term product direction, aligning teams on the future state, or distinguishing vision from ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "delegating-work",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/delegating-work",
+    "description": "Help users delegate effectively. Use when someone is struggling to let go of tasks, deciding what to delegate, building team autonomy, or balancing being hands-on vs hands-off.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 70,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "design-engineering",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/design-engineering",
+    "description": "Help users understand and build design engineering capabilities. Use when someone is creating a design engineering function, hiring design engineers, or bridging the gap between design and engineering...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 51,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "design-systems",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/design-systems",
+    "description": "Help users build and scale design systems. Use when someone is creating a component library, establishing design tokens, scaling brand consistency, or deciding when to invest in a design system.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 55,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "designing-growth-loops",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/designing-growth-loops",
+    "description": "Help users design and optimize growth loops. Use when someone is building viral mechanics, designing referral programs, creating product-led acquisition, or figuring out how to make their product grow...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "designing-surveys",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/designing-surveys",
+    "description": "Help users design effective surveys. Use when someone is creating customer surveys, NPS measurements, product-market fit surveys, or feedback collection mechanisms.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 64,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "dogfooding",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/dogfooding",
+    "description": "Help users implement effective dogfooding practices. Use when someone is trying to get their team to use their own product, designing internal usage programs, or building user empathy through personal...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 52,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "energy-management",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/energy-management",
+    "description": "Help users manage their energy for sustained performance. Use when someone is feeling burned out, trying to find their zone of genius, scheduling for productivity, or identifying what drains vs energi...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 61,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "engineering-culture",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/engineering-culture",
+    "description": "Help users build strong engineering culture. Use when someone is improving developer experience, fostering technical excellence, designing engineering practices, or scaling an engineering organization...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 70,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "enterprise-sales",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/enterprise-sales",
+    "description": "Help users navigate enterprise sales. Use when someone is closing large deals, managing complex buying committees, handling procurement, or converting PLG users to enterprise contracts.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "evaluating-candidates",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/evaluating-candidates",
+    "description": "Help users make better hiring decisions. Use when someone is evaluating job candidates, making hiring decisions, conducting reference checks, reviewing work samples or take-homes, calibrating their hi...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 83,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "evaluating-new-technology",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/evaluating-new-technology",
+    "description": "Help users evaluate emerging technologies. Use when someone is assessing new tools, making build vs buy decisions, evaluating AI vendors, or deciding on technical architecture.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "evaluating-trade-offs",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/evaluating-trade-offs",
+    "description": "Help users make better decisions between competing options. Use when someone is weighing pros and cons, comparing alternatives, struggling with a difficult choice, deciding between speed and quality, ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 83,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "finding-mentors-sponsors",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/finding-mentors-sponsors",
+    "description": "Help users build relationships with mentors and sponsors for career growth. Use when someone is looking for career guidance, wants to find a mentor, needs an advocate at work, is trying to build their...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 80,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "founder-sales",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/founder-sales",
+    "description": "Help founders close their first customers and build repeatable sales processes. Use when someone is doing founder-led sales, trying to get their first customers, writing cold outreach, running early s...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 83,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "fundraising",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/fundraising",
+    "description": "Help founders raise capital and build investor relationships. Use when someone is preparing a pitch deck, deciding whether to raise venture capital, meeting with investors, or asking about fundraising...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 54,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "giving-presentations",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/giving-presentations",
+    "description": "Help users create and deliver compelling presentations. Use when someone is preparing a talk, building a slide deck, dealing with presentation anxiety, practicing for a keynote, or asking how to be mo...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 83,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "having-difficult-conversations",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/having-difficult-conversations",
+    "description": "Help users navigate tough feedback, performance conversations, and conflict. Use when someone needs to give hard feedback, have a performance conversation, fire someone, address conflict with a collea...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 84,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "launch-marketing",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/launch-marketing",
+    "description": "Help users plan and execute product launches. Use when someone is planning a product launch, preparing PR outreach, coordinating a go-to-market campaign, launching on Product Hunt, or asking how to ge...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 83,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "managing-imposter-syndrome",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/managing-imposter-syndrome",
+    "description": "Help users work through feelings of inadequacy and self-doubt. Use when someone feels like a fraud, doubts their qualifications, is anxious about being \"found out,\" or struggling with confidence in a ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 58,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "managing-tech-debt",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/managing-tech-debt",
+    "description": "Help users manage technical debt strategically. Use when someone is dealing with legacy code, planning refactoring work, deciding between rewrites vs. incremental fixes, trying to get buy-in for tech ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 80,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "managing-timelines",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/managing-timelines",
+    "description": "Help users set and hit realistic deadlines. Use when someone is planning project timelines, struggling to hit deadlines, dealing with timeline pressure from stakeholders, or trying to improve estimati...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 77,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "managing-up",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/managing-up",
+    "description": "Help users work effectively with their manager and executives. Use when someone is struggling with their manager relationship, needs to influence leadership, wants to get better at executive communica...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 83,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "marketplace-liquidity",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/marketplace-liquidity",
+    "description": "Help users build and manage marketplace liquidity. Use when someone is working on a marketplace business, struggling with supply/demand balance, trying to improve match rates, or asking how to reach c...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 57,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "measuring-product-market-fit",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/measuring-product-market-fit",
+    "description": "Help users assess and achieve product-market fit. Use when someone is trying to determine if they have PMF, measuring user engagement and retention, running the Sean Ellis survey, or figuring out if t...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 77,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "media-relations",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/media-relations",
+    "description": "Help users build relationships with journalists and get press coverage. Use when someone is pitching reporters, preparing for media outreach, trying to get press coverage, or managing ongoing journali...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 57,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "negotiating-offers",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/negotiating-offers",
+    "description": "Help users negotiate job offers and compensation. Use when someone is negotiating salary, equity, or other terms of a job offer, preparing for a compensation conversation, or asking how to ask for mor...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 59,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "onboarding-new-hires",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/onboarding-new-hires",
+    "description": "Help users onboard new team members effectively. Use when someone is planning onboarding for a new hire, starting a new job themselves, designing a first-90-days plan, or trying to ramp up new employe...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 77,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "organizational-design",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/organizational-design",
+    "description": "Help users design effective organizational structures. Use when someone is thinking about team structure, deciding between functional vs. divisional models, planning a reorg, or figuring out how to st...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 57,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "organizational-transformation",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/organizational-transformation",
+    "description": "Help users transform organizations toward modern product practices. Use when someone is trying to shift from feature teams to product teams, introduce empowered teams, modernize legacy processes, or d...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 59,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "partnership-bd",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/partnership-bd",
+    "description": "Help users build strategic partnerships and business development deals. Use when someone is pursuing a partnership, negotiating a BD deal, working with platforms like Google or Facebook, or trying to ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 74,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "personal-productivity",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/personal-productivity",
+    "description": "Help users manage their time and tasks more effectively. Use when someone is overwhelmed with work, struggling with focus, trying to balance multiple responsibilities, or asking how to get more done.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 58,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "planning-under-uncertainty",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/planning-under-uncertainty",
+    "description": "Help users plan products and strategy when outcomes are unpredictable. Use when someone is dealing with ambiguous timelines, building in fast-moving markets, planning AI/ML projects, or asking how to ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "platform-infrastructure",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/platform-infrastructure",
+    "description": "Help users build and scale internal platforms and technical infrastructure. Use when someone is deciding whether to build vs buy tooling, designing developer platforms, creating shared services, or ma...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 60,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "platform-strategy",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/platform-strategy",
+    "description": "Help users design and execute platform business strategies. Use when someone is building a marketplace, creating an ecosystem, deciding on API strategy, thinking about multi-sided network effects, or ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 64,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "positioning-messaging",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/positioning-messaging",
+    "description": "Help users craft product positioning and messaging. Use when someone is launching a product, differentiating from competitors, writing marketing copy, struggling to explain what their product does, or...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 67,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "post-mortems-retrospectives",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/post-mortems-retrospectives",
+    "description": "Help users run effective post-mortems and retrospectives. Use when someone is reviewing a project that succeeded or failed, wants to establish learning practices, is dealing with failure aftermath, or...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 64,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "pricing-strategy",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/pricing-strategy",
+    "description": "Help users design and optimize pricing strategies. Use when someone is setting prices for the first time, considering freemium vs paid models, optimizing monetization, dealing with willingness to pay ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 67,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "prioritizing-roadmap",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/prioritizing-roadmap",
+    "description": "Help users prioritize product roadmaps and backlogs. Use when someone is deciding what to build next, sequencing features, allocating resources across projects, handling stakeholder requests, or strug...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "problem-definition",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/problem-definition",
+    "description": "Help users define problems clearly before jumping to solutions. Use when someone is scoping a new feature, validating a product idea, struggling to articulate what they're building, or falling into th...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "product-led-sales",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/product-led-sales",
+    "description": "Help users implement product-led sales motions. Use when someone is transitioning from pure PLG to sales-assisted, defining PQLs, building sales handoff processes, or trying to expand self-serve users...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 60,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "product-operations",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/product-operations",
+    "description": "Help users build and scale product operations functions. Use when someone is scaling a product team, struggling with cross-functional coordination, needs to standardize product processes, or wants to ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 60,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "product-taste-intuition",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/product-taste-intuition",
+    "description": "Help users develop product taste and intuition. Use when someone wants to improve their product judgment, struggles to evaluate design quality, needs to make decisions without complete data, or wants ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 63,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "retention-engagement",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/retention-engagement",
+    "description": "Help users improve retention and engagement metrics. Use when someone is dealing with churn, optimizing activation flows, building habit-forming products, or trying to increase user engagement and lif...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 67,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "running-decision-processes",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/running-decision-processes",
+    "description": "Help users run effective decision-making processes. Use when someone is facing a high-stakes decision, dealing with analysis paralysis, needs to align stakeholders on a choice, or wants to establish d...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 70,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "running-design-reviews",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/running-design-reviews",
+    "description": "Help users run effective design reviews and critiques. Use when someone is giving design feedback, establishing design review processes, struggling to evaluate designs, or wants to improve how their t...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 64,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "running-effective-1-1s",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/running-effective-1-1s",
+    "description": "Help users run effective one-on-one meetings. Use when someone is a new manager setting up 1:1s, struggling to make 1:1s productive, wants to improve career conversations with reports, or needs to han...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 63,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "running-effective-meetings",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/running-effective-meetings",
+    "description": "Help users run more effective meetings. Use when someone is dealing with meeting overload, wants to improve meeting culture, is preparing an important meeting, or struggles to get decisions made in me...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 70,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "running-offsites",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/running-offsites",
+    "description": "Help users plan and run effective team offsites. Use when someone is organizing a team retreat, planning a strategy offsite, trying to improve remote team cohesion, or preparing for quarterly planning...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 60,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "sales-compensation",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/sales-compensation",
+    "description": "Help users design sales compensation plans. Use when someone is hiring their first sales rep, restructuring sales comp, trying to align sales incentives with business goals, or dealing with comp plan ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 60,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "sales-qualification",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/sales-qualification",
+    "description": "Help users qualify sales leads effectively. Use when someone is wasting time on bad leads, struggling with low conversion rates, needs to build a qualification framework, or wants to improve their dis...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 60,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "scoping-cutting",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/scoping-cutting",
+    "description": "Help users scope projects and cut features effectively. Use when someone is defining an MVP, dealing with scope creep, trying to ship faster, or needs to make tradeoffs about what to build.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 70,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "setting-okrs-goals",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/setting-okrs-goals",
+    "description": "Help users set effective OKRs and goals. Use when someone is creating quarterly objectives, defining key results, setting team goals, planning annual targets, or struggling with goal alignment across ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 77,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "shipping-products",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/shipping-products",
+    "description": "Help users ship products faster and with higher quality. Use when someone is planning a launch, struggling to release features, dealing with shipping velocity issues, or trying to establish better rel...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 77,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "stakeholder-alignment",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/stakeholder-alignment",
+    "description": "Help users align stakeholders and get buy-in. Use when someone is struggling to get approval, facing resistance to their ideas, needs to influence without authority, or is preparing for an important e...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 77,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "startup-ideation",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/startup-ideation",
+    "description": "Help users generate and evaluate startup ideas. Use when someone is brainstorming business ideas, trying to find a startup concept, evaluating whether an idea is worth pursuing, or looking for unique ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 57,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "startup-pivoting",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/startup-pivoting",
+    "description": "Help users decide when and how to pivot their startup. Use when someone is questioning their current direction, seeing poor traction, considering a major strategy change, or stuck in the pre-PMF stage...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 59,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "systems-thinking",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/systems-thinking",
+    "description": "Help users think in systems and understand complex dynamics. Use when someone is dealing with multi-stakeholder problems, trying to understand second-order effects, managing platform ecosystems, or an...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 65,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "team-rituals",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/team-rituals",
+    "description": "Help users design effective team rituals. Use when someone is building team culture, creating recurring team practices, trying to improve team communication, or establishing operational rhythms for th...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 62,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "technical-roadmaps",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/technical-roadmaps",
+    "description": "Help users create technical roadmaps. Use when someone is planning engineering work, prioritizing tech debt, building architecture roadmaps, or aligning technical and product strategy.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 59,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "usability-testing",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/usability-testing",
+    "description": "Help users conduct effective usability testing. Use when someone is planning user tests, designing prototype validation, preparing usability studies, or trying to understand why users struggle with th...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "user-onboarding",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/user-onboarding",
+    "description": "Help users design effective product onboarding. Use when someone is creating first-user experiences, trying to improve activation rates, designing the first 30 seconds of product usage, or working on ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 62,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "vibe-coding",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/vibe-coding",
+    "description": "Help users build software using AI coding tools. Use when someone is using AI to generate code, building prototypes without deep technical skills, or exploring how non-engineers can create functional ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 62,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "working-backwards",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/working-backwards",
+    "description": "Help users apply the working backwards methodology. Use when someone is defining a new product, writing a PR/FAQ, planning from a future state, or trying to clarify a product's value proposition befor...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 71,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "writing-job-descriptions",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/writing-job-descriptions",
+    "description": "Help users write effective job descriptions. Use when someone is creating a job posting, defining a new role, preparing to hire, or trying to attract the right candidates for an open position.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 68,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "writing-north-star-metrics",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/writing-north-star-metrics",
+    "description": "Help users define their North Star metric. Use when someone is choosing their primary success metric, trying to align the team around a key measure, struggling with metric proliferation, or setting up...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 77,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "writing-prds",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/writing-prds",
+    "description": "Help users write effective PRDs. Use when someone is documenting product requirements, preparing specs for engineering, writing feature briefs, or defining what to build for their team.",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 74,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "writing-specs-designs",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/writing-specs-designs",
+    "description": "Help users write effective specs and design documents. Use when someone is creating technical specs, feature specs, design docs, or trying to communicate product requirements to engineering and design...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 74,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "written-communication",
+    "source": "lenny-skills",
+    "path": "lenny-skills/skills/written-communication",
+    "description": "Help users communicate more effectively in writing. Use when someone is drafting memos, emails, strategy docs, announcements, or any written communication that needs to be clear, concise, and persuasi...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 83,
+    "last_repo_commit": "%Y->- (HEAD -> main, tag: v1.0.0, origin/main, origin/HEAD)T280a57aa42fed3b6f35f51f0d9e71013b4c8ae74:%M:HEAD"
+  },
+  {
+    "name": "ljg-card",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-card",
+    "description": "Content caster (铸). Transforms content into PNG visuals. Seven molds: -l (default) long reading card, -i infograph, -m multi-card reading cards (1080x1440), -v visual sketchnote, -c comic (manga-style...",
+    "version": "1.8.0",
+    "user_invocable": true,
+    "external_deps": [
+      "node",
+      "references",
+      "chrome"
+    ],
+    "status": "active",
+    "skill_md_lines": 111,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-invest",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-invest",
+    "description": "投资分析, 生成一份深度投资分析报告。不做传统投资分析——核心判断是项目是否是一台「秩序创造机器」。Use when user says '投资报告', '投资分析', '分析这个项目', '写投资报告', 'investment report', 'invest analysis', or provides entrepreneur conversation records wanting in...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 125,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-learn",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-learn",
+    "description": "Deep concept anatomist that deconstructs any concept through 8 exploration dimensions (history, dialectics, phenomenology, linguistics, formalization, existentialism, aesthetics, meta-philosophy) and ...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 79,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-paper",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-paper",
+    "description": "Paper reader for non-academics. Takes a paper and extracts its ideas for personal use. Focuses on understanding, not academic critique. Use when user shares an arxiv link, paper URL, PDF, or asks to a...",
+    "version": "4.4.0",
+    "user_invocable": true,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 188,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-paper-flow",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-paper-flow",
+    "description": "Paper workflow: read papers + cast cards in one go. Takes one or more arxiv links, paper URLs, PDFs, or paper names. For each paper, runs ljg-paper (generates org analysis) then ljg-card -c (generates...",
+    "version": "1.0.1",
+    "user_invocable": true,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 62,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-paper-river",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-paper-river",
+    "description": "论文倒读法：给一篇论文，递归找出它批判和改进的前序论文（最多5层），再找它之后的最新进展，从源头正向讲述问题演化史。以问题为轴，费曼式讲解每篇论文看到的问题和解法创新。Use when user shares a paper and wants to understand its intellectual lineage, citation chain, problem evolution, or...",
+    "version": "1.0.0",
+    "user_invocable": true,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 155,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-plain",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-plain",
+    "description": "Cognitive atom: Plain (白). Rewrites any content so a smart 12-year-old groks it. Structure-free — form follows content. Use when user says '白话说', '说人话', '解释一下', 'plain', 'grok'.",
+    "version": "5.0.0",
+    "user_invocable": true,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 105,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-rank",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-rank",
+    "description": "给一个领域，找出背后真正撑着它的几根独立的力。十几个现象砍到不可再少的生成器——砍完能把现象一个个生回来，才算数。Use when user says '降秩', '找秩', '秩是什么', '这个领域靠什么撑着', '背后是什么', or wants to decompose any domain to its irreducible generators.",
+    "version": null,
+    "user_invocable": true,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 43,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-read",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-read",
+    "description": "Reading companion agent. Accompanies user through any text (books, articles, essays, papers, news) with translation, structural annotation, deep questioning, and cross-domain insights. Detects languag...",
+    "version": "1.0.0",
+    "user_invocable": true,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 273,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-relationship",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-relationship",
+    "description": ">-",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 261,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-roundtable",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-roundtable",
+    "description": ">-",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 133,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-skill-map",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-skill-map",
+    "description": "Skill map viewer. Scans all installed skills and renders a visual overview — name, version, description, category at a glance. Use when user says 'skills', '技能', '技能地图', 'skill map', '我有哪些技能', '看看技能',...",
+    "version": "1.0.0",
+    "user_invocable": true,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 67,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-think",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-think",
+    "description": "追本之箭——纵向深钻思维工具。给一个观点、现象或问题，像箭一样一路向下钻到不可再分的本质。Use when user says '想透', '追本', '本质是什么', '为什么会这样', '深挖', '钻到底', 'think deep', 'drill down', or wants to trace any idea/phenomenon vertically to its irreduci...",
+    "version": null,
+    "user_invocable": true,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 67,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-travel",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-travel",
+    "description": "Deep travel research workflow for museums and ancient architecture. Input a city name, auto-generates structured knowledge document (org-mode) + portable reference cards (PNG). Covers historical backg...",
+    "version": "1.0.0",
+    "user_invocable": true,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 198,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-word",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-word",
+    "description": "Deep-dive English word mastery tool. Deconstructs a single English word into core semantics and epiphany. Use when user asks to explain/master a specific English word.",
+    "version": "1.0.1",
+    "user_invocable": true,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 41,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-word-flow",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-word-flow",
+    "description": "Word flow: deep-dive word analysis + infograph card in one go. Takes one or more English words, runs ljg-word (generates deep semantics analysis) then ljg-card -i (generates infograph PNG). Use when u...",
+    "version": "1.0.1",
+    "user_invocable": true,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 63,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "ljg-writes",
+    "source": "ljg-skills",
+    "path": "ljg-skills/skills/ljg-writes",
+    "description": "写作引擎。像手术刀剖开一个观点，一层层剥到底。1000-1500 字。",
+    "version": "6.0.0",
+    "user_invocable": true,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 144,
+    "last_repo_commit": "%Y->- (HEAD -> master, origin/master, origin/HEAD)T2084228c3c8d8a3c72534383b5adf71d1fa814f0:%M:HEAD"
+  },
+  {
+    "name": "qiaomu-markdown-proxy",
+    "source": "markdown-proxy",
+    "path": "markdown-proxy",
+    "description": "|",
+    "version": "2.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "chrome",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 130,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tce0f5f685a7e1003dcea7badf8b923048c72eacf:%M:HEAD"
+  },
+  {
+    "name": "atypica-user-interview",
+    "source": "marketing-skills",
+    "path": "marketing-skills/skills/atypica-user-interview",
+    "description": "Run AI-simulated user interviews and focus group discussions using atypica.ai's library of human-like personas. Each persona is an AI that behaves like a real person — with a specific background, pers...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 402,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T995aa58283bb56cabd8de1e7ec64069f23af5f7a:%M:HEAD"
+  },
+  {
+    "name": "html-to-pdf",
+    "source": "marketing-skills",
+    "path": "marketing-skills/skills/html-to-pdf",
+    "description": ">",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "chrome"
+    ],
+    "status": "active",
+    "skill_md_lines": 109,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T995aa58283bb56cabd8de1e7ec64069f23af5f7a:%M:HEAD"
+  },
+  {
+    "name": "logo-design",
+    "source": "marketing-skills",
+    "path": "marketing-skills/skills/logo-design",
+    "description": "Design professional logos as SVG code with browser preview. Use this skill when the user asks to design a logo, create a brand mark, make an icon, or build a visual identity. Also triggers on 'logo', ...",
+    "version": "2.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "chrome"
+    ],
+    "status": "active",
+    "skill_md_lines": 361,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T995aa58283bb56cabd8de1e7ec64069f23af5f7a:%M:HEAD"
+  },
+  {
+    "name": "market-sizing",
+    "source": "marketing-skills",
+    "path": "marketing-skills/skills/market-sizing",
+    "description": "Produce a rigorous, sourced TAM/SAM/SOM market sizing for any product or business. Use this skill whenever a user asks about market size, total addressable market, SAM, SOM, or market opportunity — ac...",
+    "version": "v2",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 390,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T995aa58283bb56cabd8de1e7ec64069f23af5f7a:%M:HEAD"
+  },
+  {
+    "name": "plan-as-consultant",
+    "source": "marketing-skills",
+    "path": "marketing-skills/skills/plan-as-consultant",
+    "description": "Plan a business research study the way a professional consultant would — selecting the right analytical framework (JTBD, KANO, STP, GE-McKinsey, etc.), designing the research method, and defining a sp...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 158,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T995aa58283bb56cabd8de1e7ec64069f23af5f7a:%M:HEAD"
+  },
+  {
+    "name": "product-rnd",
+    "source": "marketing-skills",
+    "path": "marketing-skills/skills/product-rnd",
+    "description": "End-to-end Product Innovation R&D workflow — inspiration gathering, research, and professional report generation. Use whenever the user wants to create a product innovation or R&D report, develop a ne...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 272,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T995aa58283bb56cabd8de1e7ec64069f23af5f7a:%M:HEAD"
+  },
+  {
+    "name": "class-note-builder",
+    "source": "wpsnote-skills",
+    "path": "skills/class-note-builder",
+    "description": "当用户希望把课堂逐字稿、OCR 笔记、截图资料或零散学习内容整理成结构化的 WPS 学习笔记时使用此 Skill。适合课堂记录整理、培训复盘、补课笔记汇总、课程主笔记构建等场景，尤其适合原始材料很乱、但最终需要一篇可复习、可回看、可继续补充的主笔记时。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 62,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "coding-assistant",
+    "source": "wpsnote-skills",
+    "path": "skills/coding-assistant",
+    "description": "多平台编码助手。遵循各平台官方文档做编码规范、单测与编译/lint；协助将核心技术梳理为完整 WPS 笔记技术文档。生成的笔记必须包含 7 个二级标题（核心技术、核心代码、关键技术点、核心类和职责、调用链、架构概览、注意事项）；其中架构、核心技术、调用链的图示优先用 WPS 笔记的 generate_image 根据描述生成图片再用 insert_image 插入。用户新增标题时根据诉求补充内容；...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 88,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "review-notes",
+    "source": "wpsnote-skills",
+    "path": "skills/coding-assistant/review-notes",
+    "description": "作为 coding-assistant 的子 skill，生成或更新 WPS 技术文档。笔记必须完整且包含 7 个二级标题（核心技术、核心代码、关键技术点、核心类和职责、调用链、架构概览、注意事项），核心技术与架构概览须配图。用户新增标题时按诉求补充内容；用户未关闭当前笔记时约 30 秒后主动根据内容更新文档直至关闭。在用户使用 Cursor/Codex/Claude Code/AS code 且...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 50,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "content-creator",
+    "source": "wpsnote-skills",
+    "path": "skills/content-creator",
+    "description": "|",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 308,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "content-digest",
+    "source": "wpsnote-skills",
+    "path": "skills/content-digest",
+    "description": "将任意内容提炼为结构化知识笔记，自动保存到 WPS 笔记。只要用户给出任何内容（链接、图片、本地文件、粘贴文字）并有保存笔记的意图，就应使用此 skill。常见触发词：「总结」「提炼」「做笔记」「读书笔记」「学习笔记」「整理成笔记」「帮我看看」「帮我解读」「记一下」「存下来」「整理一下」「帮我归纳」。也适用于用户直接给出 URL、@图片、@文件但没有明确说「存笔记」的情况——只要内容值得保存，主动...",
+    "version": "3.7.1",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 181,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "doc-importer",
+    "source": "wpsnote-skills",
+    "path": "skills/doc-importer",
+    "description": ">",
+    "version": "1.2.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 512,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "ie-connect-dots",
+    "source": "wpsnote-skills",
+    "path": "skills/ie-connect-dots",
+    "description": "对笔记和想法进行语义聚类、发现想法之间的隐含连接、识别长期重复出现的主题模式。当用户提到\"连接想法\"、\"发现关联\"、\"想法聚类\"、\"找到模式\"、\"这些笔记有什么联系\"等需要理解多条笔记之间关系的场景时使用此技能。此技能属于灵感引擎（ie-）推理层，专门处理想法之间的关系分析，不涉及笔记检索或内容生成。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 180,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "ie-engine",
+    "source": "wpsnote-skills",
+    "path": "skills/ie-engine",
+    "description": "灵感引擎的统一入口，串联记忆检索、想法连接和洞见生成的完整流水线。当用户提到\"灵感引擎\"、\"激发灵感\"、\"connect the dots\"、\"寻找灵感\"、\"帮我把想法串起来\"、\"从笔记中发现新东西\"等需要完整运行灵感生成流水线的场景时使用此技能。此外，当用户正在深入探索某个主题、进行创造性思考、或讨论复杂问题时，如果你判断用户的历史笔记中可能存在相关启发，也应主动考虑触发此技能，以轻量提示的方式...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 205,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "ie-generate-insight",
+    "source": "wpsnote-skills",
+    "path": "skills/ie-generate-insight",
+    "description": "将推理分析结果转化为可阅读的洞见文本，生成下一步探索建议，展示想法的演化路径。当用户提到\"生成洞见\"、\"给我灵感\"、\"启发我\"、\"下一步探索什么\"、\"想法是怎么演变的\"等需要从分析结果中提炼启发性内容的场景时使用此技能。此技能属于灵感引擎（ie-）洞见层，专门负责将结构化推理结果转化为人类可读的灵感内容，不涉及笔记检索或关系分析。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 159,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "insight-recaller",
+    "source": "wpsnote-skills",
+    "path": "skills/ie-recall-memory",
+    "description": "当用户在 WPS 里写新内容、做专题复习、准备讲稿或整理研究思路时，希望把过去真正有用的旧笔记重新召回到眼前，就使用此 Skill。它更适合“现在最该想起什么”，而不是做完整的笔记建链。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 58,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "ie-retrieve-memory",
+    "source": "wpsnote-skills",
+    "path": "skills/ie-retrieve-memory",
+    "description": "从用户的 WPS 笔记中检索历史知识和过去的想法。当用户提到\"回忆过去的笔记\"、\"之前写过什么\"、\"历史想法\"、\"以前的笔记\"、\"查找旧笔记\"等需要从笔记库中找回过往知识的场景时使用此技能。此技能属于灵感引擎（ie-）记忆层，专门处理笔记知识检索，不涉及通用文件搜索或代码查找。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 125,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "image-gen",
+    "source": "wpsnote-skills",
+    "path": "skills/image-gen",
+    "description": "|",
+    "version": "2.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 260,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "lecture-focus-extractor",
+    "source": "wpsnote-skills",
+    "path": "skills/lecture-focus-extractor",
+    "description": "当用户手上已经有一篇较长的课堂笔记、逐字稿或学习记录，但只想提取最值得复习的重点时使用此 Skill。适合课程录音整理、复习提纲抽取、考前过重点、快速补课等场景。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 57,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "literature-reader",
+    "source": "wpsnote-skills",
+    "path": "skills/literature-reader",
+    "description": "阅读、分析并总结学术文献（PDF论文），生成结构化的文献概要笔记。核心能力：论文元信息提取、研究问题识别、方法论梳理、实验结果分析、个人评价生成，以及多篇文献横向对比。支持中英文论文、单篇精读与批量文献综述。当用户提供 PDF 论文文件、要求阅读文献、总结论文、文献综述、论文概要、论文精读、paper summary、paper review、读论文、读 paper、帮我看看这篇论文、分析这篇文章...",
+    "version": "1.1.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 142,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "live-transcript-summary",
+    "source": "wpsnote-skills",
+    "path": "skills/live-transcript-summary",
+    "description": "边听边总结：实时监听当前 WPS 笔记中的音频转写，每 60 秒自动循环一次，识别场景后按对应模板整理内容，并写回笔记。当用户提到正在录音、开会、听课、听播客、做采访、开始录制，或者希望 AI 帮忙整理、总结、记录当前正在发生的内容时使用此 skill。也适用于用户说「帮我跟着听」「你帮我记」「边听边整理」「录完帮我整理」「实时帮我总结」，或在笔记中输入 *** 希望 AI 结合录音补全内容的场景...",
+    "version": "2.3.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 520,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "misconception-finder",
+    "source": "wpsnote-skills",
+    "path": "skills/misconception-finder",
+    "description": "当用户希望检查一篇 WPS 学习笔记里是否存在理解错误、概念混淆、逻辑跳步或表述过虚时使用此 Skill。适合课后自查、复习前校正、讲给别人之前自检，以及“我是不是以为自己懂了其实没懂”的场景。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 57,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "news-to-note",
+    "source": "wpsnote-skills",
+    "path": "skills/news-to-note",
+    "description": ">",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 216,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "note-calendar",
+    "source": "wpsnote-skills",
+    "path": "skills/note-calendar",
+    "description": "在 macOS 上打通 WPS 笔记与系统日历。支持查询日程、创建/移动/删除日历事件，以及笔记与日历的双向联动：把今日日程整理成笔记规划页、从笔记中提取事项落入日历、根据明日事件推断今日前置准备、全局时间块规划、收集散落各处的待办 checkbox。仅支持 macOS。当用户说「帮我查日程」「看看我的日历」「今天有什么安排」「日程写到笔记」「把笔记里的计划加进日历」「明天要出发今天准备什么」「帮...",
+    "version": "1.1.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 297,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "note-copilot",
+    "source": "wpsnote-skills",
+    "path": "skills/note-copilot",
+    "description": "笔记协作助手：帮用户打磨当前 WPS 笔记，识别并处理笔记中的 *** 和 /// 援助标记，同时在发现明显逻辑错误时以着色方式提醒。当用户说「帮我打磨笔记」「打磨一下」「帮我看看笔记」「处理一下标记」「定期帮我打磨」，或提到笔记中有 *** 或 /// 需要处理时使用此 skill。",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 272,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "notes-to-flashcards",
+    "source": "wpsnote-skills",
+    "path": "skills/notes-to-flashcards",
+    "description": "当用户希望把 WPS 笔记转成可主动回忆的复习卡片时使用此 Skill。适合课程笔记复习、概念记忆、考前冲刺、误解修正后的再巩固，以及把静态笔记变成可刷卡片的学习材料。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 59,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "notes-to-lesson-plan",
+    "source": "wpsnote-skills",
+    "path": "skills/notes-to-lesson-plan",
+    "description": "当用户希望把 WPS 学习笔记整理成一份可讲给别人听的讲解结构、迷你教案或 teach-back 提纲时使用此 Skill。它不仅适合老师，也适合自学者用“能不能讲出来”来检验自己是否真正掌握。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 59,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "novel-writer",
+    "source": "wpsnote-skills",
+    "path": "skills/novel-writer",
+    "description": "AI 陪伴式长篇小说创作助手，结合 WPS 笔记实现有记忆、懂上下文、不穿帮的持续创作。触发词：帮我写小说、我想写一部小说、继续写小说、写下一章、我有个故事想法、帮我创作。核心能力：冷启动建档（世界观+人物设定+AI生图）、按章写作、每次自动回顾上文防穿帮、全程归档 WPS 笔记。不适用于：短文、散文、诗歌等非长篇小说创作。",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 829,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "novel-writer-cli",
+    "source": "wpsnote-skills",
+    "path": "skills/novel-writer-cli",
+    "description": "AI 陪伴式长篇小说创作助手（CLI 版）。通过系统命令行调用 wpsnote-cli 操作 WPS 笔记，实现有记忆、懂上下文、不穿帮的持续创作。触发词：帮我写小说、我想写一部小说、继续写小说、写下一章、我有个故事想法、帮我创作。核心能力：冷启动建档（世界观+人物设定+AI生图）、按章写作、每次自动回顾上文防穿帮、全程归档 WPS 笔记。不适用于：短文、散文、诗歌等非长篇小说创作。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 840,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "paper-researcher",
+    "source": "wpsnote-skills",
+    "path": "skills/paper-researcher",
+    "description": "学术论文全流程助手：搜索论文、下载 PDF、存入 WPS 笔记、精读分析。当用户说\"搜论文\"、\"找论文\"、\"下载论文\"、\"读论文\"、\"帮我找 paper\"、\"搜一下 XXX 相关的论文\"、\"把这篇论文存到笔记\"、\"分析这篇论文\"、\"帮我做文献调研\"时触发。支持 arXiv 和 OpenAlex 两个数据源，自动完成搜索→下载→转文本→写入 WPS 笔记→分析的完整闭环。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 177,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "prerequisite-gap-finder",
+    "source": "wpsnote-skills",
+    "path": "skills/prerequisite-gap-finder",
+    "description": "当用户觉得一个主题看不懂、学得卡住，或者想知道自己到底缺了哪些前置基础时使用此 Skill。适合课程复习、自学卡点分析、考前查漏补缺、回看旧笔记时发现“明明记了但还是不会”的场景。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 59,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "short-video-copywriter",
+    "source": "wpsnote-skills",
+    "path": "skills/short-video-copywriter",
+    "description": "|",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 322,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "skill-creator",
+    "source": "wpsnote-skills",
+    "path": "skills/skill-creator",
+    "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill...",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 485,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "study-note-linker",
+    "source": "wpsnote-skills",
+    "path": "skills/study-note-linker",
+    "description": "当用户希望把当前 WPS 学习笔记和已有旧笔记连起来，而不是让新笔记继续孤立存在时使用此 Skill。适合复习串讲、知识网络梳理、课程回看、专题学习和研究型笔记关联等场景。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 59,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "tag-organize",
+    "source": "wpsnote-skills",
+    "path": "skills/tag-organize",
+    "description": "笔记标签整理的核心原则与完整工作流程。当用户提到\"整理笔记标签\"、\"清理标签\"、\"标签太乱\"、\"标签太多\"、\"帮我打标签\"、\"重构标签\"、\"重新分类\"、\"笔记分类混乱\"、\"标签体系需要优化\"等需求时使用。",
+    "version": "1.0.1",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 270,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "tag-organize-cli",
+    "source": "wpsnote-skills",
+    "path": "skills/tag-organize-cli",
+    "description": "笔记标签整理的核心原则与完整工作流程（CLI 版）。通过系统命令行调用 wpsnote-cli 操作 WPS 笔记，无需 MCP 服务连接。当用户提到\"整理笔记标签\"、\"清理标签\"、\"标签太乱\"、\"标签太多\"、\"帮我打标签\"、\"重构标签\"、\"重新分类\"、\"笔记分类混乱\"、\"标签体系需要优化\"等需求时使用。",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 350,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "web-importer",
+    "source": "wpsnote-skills",
+    "path": "skills/web-importer",
+    "description": ">",
+    "version": "1.3.0",
+    "user_invocable": false,
+    "external_deps": [
+      "chrome"
+    ],
+    "status": "active",
+    "skill_md_lines": 244,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "wechat-publisher",
+    "source": "wpsnote-skills",
+    "path": "skills/wechat-publisher",
+    "description": "|",
+    "version": "1.1.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 476,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "wps-note",
+    "source": "wpsnote-skills",
+    "path": "skills/wps-note",
+    "description": "通过 MCP 工具读取、编辑和管理 WPS 笔记，基于 block 文档模型，所有内容以",
+    "version": "0.1.10",
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 555,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "wps-deep-search",
+    "source": "wpsnote-skills",
+    "path": "skills/wps-note-intelligent-search",
+    "description": "|",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 396,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "wpsnote-beautifier",
+    "source": "wpsnote-skills",
+    "path": "skills/wpsnote-beautifier",
+    "description": "智能美化 WPS 笔记文档，采用克制统一的配色风格（全文仅1种主色调，不混用多色系）。核心能力：优化标题层级结构、用高亮块强调核心结论与注意事项、用分栏展示对比或并列内容、应用统一配色方案并写入。仅当用户明确表达美化需求时才触发，例如：美化笔记、排版优化、文档美化、笔记排版、WPS笔记美化、智能排版、文档结构调整、加颜色、加高亮、加分栏、让笔记好看点、优化文档格式、笔记太丑了、调整排版、加点样式、...",
+    "version": "1.0.0",
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 253,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "xiaohongshu-note-creator",
+    "source": "wpsnote-skills",
+    "path": "skills/xiaohongshu-note-creator",
+    "description": "|",
+    "version": "1.1.0",
+    "user_invocable": false,
+    "external_deps": [
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 515,
+    "last_repo_commit": "unknown"
+  },
+  {
+    "name": "thesis-word-formatter",
+    "source": "wechat-skills",
+    "path": "wechat-skills/thesis-word-formatter",
+    "description": "大学生毕业论文 Word 排版技能。用于先收集学校 Word 模板、学院规范、任务书或示例论文，再对本科或硕士毕业论文进行 Word 版式整理、目录与编号校正、参考文献与图表题注检查，并输出可直接复核的排版执行清单。适用于用户说“给毕业论文排版”“按学校要求整理 Word”“检查论文格式”“论文目录标题编号不对”“把这篇论文整理成提交版”等场景。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 100,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T86e3b37aa9700648ea3b14524f5eabcd7d1961a1:%M:HEAD"
+  },
+  {
+    "name": "wechat-draft-writer",
+    "source": "wechat-skills",
+    "path": "wechat-skills/wechat-draft-writer",
+    "description": "公众号初稿写作技能。用于在选题和大纲已确认后，基于参考资料、语音底稿和文风 DNA 生成一版高保真初稿。适用于正文写作阶段，不负责选题、大纲和标题决策。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 42,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T86e3b37aa9700648ea3b14524f5eabcd7d1961a1:%M:HEAD"
+  },
+  {
+    "name": "wechat-style-profiler",
+    "source": "wechat-skills",
+    "path": "wechat-skills/wechat-style-profiler",
+    "description": "面向公众号作者的文风 DNA 梳理技能。用于从 3-10 篇参考文章中建立可复用的风格画像，输出 14 维分析、标点符号偏好、分块习惯、段落配方、叙述方法体系、内容推进方式和默认 DNA 文件，并通过用户校准确保画像可直接给写稿技能调用。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 97,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T86e3b37aa9700648ea3b14524f5eabcd7d1961a1:%M:HEAD"
+  },
+  {
+    "name": "wechat-title-generator",
+    "source": "wechat-skills",
+    "path": "wechat-skills/wechat-title-generator",
+    "description": "公众号标题生成与评估技能。用于基于已确认的选题、大纲和目标读者，生成 8 个标题候选，筛掉低质标题，并推荐 1 个最值得发布的标题。适用于写作前或写作后定题阶段，不负责正文。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 49,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T86e3b37aa9700648ea3b14524f5eabcd7d1961a1:%M:HEAD"
+  },
+  {
+    "name": "wechat-topic-outline-planner",
+    "source": "wechat-skills",
+    "path": "wechat-skills/wechat-topic-outline-planner",
+    "description": "公众号选题与大纲策划技能。用于把一个粗点子、资料包、语音底稿或采访纪要，转成 2-3 个高价值选题角度、1 个推荐方向、1 套主大纲和 1 套备选大纲。适用于写作前的方案阶段，必须先确认结构，再交给写稿技能。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 53,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)T86e3b37aa9700648ea3b14524f5eabcd7d1961a1:%M:HEAD"
+  },
+  {
+    "name": "wechat-article-formatter",
+    "source": "wechat_article_skills",
+    "path": "wechat_article_skills/wechat-article-formatter",
+    "description": "将Markdown文章转换为美化的HTML格式，适配微信公众号发布。应用专业CSS样式、代码高亮、优化排版。当用户说\"美化这篇文章\"、\"转换为HTML\"、\"优化公众号格式\"、\"生成公众号HTML\"时使用。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 327,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tabae70b8a8fda65a872875b25eea69092f5746b4:%M:HEAD"
+  },
+  {
+    "name": "wechat-draft-publisher",
+    "source": "wechat_article_skills",
+    "path": "wechat_article_skills/wechat-draft-publisher",
+    "description": "自动将 HTML 文章发布到微信公众号草稿箱，支持封面图上传、标题、作者和元数据管理。当用户说\"推送到微信\"、\"发布到公众号草稿\"、\"上传到草稿箱\"或提到微信文章发布时使用。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [],
+    "status": "active",
+    "skill_md_lines": 197,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tabae70b8a8fda65a872875b25eea69092f5746b4:%M:HEAD"
+  },
+  {
+    "name": "wechat-product-manager-writer",
+    "source": "wechat_article_skills",
+    "path": "wechat_article_skills/wechat-product-manager-writer",
+    "description": "从 AI 产品经理视角撰写微信公众号文章。涵盖 AI 产品拆解、场景解决方案、效率提升实战、产品方法论、行业观察。当用户说\"写一篇关于XXX的文章\"、\"分析一下XXX产品\"、\"聊聊XXX\"时使用。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references",
+      "api-keys"
+    ],
+    "status": "active",
+    "skill_md_lines": 597,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tabae70b8a8fda65a872875b25eea69092f5746b4:%M:HEAD"
+  },
+  {
+    "name": "wechat-tech-writer",
+    "source": "wechat_article_skills",
+    "path": "wechat_article_skills/wechat-tech-writer",
+    "description": "自动搜索、抓取、改写技术内容，生成适合微信公众号的中文科普文章。涵盖AI大模型、GitHub开源工具、技术话题。当用户说\"写一篇关于XXX的文章\"、\"帮我研究XXX\"、\"生成公众号文章\"时使用。",
+    "version": null,
+    "user_invocable": false,
+    "external_deps": [
+      "references"
+    ],
+    "status": "active",
+    "skill_md_lines": 432,
+    "last_repo_commit": "%Y->- (HEAD -> main, origin/main, origin/HEAD)Tabae70b8a8fda65a872875b25eea69092f5746b4:%M:HEAD"
+  }
+]
