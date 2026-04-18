@@ -55,18 +55,20 @@ SKILL_COUNT=$(python3 -c "import json; print(len(json.load(open('scripts/scan-ou
 echo "  扫描到 $SKILL_COUNT 个技能"
 echo ""
 
-# ---- Step 3: 保存旧 registry 用于对比 ----
-OLD_REGISTRY=""
+# ---- Step 3: 保存旧 registry 快照到临时文件（避免 shell 变量插值进 Python）----
+OLD_SNAPSHOT=""
 if [ -f skills-registry.json ]; then
-    OLD_REGISTRY=$(python3 -c "
+    OLD_SNAPSHOT=$(mktemp -t skills-old.XXXXXX)
+    trap '[ -n "$OLD_SNAPSHOT" ] && rm -f "$OLD_SNAPSHOT"' EXIT
+    python3 - > "$OLD_SNAPSHOT" <<'PY' || true
 import json
 data = json.load(open('skills-registry.json'))
-skills = {}
+snap = {}
 for c in data['clusters']:
     for s in c['skills']:
-        skills[s['name']] = {'cluster': c['id'], 'score': s['score'], 'rank': s['rank']}
-print(json.dumps(skills))
-" 2>/dev/null || echo "{}")
+        snap[s['name']] = {'cluster': c['id'], 'score': s['score'], 'rank': s['rank']}
+print(json.dumps(snap))
+PY
 fi
 
 # ---- Step 4: 构建新 registry ----
@@ -80,12 +82,13 @@ python3 scripts/generate-index.py
 echo ""
 
 # ---- Step 6: 对比变更 ----
-if [ -n "$OLD_REGISTRY" ] && [ "$OLD_REGISTRY" != "{}" ]; then
+if [ -n "$OLD_SNAPSHOT" ] && [ -s "$OLD_SNAPSHOT" ]; then
     echo "▶ Step 5: 变更对比..."
-    python3 -c "
+    python3 - "$OLD_SNAPSHOT" <<'PY' || echo "  (对比跳过)"
 import json
+import sys
 
-old = json.loads('$OLD_REGISTRY')
+old = json.load(open(sys.argv[1]))
 new_data = json.load(open('skills-registry.json'))
 
 new_skills = {}
@@ -93,11 +96,8 @@ for c in new_data['clusters']:
     for s in c['skills']:
         new_skills[s['name']] = {'cluster': c['id'], 'score': s['score'], 'rank': s['rank']}
 
-# 新增
 added = set(new_skills.keys()) - set(old.keys())
 removed = set(old.keys()) - set(new_skills.keys())
-
-# 排名变化
 rank_changes = []
 for name in set(new_skills.keys()) & set(old.keys()):
     o, n = old[name], new_skills[name]
@@ -105,16 +105,16 @@ for name in set(new_skills.keys()) & set(old.keys()):
         rank_changes.append((name, o, n))
 
 if added:
-    print(f'  新增 {len(added)} 个技能: {', '.join(sorted(added))}')
+    print(f"  新增 {len(added)} 个技能: {', '.join(sorted(added))}")
 if removed:
-    print(f'  移除 {len(removed)} 个技能: {', '.join(sorted(removed))}')
+    print(f"  移除 {len(removed)} 个技能: {', '.join(sorted(removed))}")
 if rank_changes:
-    print(f'  排名/聚类变化 {len(rank_changes)} 个:')
+    print(f"  排名/聚类变化 {len(rank_changes)} 个:")
     for name, o, n in rank_changes[:10]:
-        print(f'    {name}: #{o[\"rank\"]}({o[\"cluster\"]}) → #{n[\"rank\"]}({n[\"cluster\"]})')
+        print(f"    {name}: #{o['rank']}({o['cluster']}) → #{n['rank']}({n['cluster']})")
 if not added and not removed and not rank_changes:
-    print('  无变更')
-" 2>/dev/null || echo "  (对比跳过)"
+    print("  无变更")
+PY
     echo ""
 fi
 

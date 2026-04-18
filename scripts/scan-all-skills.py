@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""扫��所有子仓库的 SKILL.md，提取元数据输出 JSON"""
+"""扫描所有子仓库的 SKILL.md，提取元数据输出 JSON"""
 
 import json
 import os
@@ -11,6 +11,10 @@ from pathlib import Path
 ROOT_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent
 
 EXCLUDE_DIRS = {"node_modules", ".git", "vendor", "__tests__", "test", ".claude", ".gemini", "dist", "build"}
+
+# 顶层 SKILL.md（不在任何带 .git 子仓库里的）被归属给哪个 source
+# 历史上根目录 skills/ 来自 wpsnote-skills；如果未来根目录内容来自不同仓库，改此常量即可。
+ROOT_SOURCE_NAME = "wpsnote-skills"
 
 
 def find_skill_files(root: Path) -> list[Path]:
@@ -47,7 +51,7 @@ def detect_source(rel_path: str, root: Path) -> str:
     top_dir = rel_path.split("/")[0]
     if (root / top_dir / ".git").is_dir():
         return top_dir
-    return "wpsnote-skills"
+    return ROOT_SOURCE_NAME
 
 
 def detect_deps(skill_dir: Path, skill_file: Path) -> list[str]:

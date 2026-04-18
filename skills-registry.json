@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated_at": "2026-04-19T06:53:06",
+  "updated_at": "2026-04-19T07:18:16",
   "clusters": [
     {
       "id": "content-writing",
@@ -1403,24 +1403,6 @@
           "status": "active"
         },
         {
-          "name": "run",
-          "source": "claude-skills0418",
-          "path": "claude-skills0418/engineering/autoresearch-agent/skills/run",
-          "description": "Run a single experiment iteration. Edit the target file, evaluate, keep or discard.",
-          "version": null,
-          "user_invocable": false,
-          "score": 47.7,
-          "score_breakdown": {
-            "completeness": 33.3,
-            "dependency_simplicity": 100,
-            "version_activity": 0,
-            "stability": 80
-          },
-          "rank": 37,
-          "external_deps": [],
-          "status": "active"
-        },
-        {
           "name": "coverage",
           "source": "claude-skills0418",
           "path": "claude-skills0418/engineering-team/playwright-pro/skills/coverage",
@@ -1434,7 +1416,7 @@
             "version_activity": 0,
             "stability": 80
           },
-          "rank": 38,
+          "rank": 37,
           "external_deps": [],
           "status": "active"
         }
@@ -6161,24 +6143,6 @@
           "status": "active"
         },
         {
-          "name": "init",
-          "source": "claude-skills0418",
-          "path": "claude-skills0418/engineering/agenthub/skills/init",
-          "description": "Create a new AgentHub collaboration session with task, agent count, and evaluation criteria.",
-          "version": null,
-          "user_invocable": false,
-          "score": 48.7,
-          "score_breakdown": {
-            "completeness": 36.4,
-            "dependency_simplicity": 100,
-            "version_activity": 0,
-            "stability": 80
-          },
-          "rank": 124,
-          "external_deps": [],
-          "status": "active"
-        },
-        {
           "name": "merge",
           "source": "claude-skills0418",
           "path": "claude-skills0418/engineering/agenthub/skills/merge",
@@ -6192,7 +6156,7 @@
             "version_activity": 0,
             "stability": 80
           },
-          "rank": 125,
+          "rank": 124,
           "external_deps": [],
           "status": "active"
         },
@@ -6210,7 +6174,7 @@
             "version_activity": 0,
             "stability": 80
           },
-          "rank": 126,
+          "rank": 125,
           "external_deps": [
             "references"
           ],
@@ -6230,7 +6194,7 @@
             "version_activity": 0,
             "stability": 80
           },
-          "rank": 127,
+          "rank": 126,
           "external_deps": [],
           "status": "active"
         },
@@ -6248,25 +6212,7 @@
             "version_activity": 0,
             "stability": 80
           },
-          "rank": 128,
-          "external_deps": [],
-          "status": "active"
-        },
-        {
-          "name": "status",
-          "source": "claude-skills0418",
-          "path": "claude-skills0418/engineering/agenthub/skills/status",
-          "description": "Show DAG state, agent progress, and branch status for an AgentHub session.",
-          "version": null,
-          "user_invocable": false,
-          "score": 46.5,
-          "score_breakdown": {
-            "completeness": 30.1,
-            "dependency_simplicity": 100,
-            "version_activity": 0,
-            "stability": 80
-          },
-          "rank": 129,
+          "rank": 127,
           "external_deps": [],
           "status": "active"
         },
@@ -6284,7 +6230,7 @@
             "version_activity": 0,
             "stability": 80
           },
-          "rank": 130,
+          "rank": 128,
           "external_deps": [],
           "status": "active"
         },
@@ -6302,7 +6248,7 @@
             "version_activity": 0,
             "stability": 80
           },
-          "rank": 131,
+          "rank": 129,
           "external_deps": [
             "chrome"
           ],
@@ -6322,7 +6268,7 @@
             "version_activity": 0,
             "stability": 80
           },
-          "rank": 132,
+          "rank": 130,
           "external_deps": [
             "chrome"
           ],
@@ -6342,7 +6288,7 @@
             "version_activity": 0,
             "stability": 80
           },
-          "rank": 133,
+          "rank": 131,
           "external_deps": [
             "chrome"
           ],
@@ -6362,7 +6308,7 @@
             "version_activity": 0,
             "stability": 80
           },
-          "rank": 134,
+          "rank": 132,
           "external_deps": [
             "chrome",
             "api-keys"
@@ -10014,24 +9960,6 @@
           "rank": 27,
           "external_deps": [],
           "status": "active"
-        },
-        {
-          "name": "status",
-          "source": "claude-skills0418",
-          "path": "claude-skills0418/engineering/autoresearch-agent/skills/status",
-          "description": "Show experiment dashboard with results, active loops, and progress.",
-          "version": null,
-          "user_invocable": false,
-          "score": 45.6,
-          "score_breakdown": {
-            "completeness": 27.3,
-            "dependency_simplicity": 100,
-            "version_activity": 0,
-            "stability": 80
-          },
-          "rank": 28,
-          "external_deps": [],
-          "status": "active"
         }
       ]
     },
@@ -10331,26 +10259,6 @@
             "stability": 80
           },
           "rank": 11,
-          "external_deps": [
-            "chrome"
-          ],
-          "status": "active"
-        },
-        {
-          "name": "review",
-          "source": "claude-skills0418",
-          "path": "claude-skills0418/engineering-team/playwright-pro/skills/review",
-          "description": ">-",
-          "version": null,
-          "user_invocable": false,
-          "score": 35.9,
-          "score_breakdown": {
-            "completeness": 14.1,
-            "dependency_simplicity": 75,
-            "version_activity": 0,
-            "stability": 80
-          },
-          "rank": 12,
           "external_deps": [
             "chrome"
           ],

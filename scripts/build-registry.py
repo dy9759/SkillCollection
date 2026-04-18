@@ -356,6 +356,31 @@ def compute_score(skill: dict) -> dict:
     }
 
 
+def dedupe_by_source_name(skills: list[dict]) -> list[dict]:
+    """按 (source, name) 去重，保留 SKILL.md 行数更大的（内容更完整的）那条。
+
+    有些上游仓库会在多个目录下放同名 SKILL.md（如同时在 engineering/ 和
+    customer-success/），scan 会两份都收录；这里统一只留一份。
+    """
+    best: dict[tuple, dict] = {}
+    duplicates_removed = 0
+    for s in skills:
+        key = (s.get("source", ""), s.get("name", ""))
+        cur = best.get(key)
+        if cur is None:
+            best[key] = s
+        else:
+            duplicates_removed += 1
+            # 选 SKILL.md 行数更大的那条；再不行选描述更长的
+            cur_score = (cur.get("skill_md_lines", 0), len(cur.get("description", "")))
+            new_score = (s.get("skill_md_lines", 0), len(s.get("description", "")))
+            if new_score > cur_score:
+                best[key] = s
+    if duplicates_removed:
+        print(f"Deduped {duplicates_removed} (source, name) duplicates", file=sys.stderr)
+    return list(best.values())
+
+
 def main():
     # 读取扫描结果
     scan_file = ROOT_DIR / "scripts" / "scan-output.json"
@@ -369,6 +394,9 @@ def main():
             capture_output=True, text=True
         )
         skills = json.loads(result.stdout)
+
+    # 同 source 内按名字去重（避免同一个 skill 被多路径扫到两次）
+    skills = dedupe_by_source_name(skills)
 
     # 聚类
     clustered: dict[str, list] = {}
