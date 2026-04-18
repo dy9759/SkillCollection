@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent
 
-EXCLUDE_DIRS = {"node_modules", ".git", "vendor", "__tests__", "test", ".claude"}
+EXCLUDE_DIRS = {"node_modules", ".git", "vendor", "__tests__", "test", ".claude", ".gemini", "dist", "build"}
 
 
 def find_skill_files(root: Path) -> list[Path]:
