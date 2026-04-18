@@ -8,6 +8,14 @@ import subprocess
 import sys
 from pathlib import Path
 
+try:
+    import yaml  # PyYAML
+except ImportError:
+    sys.stderr.write(
+        "ERROR: PyYAML is required. Install with: pip install pyyaml\n"
+    )
+    sys.exit(1)
+
 ROOT_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent
 
 EXCLUDE_DIRS = {"node_modules", ".git", "vendor", "__tests__", "test", ".claude", ".gemini", "dist", "build"}
@@ -27,23 +35,49 @@ def find_skill_files(root: Path) -> list[Path]:
 
 
 def parse_frontmatter(filepath: Path) -> dict:
+    """用 PyYAML 解析 SKILL.md 头部 frontmatter。
+
+    支持：
+    - 顶层 name / description / version / user_invocable
+    - 嵌套 version 在 metadata.version 下（lenny-skills 等上游常见）
+    - 多行描述（block scalar `|` / `>`）
+
+    返回字典可能包含: name (str), description (str), version (str), user_invocable (bool)
+    解析失败返回空字典。
+    """
     text = filepath.read_text(encoding="utf-8", errors="replace")
     match = re.match(r"^---\s*\n(.*?)\n---", text, re.DOTALL)
     if not match:
         return {}
     fm_text = match.group(1)
+    try:
+        data = yaml.safe_load(fm_text) or {}
+    except yaml.YAMLError as exc:
+        sys.stderr.write(f"// frontmatter parse failed: {filepath}: {exc}\n")
+        return {}
+    if not isinstance(data, dict):
+        return {}
+
     result = {}
-    for line in fm_text.split("\n"):
-        line = line.strip()
-        if ":" not in line:
-            continue
-        key, _, val = line.partition(":")
-        key = key.strip()
-        val = val.strip().strip("\"'")
-        if key in ("name", "description", "version"):
-            result[key] = val
-        elif key == "user_invocable":
-            result[key] = val.lower() == "true"
+    for k in ("name", "description"):
+        v = data.get(k)
+        if v is not None:
+            # 多行 block scalar 会保留末尾换行，统一压缩成单行
+            result[k] = str(v).strip().replace("\n", " ")
+
+    # version: 先看顶层，再看 metadata.version
+    version = data.get("version")
+    if version is None and isinstance(data.get("metadata"), dict):
+        version = data["metadata"].get("version")
+    if version is not None:
+        result["version"] = str(version).strip()
+
+    ui = data.get("user_invocable")
+    if isinstance(ui, bool):
+        result["user_invocable"] = ui
+    elif isinstance(ui, str):
+        result["user_invocable"] = ui.strip().lower() == "true"
+
     return result
 
 

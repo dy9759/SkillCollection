@@ -74,6 +74,12 @@
 
 ## 更新流程
 
+### 依赖
+
+```bash
+pip install -r requirements.txt   # PyYAML，用于解析 SKILL.md frontmatter
+```
+
 ### 同步所有子仓库到最新版本
 
 ```bash
