@@ -8,19 +8,24 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 
 # 仓库来源表
 REPO_SOURCES = [
-    ("(根目录)", "wpsnote/wpsnote-skills", "WPS笔记全套AI技能（30+技能）"),
+    ("(根目录)", "wpsnote/wpsnote-skills", "WPS笔记全套AI技能（36技能）"),
+    ("lenny-skills/", "RefoundAI/lenny-skills", "商业/产品/市场/工程/领导力套装（86技能）"),
+    ("claude-skills0418/", "dy9759/claude-skills0418", "聚合型技能库：高管顾问、工程团队、QM/RA、敏捷等（238技能）"),
+    ("agent-toolkit/", "softaworks/agent-toolkit", "通用工程/协作 skill 工具包（43技能）"),
     ("baoyu-skills/", "JimLiu/baoyu-skills", "内容生成/翻译/社交媒体发布套件"),
-    ("James-Skills/", "James19890801/Skills", "简历生成与流程监控"),
-    ("wechat_article_skills/", "BND-1/wechat_article_skills", "微信公众号写作与发布工具链"),
-    ("ClaWiser/", "MattWenJun/ClaWiser", "Agent记忆与工作流增强"),
-    ("wechat-skills/", "gainubi/wechat-skills", "微信公众号写作四件套"),
-    ("awesome-claude-code-subagents/", "VoltAgent/awesome-claude-code-subagents", "127+专业Claude Code子代理"),
     ("MiniMax-skills/", "MiniMax-AI/skills", "全栈开发与多模态生成技能"),
+    ("agent-skills/", "addyosmani/agent-skills", "Addy Osmani 的工程 Agent 技能集（21技能）"),
+    ("ljg-skills/", "lijigang/ljg-skills", "李继刚个人技能集（17技能）"),
     ("dbskill/", "dontbesilent2025/dbskill", "商业诊断工具箱"),
-    ("markdown-proxy/", "joeseesun/markdown-proxy", "URL转Markdown代理服务"),
-    ("ljg-skills/", "lijigang/ljg-skills", "个人技能集（15技能）"),
-    ("anything-to-md/", "1596941391qq/anything-to-md", "万能文件转Markdown"),
+    ("ClaWiser/", "MattWenJun/ClaWiser", "Agent记忆与工作流增强"),
     ("marketing-skills/", "atypica-ai/marketing-skills", "市场调研/用户访谈/产品创新（6技能）"),
+    ("wechat-skills/", "gainubi/wechat-skills", "微信公众号写作四件套"),
+    ("wechat_article_skills/", "BND-1/wechat_article_skills", "微信公众号写作与发布工具链"),
+    ("markdown-proxy/", "joeseesun/markdown-proxy", "URL转Markdown代理服务"),
+    ("anything-to-md/", "1596941391qq/anything-to-md", "万能文件转Markdown"),
+    ("James-Skills/", "James19890801/Skills", "简历生成与流程监控"),
+    ("awesome-claude-code-subagents/", "VoltAgent/awesome-claude-code-subagents", "Claude Code 子代理清单（curated list，无 SKILL.md）"),
+    ("awesome-agent-skills/", "heilcheng/awesome-agent-skills", "Agent Skill 资源清单（curated list，无 SKILL.md）"),
 ]
 
 
